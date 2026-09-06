@@ -1,0 +1,49 @@
+name: Preview share pages
+on:
+  push:
+    branches: [feature/share-pages]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}preview/share/
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+        id: pages
+      - name: Build proposed version
+        run: node scripts/build.mjs
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}/preview/share
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          path: current-main
+      - name: Preserve main site and add isolated preview
+        run: |
+          mkdir -p publish/preview/share
+          cp -R dist/. publish/preview/share/
+          cd current-main
+          if [ -f scripts/build.mjs ]; then
+            node scripts/build.mjs
+            cp -R dist/. ../publish/
+          else
+            cp index.html ../publish/
+            cp -R css js fonts images ../publish/
+          fi
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: publish
+      - uses: actions/deploy-pages@v5
+        id: deployment

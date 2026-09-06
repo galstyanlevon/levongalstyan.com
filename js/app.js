@@ -3,8 +3,10 @@
   "use strict";
   var CONTENT = window.CONTENT, SUB_PARENT = window.SUB_PARENT, CRED = window.CRED, HREFS = window.HREFS;
 
+  var formDraft = { name: "", phone: "", email: "", message: "" };
+  var formSending = false;
   var state = {
-    lang: (function () { try { var s = localStorage.getItem("galstyan.lang"); return (s === "hy" || s === "en") ? s : "en"; } catch (e) { return "en"; } })(),
+    lang: (function () { try { var s = document.documentElement.dataset.pageLang || localStorage.getItem("galstyan.lang"); return (s === "hy" || s === "en") ? s : "hy"; } catch (e) { return "hy"; } })(),
     mobile: document.documentElement.clientWidth < 1180,
     menuOpen: false,
     servicesOpen: false,
@@ -113,6 +115,7 @@
     var next = state.lang === "en" ? "hy" : "en";
     try { localStorage.setItem("galstyan.lang", next); } catch (e) {}
     setState({ lang: next, service: "" });
+    if (window.syncSharePage) window.syncSharePage(next);
   }
 
   /* ---------- Header ---------- */
@@ -528,28 +531,38 @@
     ]));
     var form = el("form", { class: "contact-form" + (state.sent ? " hide" : ""), onsubmit: function (e) {
       e.preventDefault();
+      if (formSending || !e.target.reportValidity()) return;
+      formSending = true;
       var fd = new FormData(e.target);
       fd.append("_subject", "New inquiry from levongalstyan.com");
       fd.append("_captcha", "false");
       var submitBtn = e.target.querySelector(".form-submit");
       if (submitBtn) submitBtn.disabled = true;
+      var controller = new AbortController();
+      var timeout = setTimeout(function () { controller.abort(); }, 20000);
       fetch("https://formsubmit.co/ajax/galstyan.levon@gmail.com", {
         method: "POST",
+        signal: controller.signal,
         headers: { Accept: "application/json" },
         body: fd
-      }).then(function (r) { return r.json(); }).then(function () {
+      }).then(function (r) {
+        if (!r.ok) throw new Error("Request failed");
+        return r.json();
+      }).then(function (result) {
+        if (result.success !== true && result.success !== "true") throw new Error("Submission rejected");
+        formDraft = { name: "", phone: "", email: "", message: "" };
         setState({ sent: true });
       }).catch(function () {
         if (submitBtn) submitBtn.disabled = false;
-        alert(t().sendError || "Something went wrong. Please try again or email us directly.");
-      });
+        alert(state.lang === "hy" ? "Հաղորդագրությունը չուղարկվեց։ Փորձեք կրկին կամ գրեք galstyan.levon@gmail.com հասցեին։" : "Your message could not be sent. Please try again or email galstyan.levon@gmail.com.");
+      }).finally(function () { clearTimeout(timeout); formSending = false; if (submitBtn) submitBtn.disabled = false; });
     } });
     form.appendChild(el("label", null, [T.fName, el("input", { name: "name", required: "true", placeholder: T.phName })]));
     form.appendChild(el("div", { class: "form-row" }, [
       el("label", null, [T.fPhone, el("input", { name: "phone", required: "true", placeholder: "+374 " })]),
       el("label", null, [T.fEmail, el("input", { name: "email", type: "email", placeholder: "name@mail.com" })])
     ]));
-    var select = el("select", { name: "service", onchange: function (e) { setState({ service: e.target.value }); } });
+    var select = el("select", { name: "service", onchange: function (e) { state.service = e.target.value; } });
     var current = state.service || T.fService;
     serviceOptionsList(T).forEach(function (o) {
       select.appendChild(el("option", { value: o, selected: o === current ? "true" : null }, [o]));
@@ -557,6 +570,13 @@
     form.appendChild(el("label", null, [T.fService, select]));
     form.appendChild(el("label", null, [T.fMessage, el("textarea", { name: "message", rows: "4", placeholder: T.phMessage })]));
     form.appendChild(el("button", { type: "submit", class: "form-submit" }, [T.send]));
+    Object.keys(formDraft).forEach(function (key) {
+      var input = form.querySelector('[name="' + key + '"]');
+      input.value = formDraft[key];
+      input.addEventListener("input", function () { formDraft[key] = input.value; });
+    });
+    form.querySelector('[name="phone"]').type = "tel";
+    form.querySelector(".form-submit").disabled = formSending;
     wrap.appendChild(form);
     return wrap;
   }
@@ -1069,7 +1089,7 @@
 
   /* ---------- Routing ---------- */
   function readHash() {
-    var hash = window.location.hash || "";
+    var hash = window.location.hash || (window.currentSharePage && window.currentSharePage().route) || "";
     var m = /^#\/service\/(\d+)$/.exec(hash);
     var isEdu = hash === "#/education", isExp = hash === "#/experience", isBio = hash === "#/bio";
     var subM = /^#\/sub\/([a-z]+)$/.exec(hash);
@@ -1082,6 +1102,7 @@
     var anchor = (!m && !isEdu && !isExp && !isBio && !subM && !insightM && !isActivity && !lecM && !patM && hash.length > 1) ? hash.slice(1) : null;
     state.route = route; state.menuOpen = false; state.servicesOpen = false;
     render();
+    if (window.syncSharePage) window.syncSharePage(state.lang, hash);
     if (route != null) { window.scrollTo(0, 0); return; }
     var target = anchor ? document.getElementById(anchor) : null;
     if (target) window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 70, behavior: "instant" });
@@ -1122,6 +1143,11 @@
   }
   window.addEventListener("resize", syncMobile);
   window.addEventListener("hashchange", readHash);
+  window.addEventListener("popstate", function () {
+    var page = window.currentSharePage && window.currentSharePage();
+    if (page) state.lang = page.lang;
+    readHash();
+  });
   readHash();
   render();
   syncMobile();
