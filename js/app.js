@@ -6,7 +6,7 @@
   var formDraft = { name: "", phone: "", email: "", message: "" };
   var formSending = false;
   var state = {
-    lang: (function () { try { var s = document.documentElement.dataset.pageLang || localStorage.getItem("galstyan.lang"); return (s === "hy" || s === "en") ? s : "hy"; } catch (e) { return "hy"; } })(),
+    lang: (function () { var explicit = document.documentElement.dataset.pageLang; if (explicit === "hy" || explicit === "en") return explicit; try { var s = localStorage.getItem("galstyan.lang"); return (s === "hy" || s === "en") ? s : "hy"; } catch (e) { return "hy"; } })(),
     mobile: document.documentElement.clientWidth < 1180,
     menuOpen: false,
     servicesOpen: false,
@@ -568,7 +568,8 @@
       select.appendChild(el("option", { value: o, selected: o === current ? "true" : null }, [o]));
     });
     form.appendChild(el("label", null, [T.fService, select]));
-    form.appendChild(el("label", null, [T.fMessage, el("textarea", { name: "message", rows: "4", placeholder: T.phMessage })]));
+    form.appendChild(el("label", null, [T.fMessage, el("textarea", { name: "message", rows: "4", placeholder: T.phMessage, "aria-describedby": "message-help" })]));
+    form.appendChild(el("p", { id: "message-help", class: "form-help" }, [T.messageHelp]));
     form.appendChild(el("button", { type: "submit", class: "form-submit" }, [T.send]));
     Object.keys(formDraft).forEach(function (key) {
       var input = form.querySelector('[name="' + key + '"]');
@@ -1089,7 +1090,7 @@
 
   /* ---------- Routing ---------- */
   function readHash() {
-    var hash = window.location.hash || (window.currentSharePage && window.currentSharePage().route) || "";
+    var hash = window.location.hash || (window.currentSharePage && (window.currentSharePage() || {}).route) || "";
     var m = /^#\/service\/(\d+)$/.exec(hash);
     var isEdu = hash === "#/education", isExp = hash === "#/experience", isBio = hash === "#/bio";
     var subM = /^#\/sub\/([a-z]+)$/.exec(hash);

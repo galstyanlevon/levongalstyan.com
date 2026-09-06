@@ -12,7 +12,7 @@ for (const lang of ['en', 'hy']) {
   const t = CONTENT[lang];
   const add = (route, slug, title, description) => pages.push({ lang, route, path: `${lang}/${slug ? slug + '/' : ''}`, title: String(title).replace(/\s+/g, ' '), description: String(description || t.heroRole).replace(/\s+/g, ' ').slice(0, 240) });
   add('#home', '', t.heroName, t.heroBlurb);
-  for (const [anchor, title] of Object.entries({about:t.approachTitle,services:t.servicesTitle,credentials:t.credentialsTitle || 'Credentials',patients:t.patientsTitle,faq:t.faqTitle,contact:t.scheduleTitle,insights:t.insightsTitle})) add('#'+anchor, anchor, title || anchor, t.heroRole);
+  for (const [anchor, title] of Object.entries({about:t.approachTitle,services:t.servicesTitle,credentials:t.credentialsTitle || 'Credentials',patients:t.forPatientsTitle,faq:t.faqTitle,contact:t.scheduleTitle,insights:t.insightsTitle})) add('#'+anchor, anchor, title || anchor, t.heroRole);
   for (const key of ['bio','education','experience']) add('#/'+key,key,t[key+'Title']);
   add('#/activity','activity',t.insightsTitle,t.insightsBody);
   t.services.forEach((s,i)=>add('#/service/'+i,'service/'+i,s.title,s.body));
