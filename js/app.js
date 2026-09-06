@@ -555,7 +555,8 @@
       select.appendChild(el("option", { value: o, selected: o === current ? "true" : null }, [o]));
     });
     form.appendChild(el("label", null, [T.fService, select]));
-    form.appendChild(el("label", null, [T.fMessage, el("textarea", { name: "message", rows: "4", placeholder: T.phMessage })]));
+    form.appendChild(el("label", null, [T.fMessage, el("textarea", { name: "message", rows: "4", placeholder: T.phMessage, "aria-describedby": "message-help" })]));
+    form.appendChild(el("p", { id: "message-help", class: "form-help" }, [T.messageHelp]));
     form.appendChild(el("button", { type: "submit", class: "form-submit" }, [T.send]));
     wrap.appendChild(form);
     return wrap;
