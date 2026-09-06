@@ -1075,9 +1075,22 @@
     var T = t();
     var footer = el("footer", { class: "site-footer" });
     var cols = el("div", { class: "footer-cols" });
-    T.footerCols.forEach(function (col) {
+    var footerLinks = [
+      ["#/insight/publications", "#/insight/lectures", "#/insight/conferences", "#/insight/videos"],
+      ["#/patients/useful-info", "#faq", "#services"],
+      ["https://www.facebook.com/share/19KYS2Pe6P/?mibextid=wwXIfr", "https://www.instagram.com/levon.r.galstyan?stkn=MWQwaDc3ZW1ldDI3cw%3D%3D&utm_source=qr", "https://youtube.com/@levongalstyanomfs?si=rwM7Igbz_p-BoLFM", "https://www.linkedin.com/in/drlevongalstyan/"]
+    ];
+    T.footerCols.forEach(function (col, colIndex) {
       var ul = el("ul");
-      col.links.forEach(function (l) { ul.appendChild(el("li", null, [el("a", { href: "#insights" }, [l])])); });
+      col.links.forEach(function (l, linkIndex) {
+        var href = footerLinks[colIndex][linkIndex];
+        var attrs = { href: href };
+        if (href.indexOf("https://") === 0) {
+          attrs.target = "_blank";
+          attrs.rel = "noopener noreferrer";
+        }
+        ul.appendChild(el("li", null, [el("a", attrs, [l])]));
+      });
       cols.appendChild(el("div", { class: "footer-col" }, [el("p", null, [col.title]), ul]));
     });
     footer.appendChild(cols);
