@@ -347,7 +347,7 @@ window.CONTENT = {
       { title: "Videos", body: "Video library covering procedures,\nlectures and patient education" }
     ],
     insightPages: {
-      publications: { title: "Publications", intro: "A collection of Dr. Galstyan's scientific publications from 1999 to 2024, spanning oral and maxillofacial surgery, craniofacial reconstruction, and dental implantology." },
+      publications: { title: "Publications", intro: "A collection of Dr. Galstyan's scientific publications from 1999 to 2024, spanning oral and maxillofacial surgery, maxillofacial reconstruction, and dental implantology." },
       conferences: { title: "Conferences", intro: "As a dedicated oral and maxillofacial surgeon, I am committed to remaining at the forefront of my field through continuous education and participation in international scientific conferences. Here are some important events I have attended." },
       lectures: { title: "Scientific Presentations & Lectures", intro: "Explore a curated collection of my presentations delivered at leading scientific conferences, symposiums, and professional forums. These talks reflect my commitment to advancing clinical knowledge, sharing surgical experience, and contributing to the academic dialogue in oral and maxillofacial surgery. Whether focused on complex implantology, guided bone regeneration, or interdisciplinary case planning, each presentation offers a window into evidence-based practice and innovation in the field." },
       videos: { title: "Videos", intro: "In this section, you'll find my video interviews, podcast appearances, and public presentations — all featured on open-access channels. These recordings offer insights into my work, expertise, and professional perspective." }
@@ -665,12 +665,12 @@ dentalImplantsIntro: "Ատամնաբուժական իմպլանտները, ըս�
     experience: [
       { org: "Wigmore Clinic", role: "Դիմածնոտային վիրաբույժ", years: "նոյեմբեր 2022 – առ այսօր", location: "Երևան, Հայաստան" },
       { org: "«Ստոմիոն-Օրթոդոնտիկս» ատամնաբուժական կլինիկա", role: "Դիմածնոտային վիրաբույժ, իմպլանտոլոգ", years: "2012 – առ այսօր", location: "Կորյունի 5, Երևան" },
-      { org: "ՀՀ առողջապահության ազգային ինստիտուտ", role: "Գլխի և պարանոցի վիրաբուժության ամբիոնի ասիստենտ պրոֆեսոր", years: "2012 – առ այսօր" },
+      { org: "ՀՀ առողջապահության ազգային ինստիտուտ", role: "Գլխի և պարանոցի վիրաբուժության ամբիոնի ասիստենտ", years: "2012 – առ այսօր" },
       { org: "Slavmed բժշկական կենտրոն", role: "Դիմածնոտային վիրաբույժ", years: "2018 – 2022" },
-      { org: "Երևանի բժշկական ինստիտուտ", role: "Դիմածնոտային վիրաբուժության ամբիոն, ասիստենտ դասախոս", years: "2012 – 2015", location: "Թիֆլիսյան 14ա, 0087, Երևան", note: "Դիմածնոտային վիրաբուժության տեսական և գործնական պարապմունքներ։" },
-      { org: "Երևանի պետական բժշկական համալսարան", role: "Դաշտային վիրաբուժության ամբիոն, ասիստենտ պրոֆեսոր", years: "փետրվար 2005 – փետրվար 2012", location: "Կորյունի փ., 2 շին., 0025, Երևան", note: "Դաշտային դիմածնոտային վիրաբուժության դասավանդում և պրակտիկա հոսպիտալում։" },
+      { org: "Երևանի բժշկական ինստիտուտ", role: "Դիմածնոտային վիրաբուժության ամբիոնի ասիստենտ", years: "2012 – 2015", location: "Թիֆլիսյան 14ա, 0087, Երևան", note: "Դիմածնոտային վիրաբուժության տեսական և գործնական պարապմունքներ։" },
+      { org: "Երևանի պետական բժշկական համալսարան", role: "Ռազմադաշտային վիրաբուժության ամբիոնի ասիստենտ", years: "փետրվար 2005 – փետրվար 2012", location: "Կորյունի փ., 2 շին., 0025, Երևան", note: "Ռազմադաշտային դիմածնոտային վիրաբուժության դասավանդում և պրակտիկա հոսպիտալում։" },
       { org: "ՊՆ Կենտրոնական զինվորական կլինիկական հոսպիտալ", role: "Դիմածնոտային վիրաբուժության բաժանմունք, դիմածնոտային վիրաբույժ", years: "2001 – 2012", location: "Մուրացանի փ., 115, Երևան", note: "Վիրաբուժական պրակտիկա՝ դեմքի և ծնոտների գնդակային վնասվածքներով պացիենտների զգալի տոկոսով։" },
-      { org: "Երևանի բժշկական ինստիտուտ", role: "Դիմածնոտային վիրաբուժության ամբիոն, ասիստենտ դասախոս", years: "2001 – 2004", location: "Թիֆլիսյան 14ա, 0087, Երևան", note: "Դիմածնոտային վիրաբուժության տեսական և գործնական պարապմունքներ։" },
+      { org: "Երևանի բժշկական ինստիտուտ", role: "Դիմածնոտային վիրաբուժության ամբիոնի ասիստենտ", years: "2001 – 2004", location: "Թիֆլիսյան 14ա, 0087, Երևան", note: "Դիմածնոտային վիրաբուժության տեսական և գործնական պարապմունքներ։" },
       { org: "Հայաստանի ֆուտբոլի ֆեդերացիա", role: "IT մասնագետ", years: "1998 – 2004", location: "Խանջյան 27, 0010, Երևան", note: "Համակարգչային և ցանցային սպասարկման կիսաշխատանքային պաշտոն։" }
     ],
     educationTitle: "Կրթություն",
@@ -708,7 +708,7 @@ dentalImplantsIntro: "Ատամնաբուժական իմպլանտները, ըս�
       { title: "Տեսանյութեր", body: "Վիրահատությունների, դասախոսությունների\nև հիվանդների ուսուցման տեսագրություններ" }
     ],
     insightPages: {
-      publications: { title: "Հրապարակումներ", intro: "Բժիշկ Գալստյանի գիտական հրապարակումների հավաքածու 1999-2024 թթ., ընդգրկելով բերանի և դիմածնոտային վիրաբուժություն, գանգուղեղային վերականգնում և ատամնային իմպլանտոլոգիա։" },
+      publications: { title: "Հրապարակումներ", intro: "Բժիշկ Գալստյանի գիտական հրապարակումների հավաքածու 1999-2024 թթ., ընդգրկելով բերանի և դիմածնոտային վիրաբուժություն, դիմածնոտային վերականգնում և ատամնային իմպլանտոլոգիա։" },
       conferences: { title: "Համաժողովներ", intro: "Որպես նվիրված բերանի և դիմածնոտային վիրաբույժ, ես պարտավորված եմ մնալ իմ ոլորտի առաջատար մասնագետներից՝ շարունակական կրթության և միջազգային գիտաժողովներին մասնակցության միջոցով։ Ահա որոշ կարևոր միջոցառումներ, որոնց ես մասնակցել եմ։" },
       lectures: { title: "Գիտական ներկայացումներ և դասախոսություններ", intro: "Բացահայտեք իմ ներկայացումների ընտրանին, որոնք մատուցվել են առաջատար գիտական կոնֆերանսներում, սիմպոզիումներում և մասնագիտական ֆորումներում: Այս զեկույցներն արտացոլում են իմ նվիրվածությունը կլինիկական գիտելիքների զարգացմանը, վիրաբուժական փորձի փոխանակմանը և բերանի և դիմածնոտային վիրաբուժության ոլորտում ակադեմիական երկխոսությանը նպաստելուն: Անկախ նրանից, թե դրանք կենտրոնացած են բարդ իմպլանտոլոգիայի, ուղղորդված ոսկրային վերականգնման, թե միջդիսցիպլինար դեպքերի պլանավորման վրա, յուրաքանչյուր ներկայացում պատուհան է բացում դեպի ապացույցների վրա հիմնված պրակտիկա և նորարարություն այս ոլորտում:" },
       videos: { title: "Տեսանյութեր", intro: "Այս բաժնում դուք կգտնեք իմ տեսահարցազրույցները, մասնակցությունները փոդքասթներում և հանրային ելույթները — բոլորը հասանելի բաց հասանելիության ալիքներում։ Այս ձայնագրությունները պատկերացում են տալիս իմ աշխատանքի, փորձառության և մասնագիտական տեսակետի մասին։" }
@@ -966,7 +966,7 @@ window.LECTURES = { en: [
     "id": 1,
     "date": "01.06.2018",
     "title": "Mouth Breathing and Facial Growth Disorders",
-    "body": "A multidisciplinary overview of the effects of chronic mouth breathing on craniofacial growth, sleep, behavior, and academic performance. Includes anatomical, developmental, and orthodontic consequences, diagnosis protocols, and case management strategies. Presented by Dr. Levon Galstyan."
+    "body": "A multidisciplinary overview of the effects of chronic mouth breathing on facial and jaw growth, sleep, behavior, and academic performance. Includes anatomical, developmental, and orthodontic consequences, diagnosis protocols, and case management strategies. Presented by Dr. Levon Galstyan."
   },
   {
     "id": 12,
@@ -1039,7 +1039,7 @@ window.LECTURES = { en: [
     "id": 1,
     "date": "01.06.2018",
     "title": "Բերանային շնչառություն և դեմքի աճի խանգարումներ",
-    "body": "Բերանային շնչառության երկարաժամկետ ազդեցությունը դեմքի կռանիոֆացիալ աճի, քնի, վարքի և ուսումնական առաջադիմության վրա։ Ներառում է անատոմիական, զարգացման և օրթոդոնտիկ հետևանքները, ախտորոշման և բուժման մոտեցումները։ Ներկայացրել է՝ դոկտ. Լևոն Գալստյան։"
+    "body": "Բերանային շնչառության երկարաժամկետ ազդեցությունը դեմքի և ծնոտների աճի, քնի, վարքի և ուսումնական առաջադիմության վրա։ Ներառում է անատոմիական, զարգացման և օրթոդոնտիկ հետևանքները, ախտորոշման և բուժման մոտեցումները։ Ներկայացրել է՝ դոկտ. Լևոն Գալստյան։"
   },
   {
     "id": 12,
@@ -1115,7 +1115,7 @@ window.CONFERENCES = { en: [
     "date": "Sep 18–21, 2018",
     "place": "Munich, Germany",
     "title": "24th EACMFS Congress",
-    "body": "The premier European conference for cranio-maxillofacial surgery, covering the full spectrum of head and neck surgery, from trauma to oncology."
+    "body": "The premier European conference for oral and maxillofacial surgery, covering the full spectrum of head and neck surgery, from trauma to oncology."
   },
   {
     "date": "Jul 6–8, 2018",
@@ -1200,7 +1200,7 @@ window.CONFERENCES = { en: [
     "date": "2018թ. սեպտեմբերի 18-21",
     "place": "Մյունխեն, Գերմանիա",
     "title": "EACMFS 24-րդ կոնգրես",
-    "body": "Գանգադիմածնոտային վիրաբուժության առաջատար եվրոպական կոնֆերանս, որը ներառում է գլխի և պարանոցի վիրաբուժության ամբողջ սպեկտրը՝ վնասվածքներից մինչև ուռուցքաբանություն։"
+    "body": "Բերանի և դիմածնոտային վիրաբուժության առաջատար եվրոպական կոնֆերանս, որը ներառում է գլխի և պարանոցի վիրաբուժության ամբողջ սպեկտրը՝ վնասվածքներից մինչև ուռուցքաբանություն։"
   },
   {
     "date": "2018թ. հուլիսի 6-8",
