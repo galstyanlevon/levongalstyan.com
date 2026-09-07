@@ -162,7 +162,7 @@
       }, [el("span"), el("span"), el("span")]));
     }
     header.appendChild(el("button", { type: "button", class: "lang-btn", onclick: toggleLang }, [T.langLabel]));
-    header.appendChild(el("a", { href: "#contact", class: "contacts-btn" }, [T.contacts]));
+    header.appendChild(el("a", { href: "/" + state.lang + "/contact/", class: "contacts-btn" }, [T.contacts]));
     return header;
   }
 
