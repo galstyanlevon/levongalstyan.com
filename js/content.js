@@ -304,12 +304,12 @@ window.CONTENT = {
     experience: [
       { org: "Wigmore Clinic", role: "Oral and Maxillofacial Surgeon", years: "November 2022 – Present", location: "Yerevan, Armenia" },
       { org: "\"Stomion-Orthodontics\" dental clinic", role: "Oral and Maxillofacial Surgeon, Implantologist", years: "2012 – Present", location: "5 Koryun St, Yerevan, RA" },
-      { org: "National Institute of Healthcare, RA", role: "Assistant Professor, Chair of Head and Neck Surgery", years: "2012 – Present" },
+      { org: "National Institute of Healthcare, RA", role: "Lecturer, Department of Head and Neck Surgery", years: "2012 – Present" },
       { org: "Slavmed Medical Center", role: "Oral and Maxillofacial Surgeon", years: "2018 – 2022" },
-      { org: "Armenian Medical Institute of Yerevan", role: "Dept. of Oral and Maxillofacial Surgery, Assistant Lecturer", years: "2012 – 2015", location: "Bldg. 14a, Titogradyan St, 0087, Yerevan", note: "Theoretical and practical classes of oral and maxillofacial surgery." },
-      { org: "Yerevan State Medical University", role: "Chair of Field Surgery, Assistant Professor", years: "February 2005 – February 2012", location: "Koryuni St, Building 2, 0025, Yerevan", note: "Field maxillofacial surgery teaching and maxillofacial surgery practice in hospital." },
+      { org: "Armenian Medical Institute of Yerevan", role: "Assistant Professor, Department of Oral and Maxillofacial Surgery", years: "2012 – 2015", location: "Bldg. 14a, Titogradyan St, 0087, Yerevan", note: "Theoretical and practical classes of oral and maxillofacial surgery." },
+      { org: "Yerevan State Medical University", role: "Assistant Professor, Department of Field Surgery", years: "February 2005 – February 2012", location: "Koryuni St, Building 2, 0025, Yerevan", note: "Field maxillofacial surgery teaching and maxillofacial surgery practice in hospital." },
       { org: "Central Military Clinical Hospital of MOD", role: "Dept. of Maxillofacial Surgery, Oral and Maxillofacial Surgeon", years: "2001 – 2012", location: "Muracan St, 115, Yerevan", note: "Surgery practice, with a significant percentage of patients with gunshot injuries of the face and jaws." },
-      { org: "Armenian Medical Institute of Yerevan", role: "Dept. of Oral and Maxillofacial Surgery, Assistant Lecturer", years: "2001 – 2004", location: "Titogradyan St, Bldg 14a, 0087, Yerevan", note: "Theoretical and practical classes of oral and maxillofacial surgery." },
+      { org: "Armenian Medical Institute of Yerevan", role: "Assistant Professor, Department of Oral and Maxillofacial Surgery", years: "2001 – 2004", location: "Titogradyan St, Bldg 14a, 0087, Yerevan", note: "Theoretical and practical classes of oral and maxillofacial surgery." },
       { org: "Football Federation of Armenia", role: "IT Specialist", years: "1998 – 2004", location: "Khanjyan St, 27, 0010, Yerevan", note: "Part-time work in computer and network services." }
     ],
     educationTitle: "Education",
