@@ -737,6 +737,61 @@ window.FAQ_VIDEOS = {
   }
 };
 
+window.SERVICE_VIDEOS = {
+  en: {
+    services: {
+      2: {
+        heading: "Dental implants or bridges?",
+        title: "Dental implants vs bridges for missing teeth — 3D animation",
+        url: "https://www.youtube-nocookie.com/embed/kT68nibzonY?start=0&rel=0"
+      },
+      5: {
+        heading: "How FESS is performed",
+        title: "Functional Endoscopic Sinus Surgery (FESS) — 3D animation",
+        url: "https://www.youtube-nocookie.com/embed/qKTRyowwaLA?start=0&rel=0"
+      },
+      6: {
+        heading: "How snoring surgery is performed",
+        title: "Elevoplasty snore treatment",
+        url: "https://www.youtube-nocookie.com/embed/wYG2IfV9CyQ?start=0&rel=0"
+      }
+    },
+    subServices: {
+      sinuslifting: {
+        heading: "How sinus lift is performed",
+        title: "Sinus floor elevation — dental animation",
+        url: "https://www.youtube-nocookie.com/embed/DNoDA3JeXyw?start=0&rel=0"
+      }
+    }
+  },
+  hy: {
+    services: {
+      2: {
+        heading: "Ատամնային իմպլա՞նտ, թե՞ կամուրջ",
+        title: "Բացակայող ատամների փոխարինում․ իմպլանտներ և կամուրջներ՝ 3D անիմացիա",
+        url: "https://www.youtube-nocookie.com/embed/kT68nibzonY?start=0&rel=0"
+      },
+      5: {
+        heading: "Ինչպե՞ս է կատարվում FESS վիրահատությունը",
+        title: "Հարքթային խոռոչների ֆունկցիոնալ էնդոսկոպիկ վիրահատություն (FESS)՝ 3D անիմացիա",
+        url: "https://www.youtube-nocookie.com/embed/qKTRyowwaLA?start=0&rel=0"
+      },
+      6: {
+        heading: "Ինչպե՞ս է կատարվում խռմփոցի վիրահատական բուժումը",
+        title: "Խռմփոցի բուժում էլևոպլաստիկայի միջոցով",
+        url: "https://www.youtube-nocookie.com/embed/wYG2IfV9CyQ?start=0&rel=0"
+      }
+    },
+    subServices: {
+      sinuslifting: {
+        heading: "Ինչպե՞ս է կատարվում սինուս-լիֆտինգը",
+        title: "Սինուսի հատակի բարձրացում՝ ատամնաբուժական անիմացիա",
+        url: "https://www.youtube-nocookie.com/embed/DNoDA3JeXyw?start=0&rel=0"
+      }
+    }
+  }
+};
+
 window.SUB_PARENT = {
   rhinoplasty: 0, blepharoplasty: 0, browlift: 0, ottoplasty: 0, cheiloplasty: 0,
   mucogingival: 1, sinuslifting: 1, gbr: 1,

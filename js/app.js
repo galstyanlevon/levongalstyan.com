@@ -638,6 +638,8 @@
       el("p", { class: "service-body" }, [body]),
       el("button", { type: "button", class: "hero-cta", style: { marginTop: "26px" }, onclick: function () { bookService(s.title.replace(/\n/g, " ")); } }, [T.cta])
     ]));
+    var serviceVideo = window.SERVICE_VIDEOS && window.SERVICE_VIDEOS[state.lang] && window.SERVICE_VIDEOS[state.lang].services[index];
+    if (serviceVideo) frag.appendChild(buildProcedureVideo(serviceVideo));
     if (sections) {
       var wrap = el("section", { class: "sections-col" });
       var inner = el("div");
@@ -779,6 +781,8 @@
       el("h1", { class: "service-title" }, [sub.title]),
       el("p", { class: "service-body" }, [sub.intro])
     ]));
+    var subVideo = window.SERVICE_VIDEOS && window.SERVICE_VIDEOS[state.lang] && window.SERVICE_VIDEOS[state.lang].subServices[key];
+    if (subVideo) frag.appendChild(buildProcedureVideo(subVideo));
     var wrap = el("section", { class: "sections-col" });
     var inner = el("div");
     sub.sections.forEach(function (sec) {
@@ -805,6 +809,18 @@
     otherSec.appendChild(grid);
     frag.appendChild(otherSec);
     return frag;
+  }
+
+  function buildProcedureVideo(video) {
+    return el("section", { class: "procedure-video-section" }, [
+      el("div", { class: "procedure-video-inner" }, [
+        el("h2", null, [video.heading]),
+        el("div", { class: "card-divider" }),
+        el("div", { class: "procedure-video-frame" }, [
+          el("iframe", { src: video.url, title: video.title, loading: "lazy", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowfullscreen: "true", referrerpolicy: "strict-origin-when-cross-origin" })
+        ])
+      ])
+    ]);
   }
 
   /* ---------- Activity page ---------- */

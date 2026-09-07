@@ -221,6 +221,11 @@ h1, h2, h3, p { margin: 0; }
 .section-block { display: flex; flex-direction: column; gap: 26px; }
 .section-block h2 { font-size: 18px; font-weight: 500; line-height: 28px; }
 .section-block p { color: rgba(39,42,60,0.8); text-wrap: pretty; white-space: pre-line; }
+.procedure-video-section { padding: var(--pad-y) var(--pad-x); display: flex; justify-content: center; background: var(--paper); }
+.procedure-video-inner { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 26px; }
+.procedure-video-inner h2 { font-size: 18px; font-weight: 500; line-height: 28px; }
+.procedure-video-frame { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; background: #000; box-shadow: 0 0 30px rgba(39,42,60,0.08); }
+.procedure-video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
 /* about (bio/education/experience) */
 .timeline-item { display: flex; flex-direction: column; gap: 26px; }

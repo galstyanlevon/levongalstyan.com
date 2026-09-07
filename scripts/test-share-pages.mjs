@@ -27,8 +27,18 @@ sandbox.window.syncSharePage('hy');assert.equal(location.pathname,new URL('hy/',
 for(const p of pages){sandbox.window.syncSharePage(p.lang,p.route);assert.equal(location.pathname,new URL(p.path,base).pathname);assert.equal(dom.documentElement.lang,p.lang);assert.equal(sandbox.window.currentSharePage().route,p.route)}
 sandbox.window.syncSharePage('hy','#/patients/faq');assert.equal(location.pathname,new URL('hy/faq/',base).pathname);
 const app=fs.readFileSync('js/app.js','utf8');
+const sourceContext={window:{}};
+vm.runInNewContext(fs.readFileSync('js/content.js','utf8'),sourceContext);
 assert.equal(context.window.FAQ_VIDEOS.en['How to care after paranasal sinus surgery (FESS)?'].url,'https://www.youtube-nocookie.com/embed/SXUyqna4QZA?start=0');
 assert.equal(context.window.FAQ_VIDEOS.hy['Ինչպե՞ս խնամել քթի հարակից խոռոչների էնդոսկոպիկ վիրահատությունից հետո։'].url,'https://www.youtube-nocookie.com/embed/SXUyqna4QZA?start=0');
+assert.equal(sourceContext.window.SERVICE_VIDEOS.en.services[5].url,'https://www.youtube-nocookie.com/embed/qKTRyowwaLA?start=0&rel=0');
+assert.equal(sourceContext.window.SERVICE_VIDEOS.hy.services[5].url,'https://www.youtube-nocookie.com/embed/qKTRyowwaLA?start=0&rel=0');
+assert.equal(sourceContext.window.SERVICE_VIDEOS.en.services[6].url,'https://www.youtube-nocookie.com/embed/wYG2IfV9CyQ?start=0&rel=0');
+assert.equal(sourceContext.window.SERVICE_VIDEOS.hy.services[6].url,'https://www.youtube-nocookie.com/embed/wYG2IfV9CyQ?start=0&rel=0');
+assert.equal(sourceContext.window.SERVICE_VIDEOS.en.services[2].url,'https://www.youtube-nocookie.com/embed/kT68nibzonY?start=0&rel=0');
+assert.equal(sourceContext.window.SERVICE_VIDEOS.hy.services[2].url,'https://www.youtube-nocookie.com/embed/kT68nibzonY?start=0&rel=0');
+assert.equal(sourceContext.window.SERVICE_VIDEOS.en.subServices.sinuslifting.url,'https://www.youtube-nocookie.com/embed/DNoDA3JeXyw?start=0&rel=0');
+assert.equal(sourceContext.window.SERVICE_VIDEOS.hy.subServices.sinuslifting.url,'https://www.youtube-nocookie.com/embed/DNoDA3JeXyw?start=0&rel=0');
 const initial=/lang: \(function \(\) \{([\s\S]+?)\}\)\(\),/.exec(app)[1];
 for(const [explicit,saved,expected] of [['','','hy'],['','en','en'],['en','hy','en'],['hy','en','hy']]){
   const got=vm.runInNewContext('(function(){'+initial+'})()',{document:{documentElement:{dataset:{pageLang:explicit}}},localStorage:{getItem(){return saved}}});assert.equal(got,expected);
