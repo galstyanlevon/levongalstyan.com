@@ -8,10 +8,22 @@ const context = { window: {} };
 vm.runInNewContext(fs.readFileSync('js/content.js', 'utf8'), context);
 const { CONTENT, LECTURES, PATIENT_LINKS } = context.window;
 const pages = [];
+const homeMeta = {
+  en: {
+    title: 'Dr. Levon Galstyan — Oral & Maxillofacial Surgeon',
+    description: 'Advanced maxillofacial, reconstructive and facial surgery in Yerevan, combining precise digital planning with individualized care.',
+    image: 'images/social-preview-en.jpg'
+  },
+  hy: {
+    title: 'Լևոն Գալստյան — դիմածնոտային վիրաբույժ',
+    description: 'Դիմածնոտային, վերականգնողական և էսթետիկ վիրաբուժություն Երևանում՝ ժամանակակից թվային պլանավորմամբ և անհատական մոտեցմամբ։',
+    image: 'images/social-preview-hy.jpg'
+  }
+};
 for (const lang of ['en', 'hy']) {
   const t = CONTENT[lang];
-  const add = (route, slug, title, description) => pages.push({ lang, route, path: `${lang}/${slug ? slug + '/' : ''}`, title: String(title).replace(/\s+/g, ' '), description: String(description || t.heroRole).replace(/\s+/g, ' ').slice(0, 240) });
-  add('#home', '', t.heroName, t.heroBlurb);
+  const add = (route, slug, title, description, image = 'images/hero.webp') => pages.push({ lang, route, path: `${lang}/${slug ? slug + '/' : ''}`, title: String(title).replace(/\s+/g, ' '), description: String(description || t.heroRole).replace(/\s+/g, ' ').slice(0, 240), image });
+  add('#home', '', homeMeta[lang].title, homeMeta[lang].description, homeMeta[lang].image);
   for (const [anchor, title] of Object.entries({about:t.approachTitle,services:t.servicesTitle,credentials:t.credentialsTitle || 'Credentials',patients:t.forPatientsTitle,faq:t.faqTitle,contact:t.scheduleTitle,insights:t.insightsTitle})) add('#'+anchor, anchor, title || anchor, t.heroRole);
   for (const key of ['bio','education','experience']) add('#/'+key,key,t[key+'Title']);
   add('#/activity','activity',t.insightsTitle,t.insightsBody);
@@ -29,7 +41,8 @@ const template = fs.readFileSync('index.html','utf8');
 function html(p, root=false) {
   const base = root ? './' : '../'.repeat(p.path.split('/').filter(Boolean).length);
   const url = site+(root?'':p.path), canon=canonical+(root?'':p.path);
-  const tags = `<base href="${base}">\n<link rel="canonical" href="${esc(canon)}">\n<meta name="description" content="${esc(p.description)}">\n<meta property="og:type" content="website">\n<meta property="og:site_name" content="Dr. Levon Galstyan">\n<meta property="og:title" content="${esc(p.title)}">\n<meta property="og:description" content="${esc(p.description)}">\n<meta property="og:url" content="${esc(url)}">\n<meta property="og:image" content="${esc(site+'images/hero.webp')}">\n<meta property="og:locale" content="${p.lang==='hy'?'hy_AM':'en_US'}">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="${esc(p.title)}">\n<meta name="twitter:description" content="${esc(p.description)}">\n<meta name="twitter:image" content="${esc(site+'images/hero.webp')}">`;
+  const image = site + p.image;
+  const tags = `<base href="${base}">\n<link rel="canonical" href="${esc(canon)}">\n<meta name="description" content="${esc(p.description)}">\n<meta property="og:type" content="website">\n<meta property="og:site_name" content="Dr. Levon Galstyan">\n<meta property="og:title" content="${esc(p.title)}">\n<meta property="og:description" content="${esc(p.description)}">\n<meta property="og:url" content="${esc(url)}">\n<meta property="og:image" content="${esc(image)}">\n<meta property="og:image:type" content="image/jpeg">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n<meta property="og:image:alt" content="${esc(p.title)}">\n<meta property="og:locale" content="${p.lang==='hy'?'hy_AM':'en_US'}">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="${esc(p.title)}">\n<meta name="twitter:description" content="${esc(p.description)}">\n<meta name="twitter:image" content="${esc(image)}">`;
   return template.replace('<html lang="en">',`<html lang="${p.lang}" data-page-lang="${root?'':p.lang}">`).replace(/<title>.*?<\/title>/,`<title>${esc(p.title)} — Dr. Levon Galstyan</title>\n${tags}`);
 }
 fs.writeFileSync(path.join(out,'js/share-pages.js'),'window.SHARE_PAGES = '+JSON.stringify(pages)+';\n');
