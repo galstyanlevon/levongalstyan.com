@@ -727,12 +727,20 @@ window.FAQ_VIDEOS = {
     "How to care after paranasal sinus surgery (FESS)?": {
       title: "Postoperative care after endoscopic paranasal sinus surgery",
       url: "https://www.youtube-nocookie.com/embed/SXUyqna4QZA?start=0"
+    },
+    "Concerns About Anesthesia": {
+      title: "General anesthesia — patient education animation",
+      url: "https://www.youtube-nocookie.com/embed/r-0Mg9FNchc?start=0&rel=0"
     }
   },
   hy: {
     "Ինչպե՞ս խնամել քթի հարակից խոռոչների էնդոսկոպիկ վիրահատությունից հետո։": {
       title: "Հետվիրահատական խնամք՝ հարքթային խոռոչների էնդոսկոպիկ վիրահատությունից հետո",
       url: "https://www.youtube-nocookie.com/embed/SXUyqna4QZA?start=0"
+    },
+    "Մտահոգություններ անզգայացման վերաբերյալ։": {
+      title: "Ընդհանուր անզգայացում՝ պարզ բժշկական անիմացիա",
+      url: "https://www.youtube-nocookie.com/embed/r-0Mg9FNchc?start=0&rel=0"
     }
   }
 };
