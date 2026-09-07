@@ -491,8 +491,9 @@
       var ul = el("ul", { class: "faq-sub-list" + (isOpen ? " open" : "") });
       f.items.forEach(function (it, j) {
         var mix = faqMix(i, j);
+        var faqVideo = window.FAQ_VIDEOS && window.FAQ_VIDEOS[state.lang] && window.FAQ_VIDEOS[state.lang][it.q];
         var hasPhoto = mix === 1 || mix === 3 || mix === 5;
-        var hasVideo = mix === 2 || mix === 3 || mix === 6;
+        var hasVideo = !!faqVideo || mix === 2 || mix === 3 || mix === 6;
         var key = i + ":" + j;
         var qOpen = state.openQ === key;
         var li = el("li", { class: "faq-sub-item" });
@@ -507,7 +508,9 @@
         if (hasPhoto || hasVideo) {
           var mediaRow = el("div", { class: "faq-media-row" });
           if (hasPhoto) mediaRow.appendChild(el("div", { class: "faq-media" }, [el("span", null, [T.photoSlot])]));
-          if (hasVideo) mediaRow.appendChild(el("div", { class: "faq-media video" }, [el("span", { class: "play-btn" }, [el("i")]), el("span", null, [T.videoSlot])]));
+          if (hasVideo) mediaRow.appendChild(el("div", { class: "faq-media video" }, faqVideo ? [
+            el("iframe", { src: faqVideo.url, title: faqVideo.title, loading: "lazy", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowfullscreen: "true", referrerpolicy: "strict-origin-when-cross-origin" })
+          ] : [el("span", { class: "play-btn" }, [el("i")]), el("span", null, [T.videoSlot])]));
           ans.appendChild(mediaRow);
         }
         li.appendChild(ans);
