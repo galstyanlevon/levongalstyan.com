@@ -36,6 +36,7 @@ for (const lang of ['en', 'hy']) {
 fs.mkdirSync(out,{recursive:true});
 for (const dir of ['css','js','fonts','images']) fs.cpSync(dir,path.join(out,dir),{recursive:true});
 fs.copyFileSync('favicon.svg',path.join(out,'favicon.svg'));
+fs.copyFileSync('CNAME',path.join(out,'CNAME'));
 const esc = x => String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const template = fs.readFileSync('index.html','utf8');
 function html(p, root=false) {
