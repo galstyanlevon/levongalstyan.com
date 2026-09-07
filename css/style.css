@@ -143,6 +143,7 @@ h1, h2, h3, p { margin: 0; }
 .faq-media-row { display: flex; flex-wrap: wrap; gap: 20px; }
 .faq-media { width: 280px; aspect-ratio: 16/9; border-radius: 8px; background-color: var(--cream); background-image: repeating-linear-gradient(135deg, rgba(39,42,60,0.06) 0 8px, transparent 8px 16px); display: flex; align-items: center; justify-content: center; }
 .faq-media.video { flex-direction: column; gap: 10px; }
+.faq-media.video iframe { width: 100%; height: 100%; border: 0; border-radius: 8px; }
 .faq-media span { font-family: ui-monospace, Menlo, monospace; font-size: 11px; letter-spacing: .04em; color: rgba(39,42,60,0.55); text-align: center; white-space: pre-line; line-height: 16px; }
 .play-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(39,42,60,0.08); display: flex; align-items: center; justify-content: center; }
 .play-btn i { width: 0; height: 0; border-left: 11px solid rgba(39,42,60,0.55); border-top: 7px solid transparent; border-bottom: 7px solid transparent; margin-left: 3px; }
