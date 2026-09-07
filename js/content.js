@@ -722,6 +722,21 @@ dentalImplantsIntro: "Ատամնաբուժական իմպլանտները, ըս�
   }
 };
 
+window.FAQ_VIDEOS = {
+  en: {
+    "How to care after paranasal sinus surgery (FESS)?": {
+      title: "Postoperative care after endoscopic paranasal sinus surgery",
+      url: "https://www.youtube-nocookie.com/embed/SXUyqna4QZA?start=0"
+    }
+  },
+  hy: {
+    "Ինչպե՞ս խնամել քթի հարակից խոռոչների էնդոսկոպիկ վիրահատությունից հետո։": {
+      title: "Հետվիրահատական խնամք՝ հարքթային խոռոչների էնդոսկոպիկ վիրահատությունից հետո",
+      url: "https://www.youtube-nocookie.com/embed/SXUyqna4QZA?start=0"
+    }
+  }
+};
+
 window.SUB_PARENT = {
   rhinoplasty: 0, blepharoplasty: 0, browlift: 0, ottoplasty: 0, cheiloplasty: 0,
   mucogingival: 1, sinuslifting: 1, gbr: 1,
