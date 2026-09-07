@@ -31,6 +31,8 @@ const sourceContext={window:{}};
 vm.runInNewContext(fs.readFileSync('js/content.js','utf8'),sourceContext);
 assert.equal(context.window.FAQ_VIDEOS.en['How to care after paranasal sinus surgery (FESS)?'].url,'https://www.youtube-nocookie.com/embed/SXUyqna4QZA?start=0');
 assert.equal(context.window.FAQ_VIDEOS.hy['Ինչպե՞ս խնամել քթի հարակից խոռոչների էնդոսկոպիկ վիրահատությունից հետո։'].url,'https://www.youtube-nocookie.com/embed/SXUyqna4QZA?start=0');
+assert.equal(sourceContext.window.FAQ_VIDEOS.en['Concerns About Anesthesia'].url,'https://www.youtube-nocookie.com/embed/r-0Mg9FNchc?start=0&rel=0');
+assert.equal(sourceContext.window.FAQ_VIDEOS.hy['Մտահոգություններ անզգայացման վերաբերյալ։'].url,'https://www.youtube-nocookie.com/embed/r-0Mg9FNchc?start=0&rel=0');
 assert.equal(sourceContext.window.SERVICE_VIDEOS.en.services[5].url,'https://www.youtube-nocookie.com/embed/qKTRyowwaLA?start=0&rel=0');
 assert.equal(sourceContext.window.SERVICE_VIDEOS.hy.services[5].url,'https://www.youtube-nocookie.com/embed/qKTRyowwaLA?start=0&rel=0');
 assert.equal(sourceContext.window.SERVICE_VIDEOS.en.services[6].url,'https://www.youtube-nocookie.com/embed/wYG2IfV9CyQ?start=0&rel=0');
