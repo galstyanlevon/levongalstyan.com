@@ -4,7 +4,7 @@
 .pn-caption { font-size: 13px; line-height: 22px; color: #666873; font-weight: 400; }
 .pn-heading .pn-caption { text-align: center; margin-top: 12px; }
 .pn-grid { max-width: 1340px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(28px, 3vw, 50px); }
-.pn-card.card { min-width: 0; background: var(--gray-card); padding: clamp(28px, 3.2vw, 50px); gap: 24px; box-shadow: 0 0 30px rgba(39,42,60,.05); }
+.pn-card.card { border: 0; color: var(--ink); text-align: left; cursor: pointer; min-width: 0; background: var(--gray-card); padding: clamp(28px, 3.2vw, 50px); gap: 24px; box-shadow: 0 0 30px rgba(39,42,60,.05); }
 .pn-card.card:hover { outline-color: transparent; transform: none; box-shadow: 0 0 30px rgba(39,42,60,.05); }
 .pn-surface { display: flex; flex: 1; flex-direction: column; width: 100%; border: 0; padding: 0; background: none; color: var(--ink); cursor: pointer; text-align: left; min-width: 0; }
 .pn-content { opacity: .75; transition: opacity .25s; width: 100%; margin: auto 0; }
@@ -23,10 +23,10 @@
 .pn-contribute { display: flex; justify-content: center; margin-top: 32px; }
 /* The same text + fine underline action used by Services / Read more.
    Padding enlarges the touch target without making a separate button panel. */
-.pn-cta, .pn-choice, .pn-read { background: none; border: 0; border-radius: 0; padding: 8px 0; min-height: 44px; color: rgba(39,42,60,.8); font-size: 15px; line-height: 28px; text-align: left; cursor: pointer; }
-.pn-cta span, .pn-choice span, .pn-read span { border-bottom: 1px solid rgba(39,42,60,.25); padding-bottom: 5px; }
-.pn-cta:hover, .pn-choice:hover, .pn-read:hover { color: var(--ink); }
-.pn-cta:hover span, .pn-choice:hover span, .pn-read:hover span { border-bottom-color: var(--ink); }
+.pn-cta, .pn-choice { background: none; border: 0; border-radius: 0; padding: 8px 0; min-height: 44px; color: rgba(39,42,60,.8); font-size: 15px; line-height: 28px; text-align: left; cursor: pointer; }
+.pn-cta span, .pn-choice span { border-bottom: 1px solid rgba(39,42,60,.25); padding-bottom: 5px; }
+.pn-cta:hover, .pn-choice:hover { color: var(--ink); }
+.pn-cta:hover span, .pn-choice:hover span { border-bottom-color: var(--ink); }
 .pn-dialog { padding: 24px; border: 0; border-radius: 8px; background: var(--gray-card); color: var(--ink); width: min(600px, calc(100% - 32px)); max-height: 90dvh; overflow: auto; box-shadow: 0 12px 48px rgba(39,42,60,.18); }
 .pn-dialog::backdrop { background: rgba(39,42,60,.3); }
 .pn-dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
