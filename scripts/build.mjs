@@ -6,6 +6,7 @@ const site = (process.env.SITE_URL || 'https://www.levongalstyan.com').replace(/
 const canonical = 'https://www.levongalstyan.com/';
 const context = { window: {} };
 vm.runInNewContext(fs.readFileSync('js/content.js', 'utf8'), context);
+vm.runInNewContext(fs.readFileSync('js/patient-notes-data.js', 'utf8'), context);
 const { CONTENT, LECTURES, PATIENT_LINKS } = context.window;
 const pages = [];
 const homeMeta = {

@@ -1,0 +1,76 @@
+/* Patient Notes extends the existing palette, cards and type scale. */
+.pn-page { max-width: 1440px; margin: auto; padding-top: 48px; padding-bottom: 60px; }
+.pn-heading { margin-bottom: 28px; }
+.pn-caption { font-size: 13px; line-height: 22px; color: #666873; font-weight: 400; }
+.pn-heading .pn-caption { text-align: center; margin-top: 12px; }
+.pn-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 2.5vw, 36px); }
+.pn-card.card { min-width: 0; background: var(--gray-card); padding: 24px; gap: 12px; box-shadow: 0 0 30px rgba(39,42,60,.05); }
+.pn-card.card:hover { outline-color: transparent; transform: none; box-shadow: 0 0 30px rgba(39,42,60,.05); }
+.pn-surface { display: flex; flex: 1; flex-direction: column; width: 100%; border: 0; padding: 0; background: none; color: var(--ink); cursor: pointer; text-align: left; min-width: 0; }
+.pn-content { opacity: .75; transition: opacity .25s; width: 100%; margin: auto 0; }
+.pn-content img { width: 100%; height: 250px; object-fit: contain; }
+.pn-text { font-size: 16px; line-height: 28px; white-space: pre-wrap; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden; }
+.pn-surface { min-height: 250px; }
+.pn-meta { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+.pn-open { border: 0; background: none; color: #626571; min-width: 44px; min-height: 44px; padding: 8px; cursor: pointer; border-radius: 4px; flex: none; font-size: 20px; }
+.pn-card.card.is-active, .pn-card.card:focus-within { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(39,42,60,.10); }
+.pn-card.is-active .pn-content, .pn-card:focus-within .pn-content { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  .pn-card.card:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(39,42,60,.10); }
+  .pn-card:hover .pn-content { opacity: 1; }
+}
+.pn-page button:focus-visible, .pn-dialog button:focus-visible, .pn-dialog input:focus-visible, .pn-dialog textarea:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
+.pn-contribute { display: flex; justify-content: center; margin-top: 32px; }
+.pn-cta { background: var(--peach); border: 0; border-radius: 4px; padding: 12px 24px; min-height: 48px; color: var(--ink); cursor: pointer; }
+.pn-cta:hover { background: var(--peach-hover); }
+.pn-dialog { padding: 24px; border: 0; border-radius: 8px; background: var(--paper); color: var(--ink); width: min(600px, calc(100% - 32px)); max-height: 90dvh; overflow: auto; box-shadow: 0 12px 48px rgba(39,42,60,.18); }
+.pn-dialog::backdrop { background: rgba(39,42,60,.3); }
+.pn-dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.pn-dialog-head h2 { font-size: 18px; line-height: 28px; font-weight: 500; }
+.pn-choice-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pn-choice { border: 1px solid rgba(39,42,60,.2); background: var(--gray-card); padding: 16px 12px; border-radius: 4px; cursor: pointer; color: var(--ink); line-height: 24px; }
+.pn-choice:hover { border-color: var(--ink); }
+.pn-flow { display: flex; flex-direction: column; gap: 16px; }
+.pn-flow label { display: flex; flex-direction: column; gap: 6px; }
+.pn-flow textarea, .pn-flow input:not([type=radio]):not([type=checkbox]):not([type=file]) { border: 1px solid rgba(39,42,60,.2); border-radius: 4px; padding: 12px; font-size: 16px; line-height: 28px; width: 100%; background: var(--paper); color: var(--ink); }
+.pn-flow textarea { resize: vertical; min-height: 150px; }
+.pn-flow fieldset { border: 0; padding: 0; margin: 0; }
+.pn-flow legend { margin-bottom: 8px; }
+.pn-flow label.pn-check { flex-direction: row; align-items: flex-start; gap: 12px; padding: 6px 0; }
+.pn-check input { flex: none; width: 18px; height: 18px; accent-color: var(--dark); margin: 5px 0 0; }
+.pn-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.pn-actions .form-submit { height: auto; min-height: 48px; padding: 10px 24px; }
+.pn-error { color: var(--ink); border-left: 2px solid var(--orange); padding-left: 12px; font-size: 14px; line-height: 22px; }
+.pn-error:empty { display: none; }
+.pn-upload-preview { width: 100%; max-height: 220px; object-fit: contain; }
+.pn-review { background: var(--gray-card); padding: 20px; border-radius: 8px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.pn-viewer { width: min(1100px, calc(100% - 24px)); }
+.pn-view-body { overflow: auto; max-height: 70dvh; overscroll-behavior: contain; touch-action: pan-x pan-y pinch-zoom; }
+.pn-view-body img { margin: auto; width: auto; max-width: 100%; max-height: 65dvh; object-fit: contain; }
+.pn-view-body.is-zoomed img { max-width: none; max-height: none; width: auto; }
+.pn-view-text { max-width: 700px; margin: auto; font-size: 18px; line-height: 30px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.pn-viewer .pn-actions { margin-top: 16px; }
+.pn-hidden { display: none !important; }
+@media (max-width: 900px) {
+  .pn-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .pn-page { padding: 28px 16px 36px; }
+  .pn-heading { margin-bottom: 22px; }
+  .pn-grid { gap: 12px; }
+  .pn-card.card { padding: 14px 12px 8px; gap: 8px; }
+  .pn-surface { min-height: 200px; }
+  .pn-content img { height: 200px; }
+  .pn-text { font-size: 15px; line-height: 25px; -webkit-line-clamp: 8; }
+  .pn-meta { align-items: center; }
+  .pn-meta .pn-caption { font-size: 13px; line-height: 20px; }
+  .pn-open { padding: 4px; min-width: 36px; }
+  .pn-sheet { position: fixed; inset: auto 0 0; margin: 0; width: 100%; max-width: 100%; border-radius: 8px 8px 0 0; max-height: 90dvh; padding: 16px 20px max(16px, env(safe-area-inset-bottom)); }
+  .pn-sheet[data-step=choose] { min-height: min(25dvh, 240px); }
+  .pn-sheet[data-step=choose] .pn-dialog-head { margin-bottom: 10px; }
+  .pn-sheet[data-step=choose] .pn-choice { padding: 12px 8px; }
+  .pn-dialog-head h2 { font-size: 16px; }
+  .pn-contribute { margin-top: 24px; }
+}
+@media (max-width: 340px) { .pn-grid { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .pn-card.card, .pn-content { transition: none; } .pn-card.card.is-active, .pn-card.card:focus-within, .pn-card.card:hover { transform: none; } }

@@ -470,6 +470,7 @@
       ]));
     });
     section.appendChild(grid);
+    section.appendChild(el("div", { class: "pn-contribute" }, [el("a", { href: "#/patients/notes", class: "card-link" }, [state.lang === "hy" ? "Բուժառուների խոսքերը" : "Patient Notes"])]));
     return section;
   }
 
@@ -965,6 +966,7 @@
   /* ---------- Patients sub pages (FAQ / Addresses / Useful Info) ---------- */
   function buildPatientsSubPage(key) {
     var T = t();
+    if (key === "notes") return window.PatientNotes.build(state.lang, el);
     if (key === "faq") { window.location.replace("#faq"); return document.createDocumentFragment(); }
     var frag = document.createDocumentFragment();
     if (key === "addresses") {
@@ -1144,6 +1146,7 @@
 
   /* ---------- Render ---------- */
   function render() {
+    if (window.PatientNotes) window.PatientNotes.close();
     var app = document.getElementById("app");
     app.innerHTML = "";
     app.appendChild(buildHeader());
