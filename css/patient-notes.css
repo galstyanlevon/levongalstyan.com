@@ -1,35 +1,38 @@
 /* Patient Notes extends the existing palette, cards and type scale. */
-.pn-page { max-width: 1440px; margin: auto; padding-top: 48px; padding-bottom: 60px; }
-.pn-heading { margin-bottom: 28px; }
+.pn-page { background: var(--blue-tint); padding-top: 60px; padding-bottom: 60px; }
+.pn-heading { margin-bottom: 48px; }
 .pn-caption { font-size: 13px; line-height: 22px; color: #666873; font-weight: 400; }
 .pn-heading .pn-caption { text-align: center; margin-top: 12px; }
-.pn-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 2.5vw, 36px); }
-.pn-card.card { min-width: 0; background: var(--gray-card); padding: 24px; gap: 12px; box-shadow: 0 0 30px rgba(39,42,60,.05); }
+.pn-grid { max-width: 1340px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(28px, 3vw, 50px); }
+.pn-card.card { min-width: 0; background: var(--gray-card); padding: clamp(28px, 3.2vw, 50px); gap: 24px; box-shadow: 0 0 30px rgba(39,42,60,.05); }
 .pn-card.card:hover { outline-color: transparent; transform: none; box-shadow: 0 0 30px rgba(39,42,60,.05); }
 .pn-surface { display: flex; flex: 1; flex-direction: column; width: 100%; border: 0; padding: 0; background: none; color: var(--ink); cursor: pointer; text-align: left; min-width: 0; }
 .pn-content { opacity: .75; transition: opacity .25s; width: 100%; margin: auto 0; }
 .pn-content img { width: 100%; height: 250px; object-fit: contain; }
-.pn-text { font-size: 16px; line-height: 28px; white-space: pre-wrap; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden; }
+.pn-text { font-size: 15px; line-height: 28px; white-space: pre-wrap; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden; }
 .pn-surface { min-height: 250px; }
-.pn-meta { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+.pn-meta { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
 .pn-open { border: 0; background: none; color: #626571; min-width: 44px; min-height: 44px; padding: 8px; cursor: pointer; border-radius: 4px; flex: none; font-size: 20px; }
-.pn-card.card.is-active, .pn-card.card:focus-within { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(39,42,60,.10); }
+.pn-card.card.is-active, .pn-card.card:focus-within { transform: translateY(-3px); outline-color: var(--orange); box-shadow: 0 0 30px rgba(39,42,60,.14); }
 .pn-card.is-active .pn-content, .pn-card:focus-within .pn-content { opacity: 1; }
 @media (hover: hover) and (pointer: fine) {
-  .pn-card.card:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(39,42,60,.10); }
+  .pn-card.card:hover { transform: translateY(-3px); outline-color: var(--orange); box-shadow: 0 0 30px rgba(39,42,60,.14); }
   .pn-card:hover .pn-content { opacity: 1; }
 }
 .pn-page button:focus-visible, .pn-dialog button:focus-visible, .pn-dialog input:focus-visible, .pn-dialog textarea:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
 .pn-contribute { display: flex; justify-content: center; margin-top: 32px; }
-.pn-cta { background: var(--peach); border: 0; border-radius: 4px; padding: 12px 24px; min-height: 48px; color: var(--ink); cursor: pointer; }
-.pn-cta:hover { background: var(--peach-hover); }
-.pn-dialog { padding: 24px; border: 0; border-radius: 8px; background: var(--paper); color: var(--ink); width: min(600px, calc(100% - 32px)); max-height: 90dvh; overflow: auto; box-shadow: 0 12px 48px rgba(39,42,60,.18); }
+/* The same text + fine underline action used by Services / Read more.
+   Padding enlarges the touch target without making a separate button panel. */
+.pn-cta, .pn-choice, .pn-read { background: none; border: 0; border-radius: 0; padding: 8px 0; min-height: 44px; color: rgba(39,42,60,.8); font-size: 15px; line-height: 28px; text-align: left; cursor: pointer; }
+.pn-cta span, .pn-choice span, .pn-read span { border-bottom: 1px solid rgba(39,42,60,.25); padding-bottom: 5px; }
+.pn-cta:hover, .pn-choice:hover, .pn-read:hover { color: var(--ink); }
+.pn-cta:hover span, .pn-choice:hover span, .pn-read:hover span { border-bottom-color: var(--ink); }
+.pn-dialog { padding: 24px; border: 0; border-radius: 8px; background: var(--gray-card); color: var(--ink); width: min(600px, calc(100% - 32px)); max-height: 90dvh; overflow: auto; box-shadow: 0 12px 48px rgba(39,42,60,.18); }
 .pn-dialog::backdrop { background: rgba(39,42,60,.3); }
 .pn-dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
 .pn-dialog-head h2 { font-size: 18px; line-height: 28px; font-weight: 500; }
 .pn-choice-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.pn-choice { border: 1px solid rgba(39,42,60,.2); background: var(--gray-card); padding: 16px 12px; border-radius: 4px; cursor: pointer; color: var(--ink); line-height: 24px; }
-.pn-choice:hover { border-color: var(--ink); }
+
 .pn-flow { display: flex; flex-direction: column; gap: 16px; }
 .pn-flow label { display: flex; flex-direction: column; gap: 6px; }
 .pn-flow textarea, .pn-flow input:not([type=radio]):not([type=checkbox]):not([type=file]) { border: 1px solid rgba(39,42,60,.2); border-radius: 4px; padding: 12px; font-size: 16px; line-height: 28px; width: 100%; background: var(--paper); color: var(--ink); }
@@ -56,19 +59,19 @@
 }
 @media (max-width: 600px) {
   .pn-page { padding: 28px 16px 36px; }
-  .pn-heading { margin-bottom: 22px; }
+  .pn-heading { margin-bottom: 32px; }
   .pn-grid { gap: 12px; }
-  .pn-card.card { padding: 14px 12px 8px; gap: 8px; }
+  .pn-card.card { padding: 20px 14px 16px; gap: 16px; }
   .pn-surface { min-height: 200px; }
   .pn-content img { height: 200px; }
   .pn-text { font-size: 15px; line-height: 25px; -webkit-line-clamp: 8; }
-  .pn-meta { align-items: center; }
+  .pn-meta { align-items: flex-start; gap: 8px; }
   .pn-meta .pn-caption { font-size: 13px; line-height: 20px; }
   .pn-open { padding: 4px; min-width: 36px; }
   .pn-sheet { position: fixed; inset: auto 0 0; margin: 0; width: 100%; max-width: 100%; border-radius: 8px 8px 0 0; max-height: 90dvh; padding: 16px 20px max(16px, env(safe-area-inset-bottom)); }
   .pn-sheet[data-step=choose] { min-height: min(25dvh, 240px); }
   .pn-sheet[data-step=choose] .pn-dialog-head { margin-bottom: 10px; }
-  .pn-sheet[data-step=choose] .pn-choice { padding: 12px 8px; }
+  .pn-sheet[data-step=choose] .pn-choice { padding: 8px 0; }
   .pn-dialog-head h2 { font-size: 16px; }
   .pn-contribute { margin-top: 24px; }
 }

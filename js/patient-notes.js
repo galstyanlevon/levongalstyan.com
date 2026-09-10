@@ -7,7 +7,7 @@
     en: {
       title: 'Patient Notes', demo: 'Demonstration', intro: 'Preview with demonstration content only.',
       leave: 'Leave a note', write: 'Write a note', upload: 'Upload handwriting', close: 'Close',
-      activate: 'Select note', open: 'Open note', zoom: 'Full size', fit: 'Fit image',
+      activate: 'Select note', open: 'Open note', read: 'Read more', zoom: 'Full size', fit: 'Fit image',
       text: 'Your note', next: 'Continue', back: 'Back', privacy: 'Please leave out phone numbers and medical details you do not want published.',
       choose: 'Choose a photo', camera: 'Take a photo', imageHelp: 'Photograph the note clearly. Crop out names, signatures and other details you do not want published. JPEG, PNG or WebP, up to 10 MB.',
       imageError: 'Choose a readable JPEG, PNG or WebP image up to 10 MB. If your phone uses HEIC, export the photo as JPEG first.',
@@ -24,7 +24,7 @@
     hy: {
       title: 'Բուժառուների խոսքերը', demo: 'Ցուցադրական նմուշ', intro: 'Նախադիտում՝ միայն ցուցադրական բովանդակությամբ։',
       leave: 'Թողնել գրառում', write: 'Գրել գրառում', upload: 'Վերբեռնել ձեռագիր', close: 'Փակել',
-      activate: 'Ընտրել գրառումը', open: 'Բացել գրառումը', zoom: 'Ամբողջ չափով', fit: 'Տեղավորել պատկերը',
+      activate: 'Ընտրել գրառումը', open: 'Բացել գրառումը', read: 'Կարդալ ավելին', zoom: 'Ամբողջ չափով', fit: 'Տեղավորել պատկերը',
       text: 'Ձեր գրառումը', next: 'Շարունակել', back: 'Հետ', privacy: 'Խնդրում ենք չներառել հեռախոսահամարներ և բժշկական տվյալներ, որոնք չեք ցանկանում հրապարակել։',
       choose: 'Ընտրել լուսանկար', camera: 'Լուսանկարել', imageHelp: 'Ձեռագիրը լուսանկարեք հստակ։ Կտրեք անունները, ստորագրությունները և այլ տվյալներ, որոնք չեք ցանկանում հրապարակել։ JPEG, PNG կամ WebP՝ մինչև 10 ՄԲ։',
       imageError: 'Ընտրեք ընթեռնելի JPEG, PNG կամ WebP պատկեր՝ մինչև 10 ՄԲ։ Եթե լուսանկարը HEIC ձևաչափով է, նախ փոխարկեք այն JPEG-ի։',
@@ -44,7 +44,7 @@
   function close() { if (activeDialog) activeDialog(); }
   function build(lang, el) {
     var c = COPY[lang], draft = drafts[lang] || (drafts[lang] = blank());
-    function button(text, className, action) { return el('button', { type: 'button', class: className, onclick: action }, [text]); }
+    function button(text, className, action) { return el('button', { type: 'button', class: className, onclick: action }, [/pn-(cta|choice|read)/.test(className) ? el('span', null, [text]) : text]); }
     function caption(text) { return el('p', { class: 'pn-caption' }, [text]); }
     function makeDialog(className, title, opener) {
       close();
@@ -249,7 +249,7 @@
         grid.querySelectorAll('.pn-card').forEach(function (node) { node.classList.toggle('is-active', node === card); node.querySelector('.pn-surface').setAttribute('aria-pressed', String(node === card)); });
       } }, [content]);
       card.appendChild(surface);
-      var open = button('⤢', 'pn-open', function () { view(note, open); }); open.setAttribute('aria-label', c.open);
+      var open = button(c.read, 'pn-read', function () { view(note, open); }); open.setAttribute('aria-label', c.open);
       card.appendChild(el('div', { class: 'pn-meta' }, [caption([note.displayName, note.year].filter(Boolean).join(' · ')), open]));
       grid.appendChild(card);
     });
