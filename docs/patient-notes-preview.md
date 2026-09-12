@@ -32,6 +32,8 @@ CSS review: three desktop columns, two mobile columns (one below 341px), 75% con
 
 Not visually verified: actual desktop/mobile rendering, hover paint, native dialog scroll/keyboard behaviour, mobile camera/photo decoding and zoom gestures. The managed browser preview does not support this buildless static project. Use the private review to approve these before merge. No full-site audit was performed.
 
+Additional upload-flow check: selecting an unsupported file while an earlier photo is processing no longer leaves Continue disabled. Both languages passed asynchronous replacement/stale-result checks and the complete photo → anonymous name → consent → review → preview completion flow, with decoding/canvas stubbed. This verifies form state and no transmission; it does not substitute for actual device image decoding or camera testing.
+
 ## Before release
 
 1. Add approved real notes and sanitised photographs, with separate language content and documented consent.

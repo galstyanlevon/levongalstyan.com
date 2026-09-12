@@ -140,6 +140,9 @@
             if (!file) return;
             var current = ++generation;
             error.textContent = '';
+            // A replacement invalidates the previous conversion, including its
+            // finally handler. Restore the control before validating this file.
+            nextButton.disabled = false;
             if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 10000000) { error.textContent = c.imageError; return; }
             nextButton.disabled = true; error.textContent = c.processing;
             var source = URL.createObjectURL(file);
