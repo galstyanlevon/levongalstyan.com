@@ -23,6 +23,7 @@
 
   function setState(patch) { Object.assign(state, patch); render(); }
   function t() { return CONTENT[state.lang]; }
+  var resourcePages = window.createPatientResourcePages({ el: el, state: state, t: t, buildContactForm: buildContactForm });
 
   /* ---------- DOM helper (no innerHTML with dynamic data, no eval) ---------- */
   function el(tag, props, children) {
@@ -640,16 +641,22 @@
     ]));
     var serviceVideo = window.SERVICE_VIDEOS && window.SERVICE_VIDEOS[state.lang] && window.SERVICE_VIDEOS[state.lang].services[index];
     if (serviceVideo) frag.appendChild(buildProcedureVideo(serviceVideo));
-    if (sections) {
+    if (sections || resourcePages.hasLinks(index)) {
       var wrap = el("section", { class: "sections-col" });
       var inner = el("div");
-      sections.forEach(function (sec) {
+      (sections || []).forEach(function (sec) {
         inner.appendChild(el("div", { class: "section-block" }, [
           el("h2", null, [sec.title]), el("div", { class: "card-divider" }), el("p", null, [sec.body])
         ]));
       });
+      resourcePages.appendLinks(inner, index);
       wrap.appendChild(inner);
       frag.appendChild(wrap);
+    }
+    if (resourcePages.hasLinks(index)) {
+      frag.appendChild(el("section", { class: "section section-peach center-col" }, [
+        el("h2", { class: "uppercase-title" }, [T.scheduleTitle]), buildContactForm()
+      ]));
     }
     var subs = subsFor(index, T);
     if (subs) {
@@ -790,6 +797,7 @@
         el("h2", null, [sec.title]), el("div", { class: "card-divider" }), el("p", { style: { whiteSpace: "normal" } }, [sec.body])
       ]));
     });
+    resourcePages.appendLinks(inner, parentIdx, key);
     wrap.appendChild(inner);
     frag.appendChild(wrap);
     frag.appendChild(el("section", { class: "section section-peach center-col" }, [
@@ -1130,9 +1138,11 @@
     var isActivity = hash === "#/activity";
     var lecM = /^#\/lecture\/(\d+)$/.exec(hash);
     var patM = /^#\/patients\/([a-z-]+)$/.exec(hash);
+    var resourceM = /^#\/(guide|gallery)\/([a-z-]+)$/.exec(hash);
     var wasRoute = state.route != null;
     var route = m ? Math.max(0, Math.min(parseInt(m[1], 10), 12)) : (isEdu ? "education" : (isExp ? "experience" : (isBio ? "bio" : (subM ? "sub:" + subM[1] : (insightM ? "insight:" + insightM[1] : (isActivity ? "activity" : (lecM ? "lecture:" + lecM[1] : (patM ? "patients:" + patM[1] : null))))))));
-    var anchor = (!m && !isEdu && !isExp && !isBio && !subM && !insightM && !isActivity && !lecM && !patM && hash.length > 1) ? hash.slice(1) : null;
+    if (resourceM) route = resourceM[1] + ":" + resourceM[2];
+    var anchor = (!resourceM && !m && !isEdu && !isExp && !isBio && !subM && !insightM && !isActivity && !lecM && !patM && hash.length > 1) ? hash.slice(1) : null;
     state.route = route; state.menuOpen = false; state.servicesOpen = false;
     render();
     if (window.syncSharePage) window.syncSharePage(state.lang, hash);
@@ -1158,6 +1168,8 @@
 
     if (state.route == null) app.appendChild(buildLanding());
     else if (typeof state.route === "number") app.appendChild(buildServicePage(state.route));
+    else if (state.route.indexOf("guide:") === 0) app.appendChild(resourcePages.buildGuide(state.route.slice(6)));
+    else if (state.route.indexOf("gallery:") === 0) app.appendChild(resourcePages.buildGallery(state.route.slice(8)));
     else if (state.route === "education") app.appendChild(buildEducationPage());
     else if (state.route === "experience") app.appendChild(buildExperiencePage());
     else if (state.route === "bio") app.appendChild(buildBioPage());
