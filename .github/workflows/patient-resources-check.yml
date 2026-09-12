@@ -1,0 +1,46 @@
+name: Check patient resources
+on:
+  push:
+    branches: [feature/patient-guides]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'js/patient-resource*'
+      - 'js/app.js'
+      - 'css/style.css'
+      - 'scripts/test-patient-resources.mjs'
+      - '.github/workflows/patient-resources-check.yml'
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build and check existing navigation and form behaviour
+        run: |
+          node scripts/build.mjs
+          node scripts/test-share-pages.mjs
+          node scripts/test-contact.mjs
+      - name: Install browser for review checks
+        run: |
+          npm install --no-save --package-lock=false playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Check patient links and mobile layouts
+        run: node scripts/test-patient-resources.mjs
+      - name: Save review screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: patient-resources-screenshots
+          path: artifacts/patient-resources
+          if-no-files-found: ignore
+      - name: Save review site
+        uses: actions/upload-artifact@v4
+        with:
+          name: patient-resources-site
+          path: dist
