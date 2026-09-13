@@ -221,6 +221,49 @@ h1, h2, h3, p { margin: 0; }
 .section-block { display: flex; flex-direction: column; gap: 26px; }
 .section-block h2 { font-size: 18px; font-weight: 500; line-height: 28px; }
 .section-block p { color: rgba(39,42,60,0.8); text-wrap: pretty; white-space: pre-line; }
+.patient-resource-link { color: var(--ink); }
+.patient-resource-link p a { color: inherit; text-decoration: underline; text-decoration-color: rgba(39,42,60,.28); text-underline-offset: 5px; }
+.patient-resource-link p a:hover { color: var(--dark); text-decoration-color: currentColor; }
+.patient-resource-link p a:focus-visible { outline: 2px solid var(--orange); outline-offset: 4px; }
+.patient-guide { background: var(--gray-card); padding: clamp(36px, 6vw, 80px) clamp(16px, 3.5vw, 50px); }
+.patient-guide > div {
+  max-width: 820px;
+  padding: clamp(40px, 6vw, 76px);
+  gap: 82px;
+  background: var(--paper);
+  border: 1px solid rgba(39,42,60,.28);
+  box-shadow: 0 12px 32px rgba(39,42,60,.05);
+}
+.guide-author { font-size: 14px; }
+.guide-route { padding: 28px; background: var(--blue-tint); border-radius: 8px; }
+.guide-route { display: flex; flex-direction: column; gap: 20px; }
+.guide-route h2 { font-size: 18px; font-weight: 500; line-height: 28px; }
+.guide-route p { color: rgba(39,42,60,0.8); text-wrap: pretty; }
+.guide-section { scroll-margin-top: 100px; }
+.guide-section h3 { font-size: 18px; font-weight: 500; line-height: 28px; }
+.guide-section-level-1 h2 { font-size: 22px; font-weight: 700; line-height: 30px; }
+.guide-next { padding: 24px; background: var(--peach); border-radius: 4px; }
+.guide-reference-list { margin: 0; padding-left: 24px; color: rgba(39,42,60,0.8); }
+.guide-reference-list li + li { margin-top: 12px; }
+.guide-recovery-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 15px; line-height: 28px; }
+.guide-recovery-table th, .guide-recovery-table td { padding: 16px 12px; border-bottom: 1px solid rgba(39,42,60,.2); vertical-align: top; }
+.guide-recovery-table thead { background: var(--blue-tint); }
+.guide-recovery-table th { font-weight: 500; }
+.guide-recovery-table caption { text-align: left; font-weight: 500; padding-bottom: 12px; }
+.patient-photo-case { margin: 0; }
+.patient-photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.patient-photo-pair img { display: block; width: 100%; height: auto; margin-top: 12px; border-radius: 8px; }
+.patient-photo-case figcaption { margin-top: 26px; }
+@media (max-width: 600px) {
+  .patient-guide { padding: 24px 14px; }
+  .patient-guide > div { padding: 28px 20px; gap: 64px; box-shadow: 0 8px 20px rgba(39,42,60,.04); }
+  .guide-recovery-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .guide-recovery-table tr { display: block; margin-bottom: 28px; }
+  .guide-recovery-table th, .guide-recovery-table td { display: block; padding: 14px 0; }
+  .guide-recovery-table td::before { content: attr(data-label); display: block; font-weight: 500; margin-bottom: 8px; }
+  .guide-route { padding: 20px; }
+  .patient-photo-pair { grid-template-columns: 1fr; }
+}
 .procedure-video-section { padding: var(--pad-y) var(--pad-x); display: flex; justify-content: center; background: var(--paper); }
 .procedure-video-inner { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 26px; }
 .procedure-video-inner h2 { font-size: 18px; font-weight: 500; line-height: 28px; }
@@ -243,9 +286,9 @@ h1, h2, h3, p { margin: 0; }
 .site-footer { background: var(--dark); color: var(--cream); padding: 50px var(--pad-x); display: flex; flex-direction: column; align-items: center; gap: 50px; }
 .footer-cols { width: 100%; max-width: 1340px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 50px; }
 .footer-col { display: flex; flex-direction: column; gap: 26px; }
-.footer-col p { font-size: 16px; font-weight: 500; line-height: 24px; }
+.footer-col p { font-size: 16px; font-weight: 500; line-height: 24px; color: var(--cream); }
 .footer-col ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
-.footer-col a { font-size: 14px; }
+.footer-col a { font-size: 14px; color: var(--cream); }
 .footer-col a:hover { color: var(--orange); }
 .footer-divider { width: 100%; max-width: 1340px; height: 1px; background: rgba(238,249,247,0.2); }
 .footer-logo { opacity: .3; }
