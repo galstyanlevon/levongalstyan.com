@@ -246,6 +246,7 @@
     var grid = el('div', { class: 'pn-grid' });
     var notes = window.PATIENT_NOTES.filter(function (n) { return n.language === lang && (n.demo ? preview() : n.published === true); }).sort(function (a, b) { return a.sortOrder - b.sortOrder; });
     notes.forEach(function (note, index) {
+      var item = el('div', { class: 'pn-note' });
       var card = el('button', { type: 'button', class: 'card pn-card', 'data-note-id': note.id,
         'aria-label': c.open + ' ' + (index + 1), 'aria-haspopup': 'dialog', onclick: function () {
           grid.querySelectorAll('.pn-card').forEach(function (node) { node.classList.toggle('is-active', node === card); });
@@ -253,8 +254,9 @@
         } });
       var content = el('span', { class: 'pn-content' }, [note.image ? el('img', { src: note.image, alt: note.text, loading: 'lazy', width: '900', height: '1100' }) : el('span', { class: 'pn-text' }, [note.text])]);
       card.appendChild(el('span', { class: 'pn-surface' }, [content]));
-      card.appendChild(el('span', { class: 'pn-meta pn-caption' }, [[note.displayName, note.year].filter(Boolean).join(' · ')]));
-      grid.appendChild(card);
+      item.appendChild(card);
+      item.appendChild(el('span', { class: 'pn-meta pn-caption' }, [[note.displayName, note.year].filter(Boolean).join(' · ')]));
+      grid.appendChild(item);
     });
     page.appendChild(notes.length ? grid : caption(c.empty));
     var leave = button(c.leave, 'pn-cta', function () { contribute(leave); });
