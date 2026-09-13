@@ -1,8 +1,8 @@
-/* Review fixtures and approved public notes. Never turn a submitted draft into a published entry here.
+/* Approved public notes. Never turn a submitted draft into a published entry here.
  * Add assets to this registry only after publication consent and a privacy review.
  * language is the language of the approved public text/image, never auto-translated.
  */
-window.PATIENT_NOTES_CONFIG = Object.freeze({ preview: true, showPreviewNotice: false });
+window.PATIENT_NOTES_CONFIG = Object.freeze({ preview: false, showPreviewNotice: false });
 window.PATIENT_NOTES = ['hy', 'en'].map(function (language) {
   var hy = language === 'hy';
   return {
