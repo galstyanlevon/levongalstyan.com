@@ -15,6 +15,8 @@
       preference: 'How should your name appear?', anonymous: 'Anonymous', first: 'First name', initial: 'First name + initial',
       name: 'First name', initialLabel: 'Surname initial', consent: 'I agree to publication of this note and the name option I selected on this website.',
       moderation: 'Every note is reviewed before publication. Sending a note does not publish it automatically.',
+      emailLanguage: 'English', emailText: 'Typed note', emailHandwriting: 'Handwritten photograph',
+      emailConsent: 'Confirmed — the sender agreed to publication using the selected name option.', emailStatus: 'Awaiting moderation',
       review: 'Review your note', send: 'Send for review', previewSend: 'Finish preview', sending: 'Sending…',
       previewHint: 'Preview only. Your note and photo will not be sent or published.',
       done: 'Preview complete', doneBody: 'Nothing has been sent or published. Your demonstration draft has been cleared.',
@@ -32,6 +34,8 @@
       preference: 'Ինչպե՞ս նշենք Ձեր անունը', anonymous: 'Անանուն', first: 'Միայն անունը', initial: 'Անունը և ազգանվան սկզբնատառը',
       name: 'Անուն', initialLabel: 'Ազգանվան սկզբնատառ', consent: 'Համաձայն եմ, որ իմ գրառումը հրապարակվի այս կայքում՝ անունը նշելու իմ ընտրած տարբերակով։',
       moderation: 'Յուրաքանչյուր գրառում ստուգվում է հրապարակումից առաջ։ Ուղարկելը չի նշանակում ինքնաբերաբար հրապարակում։',
+      emailLanguage: 'Armenian', emailText: 'Typed note', emailHandwriting: 'Handwritten photograph',
+      emailConsent: 'Confirmed — the sender agreed to publication using the selected name option.', emailStatus: 'Awaiting moderation',
       review: 'Ստուգեք Ձեր գրառումը', send: 'Ուղարկել ստուգման', previewSend: 'Ավարտել փորձարկումը', sending: 'Ուղարկվում է…',
       previewHint: 'Սա նախադիտում է։ Ձեր գրառումը և լուսանկարը չեն ուղարկվի կամ հրապարակվի։',
       done: 'Փորձարկումն ավարտված է', doneBody: 'Ոչինչ չի ուղարկվել կամ հրապարակվել։ Փորձնական սևագիրը ջնջվել է։',
@@ -211,17 +215,47 @@
           e.preventDefault(); if (sending || !draft.consent) return;
           if (preview()) { finish(); return; }
           sending = true; submit.disabled = true; submit.textContent = c.sending; error.textContent = '';
+          function appendModerationFields(fd) {
+            fd.append('_subject', 'New Patient Note — Review Required');
+            fd.append('_captcha', 'false');
+            fd.append('_template', 'table');
+            fd.append('Language', c.emailLanguage);
+            fd.append('Note format', draft.type === 'text' ? c.emailText : c.emailHandwriting);
+            fd.append('Publication name', publicationName());
+            fd.append('Consent', c.emailConsent);
+            fd.append('Agreed publication wording', c.consent);
+            fd.append('Consent recorded at (UTC)', new Date().toISOString());
+            fd.append('Status', c.emailStatus);
+          }
+          if (draft.type === 'handwriting') {
+            try {
+              // FormSubmit documents attachments for native multipart forms. The
+              // processed JPEG is assigned to a real file input before posting.
+              var nativeForm = el('form', { method: 'POST', action: 'https://formsubmit.co/galstyan.levon@gmail.com', enctype: 'multipart/form-data' });
+              nativeForm.hidden = true;
+              function hidden(name, value) { nativeForm.appendChild(el('input', { type: 'hidden', name: name, value: value })); }
+              var fields = new FormData(); appendModerationFields(fields);
+              fields.append('_next', location.origin + location.pathname + '?note-sent=1');
+              fields.forEach(function (value, name) { hidden(name, value); });
+              var attachment = el('input', { type: 'file', name: 'attachment', accept: 'image/jpeg' });
+              var transfer = new DataTransfer();
+              transfer.items.add(new File([draft.image], 'patient-note.jpg', { type: 'image/jpeg' }));
+              attachment.files = transfer.files; nativeForm.appendChild(attachment);
+              if (attachment.files.length !== 1 || attachment.files[0].size !== draft.image.size) throw Error('Attachment unavailable');
+              document.body.appendChild(nativeForm); nativeForm.submit();
+              return;
+            } catch (err) {
+              error.textContent = c.sendError; submit.disabled = false; submit.textContent = c.send; sending = false;
+              return;
+            }
+          }
           var controller = new AbortController(), timeout = setTimeout(function () { controller.abort(); }, 20000);
           try {
-            // Same FormData/AJAX convention as the existing contact form.
-            // Inbox is the moderation queue; this never changes published data.
+            // Typed notes use the same AJAX convention as the contact form.
+            // Handwritten notes use native multipart submission above because
+            // that is the attachment path documented by FormSubmit.
             var fd = new FormData();
-            fd.append('_subject', 'Patient note — moderation required'); fd.append('_captcha', 'false');
-            fd.append('language', lang); fd.append('type', draft.type); fd.append('displayName', publicationName());
-            fd.append('namePreference', draft.preference); fd.append('publicationConsent', c.consent);
-            fd.append('consentTimestamp', new Date().toISOString()); fd.append('published', 'false');
-            if (draft.type === 'text') fd.append('message', draft.text.trim());
-            else fd.append('attachment', draft.image, 'patient-note.jpg');
+            appendModerationFields(fd); fd.append('Note', draft.text.trim());
             var response = await fetch('https://formsubmit.co/ajax/galstyan.levon@gmail.com', { method: 'POST', headers: { Accept: 'application/json' }, body: fd, signal: controller.signal });
             if (!response.ok) throw Error('Request failed');
             var result = await response.json(); if (result.success !== true && result.success !== 'true') throw Error('Rejected');
@@ -261,6 +295,15 @@
     page.appendChild(notes.length ? grid : caption(c.empty));
     var leave = button(c.leave, 'pn-cta', function () { contribute(leave); });
     page.appendChild(el('div', { class: 'pn-contribute' }, [leave]));
+    if (new URLSearchParams(location.search).get('note-sent') === '1') {
+      history.replaceState(null, '', location.pathname + location.hash);
+      setTimeout(function () {
+        var d = makeDialog('pn-sheet', c.received, leave);
+        d.node.dataset.step = 'done';
+        d.node.appendChild(el('div', { class: 'pn-flow', role: 'status' }, [el('p', null, [c.receivedBody]), button(c.close, 'pn-cta', d.close)]));
+        d.heading.focus();
+      }, 0);
+    }
     return page;
   }
   window.PatientNotes = { build: build, close: close };
