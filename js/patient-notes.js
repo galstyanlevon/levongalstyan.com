@@ -72,12 +72,13 @@
       return { node: dialog, heading: heading, close: dispose, cleanup: cleanup };
     }
     function view(note, opener) {
-      var d = makeDialog('pn-viewer', c.title, opener);
+      var meta = [note.displayName, note.year].filter(Boolean).join(' · ');
+      var d = makeDialog('pn-viewer', meta || c.title, opener);
       var body = el('div', { class: 'pn-view-body' });
       if (note.image) body.appendChild(el('img', { src: note.image, alt: note.text }));
       else body.appendChild(el('p', { class: 'pn-view-text' }, [note.text]));
       d.node.appendChild(body);
-      var actions = el('div', { class: 'pn-actions' }, [caption([note.demo ? c.demo : '', note.displayName, note.year].filter(Boolean).join(' · '))]);
+      var actions = el('div', { class: 'pn-actions' });
       if (note.image) actions.appendChild(button(c.zoom, 'card-btn', function (e) {
         var zoomed = body.classList.toggle('is-zoomed');
         e.currentTarget.textContent = zoomed ? c.fit : c.zoom;
@@ -250,7 +251,6 @@
           grid.querySelectorAll('.pn-card').forEach(function (node) { node.classList.toggle('is-active', node === card); });
           view(note, card);
         } });
-      if (note.demo) card.appendChild(el('span', { class: 'pn-caption' }, [c.demo]));
       var content = el('span', { class: 'pn-content' }, [note.image ? el('img', { src: note.image, alt: note.text, loading: 'lazy', width: '900', height: '1100' }) : el('span', { class: 'pn-text' }, [note.text])]);
       card.appendChild(el('span', { class: 'pn-surface' }, [content]));
       card.appendChild(el('span', { class: 'pn-meta pn-caption' }, [[note.displayName, note.year].filter(Boolean).join(' · ')]));
