@@ -411,51 +411,62 @@
     var track = el("div", {
       class: "cred-track",
       onpointerdown: function (e) { state.dragX = e.clientX; state.moved = false; },
-      onpointerup: onDragEnd, onpointercancel: onDragEnd
+      onpointerup: onDragEnd,
+      onpointercancel: function () { state.dragX = null; state.moved = true; }
     });
-    CRED.forEach(function (img, i) {
-      var rel = i - state.cred;
-      if (rel > CRED.length / 2) rel -= CRED.length;
-      if (rel < -CRED.length / 2) rel += CRED.length;
-      if (Math.abs(rel) > 1) return;
-      var leftPx, scaleVal;
-      if (rel === 0) { leftPx = (containerW - cardW) / 2; scaleVal = 1; }
-      else if (rel > 0) { scaleVal = scale; leftPx = containerW - cardW * (1 + scale) / 2; }
-      else { scaleVal = scale; leftPx = -cardW * (1 - scale) / 2; }
-      var slide = el("div", {
-        class: "cred-slide",
-        style: {
-          left: leftPx + "px", width: cardW + "px",
-          transform: "translateY(-50%) scale(" + scaleVal + ")",
-          opacity: rel === 0 ? "1" : "0.1",
-          zIndex: rel === 0 ? "3" : "1",
-          cursor: "pointer",
-          backgroundImage: "url('" + img + "')"
-        },
-        onclick: function () {
-          if (state.moved) return;
-          if (rel === 0) setState({ cred: (state.cred + 1) % CRED.length });
-          else setState({ cred: i });
-        }
+    // Keep the page and controls mounted so touch navigation preserves scroll and focus.
+    function updateSlides() {
+      track.replaceChildren();
+      CRED.forEach(function (img, i) {
+        var rel = i - state.cred;
+        if (rel > CRED.length / 2) rel -= CRED.length;
+        if (rel < -CRED.length / 2) rel += CRED.length;
+        if (Math.abs(rel) > 1) return;
+        var leftPx, scaleVal;
+        if (rel === 0) { leftPx = (containerW - cardW) / 2; scaleVal = 1; }
+        else if (rel > 0) { scaleVal = scale; leftPx = containerW - cardW * (1 + scale) / 2; }
+        else { scaleVal = scale; leftPx = -cardW * (1 - scale) / 2; }
+        var slide = el("div", {
+          class: "cred-slide",
+          style: {
+            left: leftPx + "px", width: cardW + "px",
+            transform: "translateY(-50%) scale(" + scaleVal + ")",
+            opacity: rel === 0 ? "1" : "0.1",
+            zIndex: rel === 0 ? "3" : "1",
+            cursor: "pointer",
+            backgroundImage: "url('" + img + "')"
+          },
+          onclick: function () {
+            if (state.moved) return;
+            if (rel === 0) setCred(state.cred + 1);
+            else setCred(i);
+          }
+        });
+        track.appendChild(slide);
       });
-      track.appendChild(slide);
-    });
+    }
+    updateSlides();
     section.appendChild(track);
     var controls = el("div", { class: "cred-controls" }, [
-      el("button", { type: "button", "aria-label": "Previous", onclick: function () { setState({ cred: (state.cred + CRED.length - 1) % CRED.length }); } }, [el("span", { class: "cred-arrow" })]),
+      el("button", { type: "button", "aria-label": "Previous", onclick: function () { setCred(state.cred - 1); } }, [el("span", { class: "cred-arrow" })]),
       el("span", { class: "cred-counter" }, [(state.cred + 1) + " / " + CRED.length]),
-      el("button", { type: "button", "aria-label": "Next", onclick: function () { setState({ cred: (state.cred + 1) % CRED.length }); } }, [el("span", { class: "cred-arrow right" })])
+      el("button", { type: "button", "aria-label": "Next", onclick: function () { setCred(state.cred + 1); } }, [el("span", { class: "cred-arrow right" })])
     ]);
     section.appendChild(controls);
+    function setCred(i) {
+      state.cred = ((i % CRED.length) + CRED.length) % CRED.length;
+      updateSlides();
+      controls.querySelector(".cred-counter").textContent = (state.cred + 1) + " / " + CRED.length;
+    }
+    function onDragEnd(e) {
+      if (state.dragX == null) return;
+      var dx = e.clientX - state.dragX;
+      state.dragX = null;
+      state.moved = Math.abs(dx) > 8;
+      if (dx <= -40) setCred(state.cred + 1);
+      else if (dx >= 40) setCred(state.cred - 1);
+    }
     return section;
-  }
-  function onDragEnd(e) {
-    if (state.dragX == null) return;
-    var dx = e.clientX - state.dragX;
-    state.dragX = null;
-    state.moved = Math.abs(dx) > 8;
-    if (dx <= -40) setState({ cred: (state.cred + 1) % CRED.length });
-    else if (dx >= 40) setState({ cred: (state.cred + CRED.length - 1) % CRED.length });
   }
 
   function buildPatients() {
@@ -875,7 +886,12 @@
     var containerW = Math.min(1340, vw - 2 * sidePad);
     var cardW = mobile ? vw * 0.62 : Math.min(700, vw * 0.5);
     var scale = 0.62;
-    function setCur(i) { state.lectureCred[id] = ((i % images.length) + images.length) % images.length; render(); }
+    function setCur(i) {
+      cur = ((i % images.length) + images.length) % images.length;
+      state.lectureCred[id] = cur;
+      updateSlides();
+      wrap.querySelector(".lec-carousel-counter").textContent = (cur + 1) + " / " + images.length;
+    }
     var track = el("div", {
       class: "lec-carousel-track",
       onpointerdown: function (e) { state.dragX2 = e.clientX; state.moved2 = false; },
@@ -883,23 +899,29 @@
         if (state.dragX2 == null) return;
         var dx = e.clientX - state.dragX2; state.dragX2 = null; state.moved2 = Math.abs(dx) > 8;
         if (dx <= -40) setCur(cur + 1); else if (dx >= 40) setCur(cur - 1);
-      }
+      },
+      onpointercancel: function () { state.dragX2 = null; state.moved2 = true; }
     });
-    images.forEach(function (img, i) {
-      var rel = i - cur;
-      if (rel > images.length / 2) rel -= images.length;
-      if (rel < -images.length / 2) rel += images.length;
-      if (Math.abs(rel) > 1) return;
-      var leftPx, scaleVal;
-      if (rel === 0) { leftPx = (containerW - cardW) / 2; scaleVal = 1; }
-      else if (rel > 0) { scaleVal = scale; leftPx = containerW - cardW * (1 + scale) / 2; }
-      else { scaleVal = scale; leftPx = -cardW * (1 - scale) / 2; }
-      track.appendChild(el("div", {
-        class: "lec-carousel-slide",
-        style: { left: leftPx + "px", width: cardW + "px", transform: "translateY(-50%) scale(" + scaleVal + ")", opacity: rel === 0 ? "1" : "0.1", zIndex: rel === 0 ? "3" : "1", cursor: "pointer", backgroundImage: "url('" + img + "')" },
-        onclick: function () { if (state.moved2) return; if (rel === 0) setCur(cur + 1); else setCur(i); }
-      }));
-    });
+    // Keep the page and controls mounted so touch navigation preserves scroll and focus.
+    function updateSlides() {
+      track.replaceChildren();
+      images.forEach(function (img, i) {
+        var rel = i - cur;
+        if (rel > images.length / 2) rel -= images.length;
+        if (rel < -images.length / 2) rel += images.length;
+        if (Math.abs(rel) > 1) return;
+        var leftPx, scaleVal;
+        if (rel === 0) { leftPx = (containerW - cardW) / 2; scaleVal = 1; }
+        else if (rel > 0) { scaleVal = scale; leftPx = containerW - cardW * (1 + scale) / 2; }
+        else { scaleVal = scale; leftPx = -cardW * (1 - scale) / 2; }
+        track.appendChild(el("div", {
+          class: "lec-carousel-slide",
+          style: { left: leftPx + "px", width: cardW + "px", transform: "translateY(-50%) scale(" + scaleVal + ")", opacity: rel === 0 ? "1" : "0.1", zIndex: rel === 0 ? "3" : "1", cursor: "pointer", backgroundImage: "url('" + img + "')" },
+          onclick: function () { if (state.moved2) return; if (rel === 0) setCur(cur + 1); else setCur(i); }
+        }));
+      });
+    }
+    updateSlides();
     var wrap = el("div", { class: "section center-col" }, [track,
       el("div", { class: "lec-carousel-controls" }, [
         el("button", { type: "button", "aria-label": "Previous", onclick: function () { setCur(cur - 1); } }, [el("span", { class: "cred-arrow", style: { borderColor: "#272A3C" } })]),
