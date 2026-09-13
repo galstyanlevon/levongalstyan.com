@@ -1,6 +1,6 @@
-# Patient Notes — preview handoff
+# Patient Notes — implementation handoff
 
-Canonical source: `feature/patient-notes-preview`, based on main `c167153a8389f3b8948d17bde9c085e204563075`. Do not merge without visual approval.
+Canonical source: `main`. The approved section is published through the existing GitHub Pages workflow.
 
 ## Review
 
@@ -10,11 +10,11 @@ GitHub Pages rejected deployment from this branch due to its environment protect
 
 ## Data and moderation
 
-`js/patient-notes-data.js` owns the registry and the preview flag. Entries use `id`, `language` (`hy`/`en`), `type` (`text`/`handwriting`), `image`, `text` (or image description), `year`, `displayName`, `published`, `sortOrder`; fixtures additionally have `demo: true`.
+`js/patient-notes-data.js` owns the registry and the contribution-form preview flag. Entries use `id`, `language` (`hy`/`en`), `type` (`text`/`handwriting`), `image`, `text` (or image description), `year`, `displayName`, `published` and `sortOrder`.
 
-All fixtures are labelled demonstration content and `published: false`. Demo entries are visible only when preview mode is on. Outside preview, only non-demo entries with `published: true` can appear. No browser submission changes this registry. Approved items must be added manually after review and documented publication consent. Keep identity/consent records out of the public repository.
+The visible registry contains only the approved 2015 handwritten note; the earlier demonstration cards and assets were removed. The same original note is available through the separate Armenian and English page states with localised image descriptions. No browser submission changes this registry. Approved items must be added manually after review and documented publication consent. Keep identity/consent records out of the public repository.
 
-The preview flag is on. Finish preview sends nothing and clears the draft. Drafts and selected images remain in memory only; no local storage, messenger screenshots or patient identifiers are collected automatically.
+The contribution form remains in preview mode while its heading notice is hidden on the published gallery. Finish preview sends nothing and clears the draft. Drafts and selected images remain in memory only; no local storage, messenger screenshots or patient identifiers are collected automatically.
 
 ## Submission service
 
