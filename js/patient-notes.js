@@ -6,7 +6,7 @@
   var COPY = {
     en: {
       title: 'Patient Notes', demo: 'Demonstration', intro: 'Preview with demonstration content only.',
-      leave: 'Leave a note', write: 'Write a note', upload: 'Upload handwriting', close: 'Close',
+      leave: 'Leave a note', write: 'Write a note', upload: 'Upload handwriting', preferred: 'Preferred', close: 'Close',
       activate: 'Select note', open: 'Open note', zoom: 'Full size', fit: 'Fit image',
       text: 'Your note', next: 'Continue', back: 'Back', privacy: 'Please leave out phone numbers and medical details you do not want published.',
       choose: 'Choose a photo', camera: 'Take a photo', imageHelp: 'Photograph the note clearly. Crop out names, signatures and other details you do not want published. JPEG, PNG or WebP, up to 10 MB.',
@@ -23,7 +23,7 @@
     },
     hy: {
       title: 'Բուժառուների խոսքերը', demo: 'Ցուցադրական նմուշ', intro: 'Նախադիտում՝ միայն ցուցադրական բովանդակությամբ։',
-      leave: 'Թողնել գրառում', write: 'Գրել գրառում', upload: 'Վերբեռնել ձեռագիր', close: 'Փակել',
+      leave: 'Թողնել գրառում', write: 'Գրել գրառում', upload: 'Վերբեռնել ձեռագիր', preferred: 'Նախընտրելի', close: 'Փակել',
       activate: 'Ընտրել գրառումը', open: 'Բացել գրառումը', zoom: 'Ամբողջ չափով', fit: 'Տեղավորել պատկերը',
       text: 'Ձեր գրառումը', next: 'Շարունակել', back: 'Հետ', privacy: 'Խնդրում ենք չներառել հեռախոսահամարներ և բժշկական տվյալներ, որոնք չեք ցանկանում հրապարակել։',
       choose: 'Ընտրել լուսանկար', camera: 'Լուսանկարել', imageHelp: 'Ձեռագիրը լուսանկարեք հստակ։ Կտրեք անունները, ստորագրությունները և այլ տվյալներ, որոնք չեք ցանկանում հրապարակել։ JPEG, PNG կամ WebP՝ մինչև 10 ՄԲ։',
@@ -44,7 +44,7 @@
   function close() { if (activeDialog) activeDialog(); }
   function build(lang, el) {
     var c = COPY[lang], draft = drafts[lang] || (drafts[lang] = blank());
-    function button(text, className, action) { return el('button', { type: 'button', class: className, onclick: action }, [/pn-(cta|choice)/.test(className) ? el('span', null, [text]) : text]); }
+    function button(text, className, action) { return el('button', { type: 'button', class: className, onclick: action }, [/pn-(cta|choice)/.test(className) ? el('span', { class: 'pn-choice-label' }, [text]) : text]); }
     function caption(text) { return el('p', { class: 'pn-caption' }, [text]); }
     function makeDialog(className, title, opener) {
       close();
@@ -111,9 +111,11 @@
       }
       function choose() {
         screen('choose', c.leave);
+        var handwriting = button(c.upload, 'pn-choice is-preferred', function () { draft.type = 'handwriting'; compose(); });
+        handwriting.appendChild(el('span', { class: 'pn-preferred' }, [c.preferred]));
         stepContent.appendChild(el('div', { class: 'pn-choice-row' }, [
-          button(c.write, 'pn-choice', function () { draft.type = 'text'; compose(); }),
-          button(c.upload, 'pn-choice', function () { draft.type = 'handwriting'; compose(); })
+          handwriting,
+          button(c.write, 'pn-choice', function () { draft.type = 'text'; compose(); })
         ]));
       }
       function compose() {
