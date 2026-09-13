@@ -87,7 +87,7 @@ h1, h2, h3, p { margin: 0; }
 .hero-banner { margin-top: -70px; height: 570px; background-size: cover; background-position: 50% 30%; background-repeat: no-repeat; }
 .hero-identity { display: flex; flex-direction: column; align-items: center; gap: 2px; }
 .hero-name { display: flex; align-items: baseline; justify-content: center; gap: 0.35em; max-width: 100%; font-size: clamp(18px, 5.64vw, 22px); white-space: nowrap; }
-.hero-name-prefix { font-size: 16px; font-weight: 400; line-height: 22px; text-transform: none; }
+.hero-name-prefix { font-size: 16px; font-weight: 700; line-height: 22px; text-transform: none; }
 .hero-degrees { font-size: 16px; line-height: 22px; text-align: center; }
 .hero-cta { margin-top: 26px; min-width: 236px; height: 70px; border-radius: 4px; background: var(--peach); color: var(--ink); display: flex; align-items: center; justify-content: center; padding: 0 30px; white-space: nowrap; border: 0; cursor: pointer; font-size: 15px; }
 .hero-cta:hover { background: var(--peach-hover); }
