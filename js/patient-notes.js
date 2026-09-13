@@ -241,7 +241,7 @@
     }
     var page = el('main', { class: 'section pn-page', id: 'patient-notes' });
     var heading = el('div', { class: 'pn-heading' }, [el('h1', { class: 'uppercase-title' }, [c.title])]);
-    if (preview()) heading.appendChild(caption(c.intro));
+    if (preview() && window.PATIENT_NOTES_CONFIG.showPreviewNotice !== false) heading.appendChild(caption(c.intro));
     page.appendChild(heading);
     var grid = el('div', { class: 'pn-grid' });
     var notes = window.PATIENT_NOTES.filter(function (n) { return n.language === lang && (n.demo ? preview() : n.published === true); }).sort(function (a, b) { return a.sortOrder - b.sortOrder; });
