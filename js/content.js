@@ -3,7 +3,8 @@ window.CONTENT = {
   en: {
     contacts: "Contact", langLabel: "ARM",
     nav: ["Home", "Clinical Practice", "Academic Activity", "For Patients"],
-    heroName: "Dr. Levon Galstyan",
+    heroName: "LEVON R. GALSTYAN",
+    heroDegrees: "DMD, MD, DDS",
     heroRole: "Oral and Maxillofacial Surgeon",
     heroBlurb: "Combining precision with transformative care, Dr. Galstyan restores vital function and renews self-confidence—helping you step into a healthier, more confident life.",
     cta: "Book an appointment",
@@ -122,10 +123,10 @@ window.CONTENT = {
     subServices: {
       rhinoplasty: {
         title: "Nose Reshaping (Rhinoplasty)",
-        intro: "A delicate surgical procedure aimed at reshaping the nose for aesthetic refinement, functional improvement, or both — planned with 3D digital imaging and anatomical precision, drawing on Dr. Galstyan's 25+ years of experience in facial aesthetics.",
+        intro: "A delicate surgical procedure aimed at reshaping the nose for aesthetic refinement, functional improvement, or both — planned with 2D photographic modelling and anatomical precision, drawing on Dr. Galstyan's 25+ years of experience in facial aesthetics.",
         sections: [
           { title: "Why Consider Rhinoplasty?", body: "Rhinoplasty may be recommended to refine nasal shape, projection or symmetry; correct a deviated septum or breathing difficulties; address congenital or trauma-related nasal deformities; and restore harmony to facial proportions." },
-          { title: "How the Procedure Works", body: "Each procedure is planned using advanced imaging and 3D modeling. Performed under general or local anesthesia with sedation, Dr. Galstyan reshapes bone and cartilage through internal incisions or a minimal external approach. Depending on complexity, grafts may be harvested from the septum, ear or rib, and functional correction (septoplasty) can be performed at the same time to improve breathing. Surgery typically lasts 1–2 hours in an accredited surgical facility." },
+          { title: "How the Procedure Works", body: "Each procedure is planned using advanced imaging and 2D photographic modelling. Performed under general or local anesthesia with sedation, Dr. Galstyan reshapes bone and cartilage through internal incisions or a minimal external approach. Depending on complexity, grafts may be harvested from the septum, ear or rib, and functional correction (septoplasty) can be performed at the same time to improve breathing. Surgery typically lasts 1–2 hours in an accredited surgical facility." },
           { title: "Recovery Timeline", body: "First week: mild discomfort, nasal congestion, swelling and possible bruising around the eyes; the splint and internal supports are usually removed around day 7. Weeks 2–4: swelling gradually subsides and most patients return to work or daily activities after 10–14 days. Months 1–12: the final shape refines gradually, with minor residual swelling — especially at the tip — sometimes persisting for up to a year. During recovery, sleep with your head elevated, avoid intense physical activity, don't rest glasses on the nasal bridge for 4–6 weeks, and protect your nose from sun exposure with SPF 30+." },
           { title: "What Makes Our Approach Unique", body: "Digital surgical simulation for personalized planning, functional and aesthetic correction in a single procedure, minimally invasive techniques for optimal recovery, expertise in secondary (revision) rhinoplasty, and multilingual patient care in Armenian, English and Russian." },
           { title: "Frequently Asked Questions", body: "Is rhinoplasty painful?\nMost patients report only mild discomfort, easily managed with medication.\n\nWill I need nasal packing?\nNo. Soft internal splints are used that allow breathing and are removed painlessly at your post-op visit.\n\nWill I see the final result immediately?\nYou'll notice changes right away, but swelling will continue to resolve gradually for 6–12 months.\n\nIs rhinoplasty covered by insurance?\nFunctional corrections (like septoplasty) may be partially covered — our team will help you check your eligibility.\n\nDo you use photo simulations?\nYes. Preoperative imaging helps you visualize possible outcomes and aligns expectations with surgical possibilities." }
@@ -362,7 +363,8 @@ window.CONTENT = {
   hy: {
     contacts: "ԿԱՊ", langLabel: "ENG",
     nav: ["Գլխավոր", "Կլինիկական գործունեություն", "Ակադեմիական գործունեություն", "Պացիենտներին"],
-    heroName: "ԼԵՎոն Գալստյան",
+    heroPrefix: "դր.",
+    heroName: "ԼԵՎՈՆ Ռ. ԳԱԼՍՏՅԱՆ",
     heroRole: "Դիմածնոտային վիրաբույժ",
     heroBlurb: "Համադրելով բարձր ճշգրտությունն ու պրոֆեսիոնալ խնամքը՝ բժիշկ Գալստյանը վերականգնում է դեմքի կարևոր ֆունկցիաներն ու ինքնավստահությունը՝ օգնելով Ձեզ վերադառնալ լիարժեք ու առողջ կյանքի։",
     cta: "Գրանցվել",
@@ -480,7 +482,7 @@ dentalImplantsIntro: "Ատամնաբուժական իմպլանտները, ըս�
     subServices: {
       rhinoplasty: {
         title: "Քթի ձևի փոփոխություն (ռինոպլաստիկա)",
-        intro: "Նուրբ վիրահատություն, որն ուղղված է քթի ձևի փոփոխմանը՝ էսթետիկ և ֆունկցիոնալ նպատակներով, 3D թվային պլանավորմամբ և անատոմիական ճշգրտությամբ։",
+        intro: "Նուրբ վիրահատություն, որն ուղղված է քթի ձևի փոփոխմանը՝ էսթետիկ և ֆունկցիոնալ նպատակներով, 2D լուսանկարային մոդելավորմամբ և անատոմիական ճշգրտությամբ։",
         sections: [
           { title: "Ինչու է իրականացվում", body: "Ռինոպլաստիկայով հնարավոր է փոխել քթի չափերը, ձևը կամ համաչափությունը։ Այն կարող է իրականացվել վնասվածքից հետո առաջացած խնդիրները շտկելու, ծննդաբերական արատը ուղղելու կամ շնչառական խանգարումները բարելավելու համար։" },
           { title: "Ռիսկերը", body: "Ինչպես յուրաքանչյուր մեծ վիրահատություն, ռինոպլաստիկան էլ ունի որոշ ռիսկեր՝ արյունահոսություն, վարակ, անզգայացման հանդեպ անցանկալի ռեակցիա։ Հատուկ բարդություններից են՝ քթով շնչառության դժվարություններ, մշտական թմրածություն, անհամաչափ ձև, երկարատև ցավ կամ այտուց, սպիավորում, միջնապատի շրջանում անցք, կրկնակի վիրահատության կարիք և հոտառության փոփոխություն։" },

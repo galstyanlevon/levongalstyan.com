@@ -354,7 +354,13 @@
     var frag = document.createDocumentFragment();
     frag.appendChild(el("section", { id: "home", class: "hero-banner", style: { backgroundImage: "url('images/hero.webp')" } }));
     var s = el("section", { class: "section section-dark center-col", style: { gap: "24px" } }, [
-      el("h1", { class: "uppercase-title" }, [T.heroName]),
+      el("div", { class: "hero-identity" }, [
+        el("h1", { class: "uppercase-title hero-name" }, [
+          T.heroPrefix ? el("span", { class: "hero-name-prefix" }, [T.heroPrefix]) : null,
+          el("span", null, [T.heroName])
+        ]),
+        T.heroDegrees ? el("p", { class: "hero-degrees" }, [T.heroDegrees]) : null
+      ]),
       el("p", { style: { fontSize: "18px", textAlign: "center" } }, [T.heroRole]),
       el("p", { class: "max-670", style: { marginTop: "26px" } }, [T.heroBlurb]),
       el("button", { type: "button", class: "hero-cta", onclick: function () { bookService(""); } }, [T.cta])
