@@ -500,14 +500,32 @@
     section.appendChild(el("h2", { class: "uppercase-title" }, [T.faqTitle]));
     section.appendChild(el("p", { class: "max-670" }, [T.faqBody]));
     var list = el("div", { class: "faq-list" });
+    var faqControls = [];
+    function updateFaq() {
+      faqControls.forEach(function (entry, i) {
+        var categoryOpen = state.open === i;
+        entry.categoryChevron.style.transform = categoryOpen ? "rotate(180deg)" : "rotate(0deg)";
+        entry.list.classList.toggle("open", categoryOpen);
+        entry.questions.forEach(function (question) {
+          var questionOpen = state.openQ === question.key;
+          question.chevron.style.transform = questionOpen ? "rotate(180deg)" : "rotate(0deg)";
+          question.answer.classList.toggle("open", questionOpen);
+        });
+      });
+    }
     T.faq.forEach(function (f, i) {
       var isOpen = state.open === i;
       var item = el("div", { class: "faq-item" });
-      item.appendChild(el("button", { type: "button", class: "faq-head", onclick: function () { setState({ open: state.open === i ? -1 : i }); } }, [
-        el("span", null, [f.title]), chevron(isOpen)
+      var categoryChevron = chevron(isOpen);
+      item.appendChild(el("button", { type: "button", class: "faq-head", onclick: function () {
+        state.open = state.open === i ? -1 : i;
+        updateFaq();
+      } }, [
+        el("span", null, [f.title]), categoryChevron
       ]));
       item.appendChild(el("div", { class: "faq-badge-row" }, [el("span", { class: "faq-badge" }, [f.count])]));
       var ul = el("ul", { class: "faq-sub-list" + (isOpen ? " open" : "") });
+      var questions = [];
       f.items.forEach(function (it, j) {
         var mix = faqMix(i, j);
         var faqVideo = window.FAQ_VIDEOS && window.FAQ_VIDEOS[state.lang] && window.FAQ_VIDEOS[state.lang][it.q];
@@ -519,8 +537,12 @@
         var iconsRow = el("span", { class: "faq-q-icons" });
         if (hasPhoto) iconsRow.appendChild(photoIcon());
         if (hasVideo) iconsRow.appendChild(videoIcon());
-        iconsRow.appendChild(chevron(qOpen, "rgba(39,42,60,0.6)"));
-        li.appendChild(el("button", { type: "button", class: "faq-q", onclick: function () { setState({ openQ: state.openQ === key ? null : key }); } }, [
+        var questionChevron = chevron(qOpen, "rgba(39,42,60,0.6)");
+        iconsRow.appendChild(questionChevron);
+        li.appendChild(el("button", { type: "button", class: "faq-q", onclick: function () {
+          state.openQ = state.openQ === key ? null : key;
+          updateFaq();
+        } }, [
           el("span", null, [it.q]), iconsRow
         ]));
         var ans = el("div", { class: "faq-answer" + (qOpen ? " open" : "") }, [el("p", null, [it.a || T.answerPlaceholder])]);
@@ -534,9 +556,11 @@
         }
         li.appendChild(ans);
         ul.appendChild(li);
+        questions.push({ key: key, chevron: questionChevron, answer: ans });
       });
       item.appendChild(ul);
       list.appendChild(item);
+      faqControls.push({ categoryChevron: categoryChevron, list: ul, questions: questions });
     });
     section.appendChild(list);
     return section;
