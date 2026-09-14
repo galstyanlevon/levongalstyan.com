@@ -14,12 +14,12 @@ const { CONTENT, LECTURES, PATIENT_LINKS } = context.window;
 const pages = [];
 const homeMeta = {
   en: {
-    title: 'Dr. Levon Galstyan — Oral & Maxillofacial Surgeon',
+    title: 'Oral & Maxillofacial Surgeon',
     description: 'Advanced maxillofacial, reconstructive and facial surgery in Yerevan, combining precise digital planning with individualized care.',
     image: 'images/social-preview-en.jpg'
   },
   hy: {
-    title: 'Լևոն Գալստյան — դիմածնոտային վիրաբույժ',
+    title: 'Դիմածնոտային վիրաբույժ',
     description: 'Դիմածնոտային, վերականգնողական և էսթետիկ վիրաբուժություն Երևանում՝ ժամանակակից թվային պլանավորմամբ և անհատական մոտեցմամբ։',
     image: 'images/social-preview-hy.jpg'
   }
