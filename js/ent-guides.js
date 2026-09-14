@@ -9,7 +9,7 @@
     "status": "published",
     "reviewedDate": "2026-09-14",
     "en": {
-      "title": "Septoplasty",
+      "title": "Septoplasty and turbinate correction",
       "subtitle": "A structured guide for patients",
       "author": "Levon Galstyan · DMD, MD, DDS · Oral and Maxillofacial Surgeon",
       "intro": [
@@ -784,7 +784,7 @@
       ]
     },
     "hy": {
-      "title": "Սեպտոպլաստիկա",
+      "title": "Սեպտոպլաստիկա և քթային խեցիների շտկում",
       "subtitle": "Կառուցվածքային ուղեցույց պացիենտի համար",
       "author": "Լևոն Գալստյան · DMD, MD, DDS · Դիմածնոտային վիրաբույժ",
       "intro": [

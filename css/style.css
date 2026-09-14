@@ -243,6 +243,10 @@ h1, h2, h3, p { margin: 0; }
 .guide-route { display: flex; flex-direction: column; gap: 20px; }
 .guide-route h2 { font-size: 18px; font-weight: 500; line-height: 28px; }
 .guide-route p { color: rgba(39,42,60,0.8); text-wrap: pretty; }
+.guide-pathway { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; color: rgba(39,42,60,0.8); }
+.guide-pathway li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; line-height: 28px; }
+.guide-pathway li:first-child { grid-template-columns: 1fr; }
+.guide-pathway-arrow { color: var(--ink); font-weight: 700; }
 .guide-section { scroll-margin-top: 100px; }
 .guide-section h3 { font-size: 18px; font-weight: 500; line-height: 28px; }
 .guide-section-level-1 h2 { font-size: 22px; font-weight: 700; line-height: 30px; }
