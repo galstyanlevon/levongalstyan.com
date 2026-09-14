@@ -9,6 +9,7 @@ vm.runInNewContext(fs.readFileSync('js/content.js', 'utf8'), context);
 vm.runInNewContext(fs.readFileSync('js/patient-notes-data.js', 'utf8'), context);
 vm.runInNewContext(fs.readFileSync('js/patient-resources.js', 'utf8'), context);
 vm.runInNewContext(fs.readFileSync('js/orthognathic-guide.js', 'utf8'), context);
+vm.runInNewContext(fs.readFileSync('js/ent-guides.js', 'utf8'), context);
 const { CONTENT, LECTURES, PATIENT_LINKS } = context.window;
 const pages = [];
 const homeMeta = {

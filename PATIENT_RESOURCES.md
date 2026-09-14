@@ -27,6 +27,11 @@ and empty destinations are neither linked nor generated as public share pages.
   The guide follows a linear reading flow without a separate contents block.
 - Direct static URLs, locale switching, responsive recovery table and a gallery
   renderer. The published guide is indexed; draft resources have no public route.
+- Published septoplasty guide on the nasal breathing service and published FESS
+  and nasal polyps guide on the endoscopic sinus surgery service. Both preserve
+  the approved Armenian and British English clinical content while presenting it
+  as structured sections, lists, tables, highlighted instructions and timelines.
+  The FESS guide includes the approved postoperative irrigation video.
 
 ## Gallery completion
 
@@ -34,7 +39,7 @@ and empty destinations are neither linked nor generated as public share pages.
    intervals and alternative text. Galleries intentionally contain no cases yet.
 2. Set each reviewed gallery's `status` to `published` when it is ready.
 
-Implant and breathing surgery guides are the next content phase. Adding a guide to
+Implant guides are the next content phase. Adding a guide to
 `PATIENT_GUIDES` with its `service` index and both language versions automatically
 adds its linked section and generated pages. Optional `sub` keys target individual
 procedures. Do not point these links to unrelated general guides.

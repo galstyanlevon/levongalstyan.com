@@ -7,6 +7,8 @@ vm.runInNewContext(fs.readFileSync('dist/js/share-pages.js','utf8'),context);
 vm.runInNewContext(fs.readFileSync('dist/js/content.js','utf8'),context);
 const pages=context.window.SHARE_PAGES;
 assert.equal(pages.filter(p=>p.route==='#/guide/orthognathic').length,2);
+assert.equal(pages.filter(p=>p.route==='#/guide/septoplasty').length,2);
+assert.equal(pages.filter(p=>p.route==='#/guide/fess').length,2);
 assert.equal(pages.some(p=>p.route.startsWith('#/gallery/')),false);
 const base='https://galstyanlevon.github.io/levongalstyan.com/preview/share/';
 for (const p of pages) {

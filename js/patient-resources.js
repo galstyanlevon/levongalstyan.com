@@ -1,5 +1,5 @@
 /* Patient resource registry and shared interface copy.
- * The reviewed orthognathic guide is loaded from orthognathic-guide.js.
+ * Reviewed guides are loaded from the procedure-specific guide files.
  * Galleries remain drafts pending selected photographs and publication consent.
  * Add future guides only when their content is ready; do not create dead service links.
  */
