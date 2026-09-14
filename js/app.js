@@ -13,8 +13,8 @@
     dropdownRight: 0,
     hoverSubIndex: null,
     route: null,
-    open: 0,
-    openQ: "0:0",
+    open: -1,
+    openQ: null,
     cred: 2,
     sent: false,
     service: "",
@@ -23,6 +23,7 @@
 
   function setState(patch) { Object.assign(state, patch); render(); }
   function t() { return CONTENT[state.lang]; }
+  var resourcePages = window.createPatientResourcePages({ el: el, state: state, t: t, buildContactForm: buildContactForm });
 
   /* ---------- DOM helper (no innerHTML with dynamic data, no eval) ---------- */
   function el(tag, props, children) {
@@ -162,7 +163,7 @@
       }, [el("span"), el("span"), el("span")]));
     }
     header.appendChild(el("button", { type: "button", class: "lang-btn", onclick: toggleLang }, [T.langLabel]));
-    header.appendChild(el("a", { href: "#contact", class: "contacts-btn" }, [T.contacts]));
+    header.appendChild(el("a", { href: "/" + state.lang + "/contact/", class: "contacts-btn" }, [T.contacts]));
     return header;
   }
 
@@ -353,7 +354,13 @@
     var frag = document.createDocumentFragment();
     frag.appendChild(el("section", { id: "home", class: "hero-banner", style: { backgroundImage: "url('images/hero.webp')" } }));
     var s = el("section", { class: "section section-dark center-col", style: { gap: "24px" } }, [
-      el("h1", { class: "uppercase-title" }, [T.heroName]),
+      el("div", { class: "hero-identity" }, [
+        el("h1", { class: "uppercase-title hero-name" }, [
+          T.heroPrefix ? el("span", { class: "hero-name-prefix" }, [T.heroPrefix]) : null,
+          el("span", null, [T.heroName])
+        ]),
+        T.heroDegrees ? el("p", { class: "hero-degrees" }, [T.heroDegrees]) : null
+      ]),
       el("p", { style: { fontSize: "18px", textAlign: "center" } }, [T.heroRole]),
       el("p", { class: "max-670", style: { marginTop: "26px" } }, [T.heroBlurb]),
       el("button", { type: "button", class: "hero-cta", onclick: function () { bookService(""); } }, [T.cta])
@@ -410,51 +417,62 @@
     var track = el("div", {
       class: "cred-track",
       onpointerdown: function (e) { state.dragX = e.clientX; state.moved = false; },
-      onpointerup: onDragEnd, onpointercancel: onDragEnd
+      onpointerup: onDragEnd,
+      onpointercancel: function () { state.dragX = null; state.moved = true; }
     });
-    CRED.forEach(function (img, i) {
-      var rel = i - state.cred;
-      if (rel > CRED.length / 2) rel -= CRED.length;
-      if (rel < -CRED.length / 2) rel += CRED.length;
-      if (Math.abs(rel) > 1) return;
-      var leftPx, scaleVal;
-      if (rel === 0) { leftPx = (containerW - cardW) / 2; scaleVal = 1; }
-      else if (rel > 0) { scaleVal = scale; leftPx = containerW - cardW * (1 + scale) / 2; }
-      else { scaleVal = scale; leftPx = -cardW * (1 - scale) / 2; }
-      var slide = el("div", {
-        class: "cred-slide",
-        style: {
-          left: leftPx + "px", width: cardW + "px",
-          transform: "translateY(-50%) scale(" + scaleVal + ")",
-          opacity: rel === 0 ? "1" : "0.1",
-          zIndex: rel === 0 ? "3" : "1",
-          cursor: "pointer",
-          backgroundImage: "url('" + img + "')"
-        },
-        onclick: function () {
-          if (state.moved) return;
-          if (rel === 0) setState({ cred: (state.cred + 1) % CRED.length });
-          else setState({ cred: i });
-        }
+    // Keep the page and controls mounted so touch navigation preserves scroll and focus.
+    function updateSlides() {
+      track.replaceChildren();
+      CRED.forEach(function (img, i) {
+        var rel = i - state.cred;
+        if (rel > CRED.length / 2) rel -= CRED.length;
+        if (rel < -CRED.length / 2) rel += CRED.length;
+        if (Math.abs(rel) > 1) return;
+        var leftPx, scaleVal;
+        if (rel === 0) { leftPx = (containerW - cardW) / 2; scaleVal = 1; }
+        else if (rel > 0) { scaleVal = scale; leftPx = containerW - cardW * (1 + scale) / 2; }
+        else { scaleVal = scale; leftPx = -cardW * (1 - scale) / 2; }
+        var slide = el("div", {
+          class: "cred-slide",
+          style: {
+            left: leftPx + "px", width: cardW + "px",
+            transform: "translateY(-50%) scale(" + scaleVal + ")",
+            opacity: rel === 0 ? "1" : "0.1",
+            zIndex: rel === 0 ? "3" : "1",
+            cursor: "pointer",
+            backgroundImage: "url('" + img + "')"
+          },
+          onclick: function () {
+            if (state.moved) return;
+            if (rel === 0) setCred(state.cred + 1);
+            else setCred(i);
+          }
+        });
+        track.appendChild(slide);
       });
-      track.appendChild(slide);
-    });
+    }
+    updateSlides();
     section.appendChild(track);
     var controls = el("div", { class: "cred-controls" }, [
-      el("button", { type: "button", "aria-label": "Previous", onclick: function () { setState({ cred: (state.cred + CRED.length - 1) % CRED.length }); } }, [el("span", { class: "cred-arrow" })]),
+      el("button", { type: "button", "aria-label": "Previous", onclick: function () { setCred(state.cred - 1); } }, [el("span", { class: "cred-arrow" })]),
       el("span", { class: "cred-counter" }, [(state.cred + 1) + " / " + CRED.length]),
-      el("button", { type: "button", "aria-label": "Next", onclick: function () { setState({ cred: (state.cred + 1) % CRED.length }); } }, [el("span", { class: "cred-arrow right" })])
+      el("button", { type: "button", "aria-label": "Next", onclick: function () { setCred(state.cred + 1); } }, [el("span", { class: "cred-arrow right" })])
     ]);
     section.appendChild(controls);
+    function setCred(i) {
+      state.cred = ((i % CRED.length) + CRED.length) % CRED.length;
+      updateSlides();
+      controls.querySelector(".cred-counter").textContent = (state.cred + 1) + " / " + CRED.length;
+    }
+    function onDragEnd(e) {
+      if (state.dragX == null) return;
+      var dx = e.clientX - state.dragX;
+      state.dragX = null;
+      state.moved = Math.abs(dx) > 8;
+      if (dx <= -40) setCred(state.cred + 1);
+      else if (dx >= 40) setCred(state.cred - 1);
+    }
     return section;
-  }
-  function onDragEnd(e) {
-    if (state.dragX == null) return;
-    var dx = e.clientX - state.dragX;
-    state.dragX = null;
-    state.moved = Math.abs(dx) > 8;
-    if (dx <= -40) setState({ cred: (state.cred + 1) % CRED.length });
-    else if (dx >= 40) setState({ cred: (state.cred + CRED.length - 1) % CRED.length });
   }
 
   function buildPatients() {
@@ -470,6 +488,7 @@
       ]));
     });
     section.appendChild(grid);
+    section.appendChild(el("div", { class: "pn-contribute" }, [el("a", { href: "#/patients/notes", class: "card-link" }, [state.lang === "hy" ? "Բուժառուների խոսքերը" : "Patient Notes"])]));
     return section;
   }
 
@@ -491,8 +510,9 @@
       var ul = el("ul", { class: "faq-sub-list" + (isOpen ? " open" : "") });
       f.items.forEach(function (it, j) {
         var mix = faqMix(i, j);
+        var faqVideo = window.FAQ_VIDEOS && window.FAQ_VIDEOS[state.lang] && window.FAQ_VIDEOS[state.lang][it.q];
         var hasPhoto = mix === 1 || mix === 3 || mix === 5;
-        var hasVideo = mix === 2 || mix === 3 || mix === 6;
+        var hasVideo = !!faqVideo || mix === 2 || mix === 3 || mix === 6;
         var key = i + ":" + j;
         var qOpen = state.openQ === key;
         var li = el("li", { class: "faq-sub-item" });
@@ -507,7 +527,9 @@
         if (hasPhoto || hasVideo) {
           var mediaRow = el("div", { class: "faq-media-row" });
           if (hasPhoto) mediaRow.appendChild(el("div", { class: "faq-media" }, [el("span", null, [T.photoSlot])]));
-          if (hasVideo) mediaRow.appendChild(el("div", { class: "faq-media video" }, [el("span", { class: "play-btn" }, [el("i")]), el("span", null, [T.videoSlot])]));
+          if (hasVideo) mediaRow.appendChild(el("div", { class: "faq-media video" }, faqVideo ? [
+            el("iframe", { src: faqVideo.url, title: faqVideo.title, loading: "lazy", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowfullscreen: "true", referrerpolicy: "strict-origin-when-cross-origin" })
+          ] : [el("span", { class: "play-btn" }, [el("i")]), el("span", null, [T.videoSlot])]));
           ans.appendChild(mediaRow);
         }
         li.appendChild(ans);
@@ -635,16 +657,24 @@
       el("p", { class: "service-body" }, [body]),
       el("button", { type: "button", class: "hero-cta", style: { marginTop: "26px" }, onclick: function () { bookService(s.title.replace(/\n/g, " ")); } }, [T.cta])
     ]));
-    if (sections) {
+    var serviceVideo = window.SERVICE_VIDEOS && window.SERVICE_VIDEOS[state.lang] && window.SERVICE_VIDEOS[state.lang].services[index];
+    if (serviceVideo) frag.appendChild(buildProcedureVideo(serviceVideo));
+    if (sections || resourcePages.hasLinks(index)) {
       var wrap = el("section", { class: "sections-col" });
       var inner = el("div");
-      sections.forEach(function (sec) {
+      (sections || []).forEach(function (sec) {
         inner.appendChild(el("div", { class: "section-block" }, [
           el("h2", null, [sec.title]), el("div", { class: "card-divider" }), el("p", null, [sec.body])
         ]));
       });
+      resourcePages.appendLinks(inner, index);
       wrap.appendChild(inner);
       frag.appendChild(wrap);
+    }
+    if (resourcePages.hasLinks(index)) {
+      frag.appendChild(el("section", { class: "section section-peach center-col" }, [
+        el("h2", { class: "uppercase-title" }, [T.scheduleTitle]), buildContactForm()
+      ]));
     }
     var subs = subsFor(index, T);
     if (subs) {
@@ -776,6 +806,8 @@
       el("h1", { class: "service-title" }, [sub.title]),
       el("p", { class: "service-body" }, [sub.intro])
     ]));
+    var subVideo = window.SERVICE_VIDEOS && window.SERVICE_VIDEOS[state.lang] && window.SERVICE_VIDEOS[state.lang].subServices[key];
+    if (subVideo) frag.appendChild(buildProcedureVideo(subVideo));
     var wrap = el("section", { class: "sections-col" });
     var inner = el("div");
     sub.sections.forEach(function (sec) {
@@ -783,6 +815,7 @@
         el("h2", null, [sec.title]), el("div", { class: "card-divider" }), el("p", { style: { whiteSpace: "normal" } }, [sec.body])
       ]));
     });
+    resourcePages.appendLinks(inner, parentIdx, key);
     wrap.appendChild(inner);
     frag.appendChild(wrap);
     frag.appendChild(el("section", { class: "section section-peach center-col" }, [
@@ -802,6 +835,18 @@
     otherSec.appendChild(grid);
     frag.appendChild(otherSec);
     return frag;
+  }
+
+  function buildProcedureVideo(video) {
+    return el("section", { class: "procedure-video-section" }, [
+      el("div", { class: "procedure-video-inner" }, [
+        el("h2", null, [video.heading]),
+        el("div", { class: "card-divider" }),
+        el("div", { class: "procedure-video-frame" }, [
+          el("iframe", { src: video.url, title: video.title, loading: "lazy", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowfullscreen: "true", referrerpolicy: "strict-origin-when-cross-origin" })
+        ])
+      ])
+    ]);
   }
 
   /* ---------- Activity page ---------- */
@@ -847,7 +892,12 @@
     var containerW = Math.min(1340, vw - 2 * sidePad);
     var cardW = mobile ? vw * 0.62 : Math.min(700, vw * 0.5);
     var scale = 0.62;
-    function setCur(i) { state.lectureCred[id] = ((i % images.length) + images.length) % images.length; render(); }
+    function setCur(i) {
+      cur = ((i % images.length) + images.length) % images.length;
+      state.lectureCred[id] = cur;
+      updateSlides();
+      wrap.querySelector(".lec-carousel-counter").textContent = (cur + 1) + " / " + images.length;
+    }
     var track = el("div", {
       class: "lec-carousel-track",
       onpointerdown: function (e) { state.dragX2 = e.clientX; state.moved2 = false; },
@@ -855,23 +905,29 @@
         if (state.dragX2 == null) return;
         var dx = e.clientX - state.dragX2; state.dragX2 = null; state.moved2 = Math.abs(dx) > 8;
         if (dx <= -40) setCur(cur + 1); else if (dx >= 40) setCur(cur - 1);
-      }
+      },
+      onpointercancel: function () { state.dragX2 = null; state.moved2 = true; }
     });
-    images.forEach(function (img, i) {
-      var rel = i - cur;
-      if (rel > images.length / 2) rel -= images.length;
-      if (rel < -images.length / 2) rel += images.length;
-      if (Math.abs(rel) > 1) return;
-      var leftPx, scaleVal;
-      if (rel === 0) { leftPx = (containerW - cardW) / 2; scaleVal = 1; }
-      else if (rel > 0) { scaleVal = scale; leftPx = containerW - cardW * (1 + scale) / 2; }
-      else { scaleVal = scale; leftPx = -cardW * (1 - scale) / 2; }
-      track.appendChild(el("div", {
-        class: "lec-carousel-slide",
-        style: { left: leftPx + "px", width: cardW + "px", transform: "translateY(-50%) scale(" + scaleVal + ")", opacity: rel === 0 ? "1" : "0.1", zIndex: rel === 0 ? "3" : "1", cursor: "pointer", backgroundImage: "url('" + img + "')" },
-        onclick: function () { if (state.moved2) return; if (rel === 0) setCur(cur + 1); else setCur(i); }
-      }));
-    });
+    // Keep the page and controls mounted so touch navigation preserves scroll and focus.
+    function updateSlides() {
+      track.replaceChildren();
+      images.forEach(function (img, i) {
+        var rel = i - cur;
+        if (rel > images.length / 2) rel -= images.length;
+        if (rel < -images.length / 2) rel += images.length;
+        if (Math.abs(rel) > 1) return;
+        var leftPx, scaleVal;
+        if (rel === 0) { leftPx = (containerW - cardW) / 2; scaleVal = 1; }
+        else if (rel > 0) { scaleVal = scale; leftPx = containerW - cardW * (1 + scale) / 2; }
+        else { scaleVal = scale; leftPx = -cardW * (1 - scale) / 2; }
+        track.appendChild(el("div", {
+          class: "lec-carousel-slide",
+          style: { left: leftPx + "px", width: cardW + "px", transform: "translateY(-50%) scale(" + scaleVal + ")", opacity: rel === 0 ? "1" : "0.1", zIndex: rel === 0 ? "3" : "1", cursor: "pointer", backgroundImage: "url('" + img + "')" },
+          onclick: function () { if (state.moved2) return; if (rel === 0) setCur(cur + 1); else setCur(i); }
+        }));
+      });
+    }
+    updateSlides();
     var wrap = el("div", { class: "section center-col" }, [track,
       el("div", { class: "lec-carousel-controls" }, [
         el("button", { type: "button", "aria-label": "Previous", onclick: function () { setCur(cur - 1); } }, [el("span", { class: "cred-arrow", style: { borderColor: "#272A3C" } })]),
@@ -946,6 +1002,7 @@
   /* ---------- Patients sub pages (FAQ / Addresses / Useful Info) ---------- */
   function buildPatientsSubPage(key) {
     var T = t();
+    if (key === "notes") return window.PatientNotes.build(state.lang, el);
     if (key === "faq") { window.location.replace("#faq"); return document.createDocumentFragment(); }
     var frag = document.createDocumentFragment();
     if (key === "addresses") {
@@ -1111,9 +1168,11 @@
     var isActivity = hash === "#/activity";
     var lecM = /^#\/lecture\/(\d+)$/.exec(hash);
     var patM = /^#\/patients\/([a-z-]+)$/.exec(hash);
+    var resourceM = /^#\/(guide|gallery)\/([a-z-]+)$/.exec(hash);
     var wasRoute = state.route != null;
     var route = m ? Math.max(0, Math.min(parseInt(m[1], 10), 12)) : (isEdu ? "education" : (isExp ? "experience" : (isBio ? "bio" : (subM ? "sub:" + subM[1] : (insightM ? "insight:" + insightM[1] : (isActivity ? "activity" : (lecM ? "lecture:" + lecM[1] : (patM ? "patients:" + patM[1] : null))))))));
-    var anchor = (!m && !isEdu && !isExp && !isBio && !subM && !insightM && !isActivity && !lecM && !patM && hash.length > 1) ? hash.slice(1) : null;
+    if (resourceM) route = resourceM[1] + ":" + resourceM[2];
+    var anchor = (!resourceM && !m && !isEdu && !isExp && !isBio && !subM && !insightM && !isActivity && !lecM && !patM && hash.length > 1) ? hash.slice(1) : null;
     state.route = route; state.menuOpen = false; state.servicesOpen = false;
     render();
     if (window.syncSharePage) window.syncSharePage(state.lang, hash);
@@ -1125,6 +1184,7 @@
 
   /* ---------- Render ---------- */
   function render() {
+    if (window.PatientNotes) window.PatientNotes.close();
     var app = document.getElementById("app");
     app.innerHTML = "";
     app.appendChild(buildHeader());
@@ -1139,6 +1199,8 @@
 
     if (state.route == null) app.appendChild(buildLanding());
     else if (typeof state.route === "number") app.appendChild(buildServicePage(state.route));
+    else if (state.route.indexOf("guide:") === 0) app.appendChild(resourcePages.buildGuide(state.route.slice(6)));
+    else if (state.route.indexOf("gallery:") === 0) app.appendChild(resourcePages.buildGallery(state.route.slice(8)));
     else if (state.route === "education") app.appendChild(buildEducationPage());
     else if (state.route === "experience") app.appendChild(buildExperiencePage());
     else if (state.route === "bio") app.appendChild(buildBioPage());

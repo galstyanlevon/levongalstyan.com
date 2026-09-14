@@ -1,9 +1,10 @@
 // Generated data — plain JS, no templating, no eval.
 window.CONTENT = {
   en: {
-    contacts: "Contacts", langLabel: "ARM",
+    contacts: "Contact", langLabel: "ARM",
     nav: ["Home", "Clinical Practice", "Academic Activity", "For Patients"],
-    heroName: "Dr. Levon Galstyan",
+    heroName: "LEVON R. GALSTYAN",
+    heroDegrees: "DMD, MD, DDS",
     heroRole: "Oral and Maxillofacial Surgeon",
     heroBlurb: "Combining precision with transformative care, Dr. Galstyan restores vital function and renews self-confidence—helping you step into a healthier, more confident life.",
     cta: "Book an appointment",
@@ -122,10 +123,10 @@ window.CONTENT = {
     subServices: {
       rhinoplasty: {
         title: "Nose Reshaping (Rhinoplasty)",
-        intro: "A delicate surgical procedure aimed at reshaping the nose for aesthetic refinement, functional improvement, or both — planned with 3D digital imaging and anatomical precision, drawing on Dr. Galstyan's 25+ years of experience in facial aesthetics.",
+        intro: "A delicate surgical procedure aimed at reshaping the nose for aesthetic refinement, functional improvement, or both — planned with 2D photographic modelling and anatomical precision, drawing on Dr. Galstyan's 25+ years of experience in facial aesthetics.",
         sections: [
           { title: "Why Consider Rhinoplasty?", body: "Rhinoplasty may be recommended to refine nasal shape, projection or symmetry; correct a deviated septum or breathing difficulties; address congenital or trauma-related nasal deformities; and restore harmony to facial proportions." },
-          { title: "How the Procedure Works", body: "Each procedure is planned using advanced imaging and 3D modeling. Performed under general or local anesthesia with sedation, Dr. Galstyan reshapes bone and cartilage through internal incisions or a minimal external approach. Depending on complexity, grafts may be harvested from the septum, ear or rib, and functional correction (septoplasty) can be performed at the same time to improve breathing. Surgery typically lasts 1–2 hours in an accredited surgical facility." },
+          { title: "How the Procedure Works", body: "Each procedure is planned using advanced imaging and 2D photographic modelling. Performed under general or local anesthesia with sedation, Dr. Galstyan reshapes bone and cartilage through internal incisions or a minimal external approach. Depending on complexity, grafts may be harvested from the septum, ear or rib, and functional correction (septoplasty) can be performed at the same time to improve breathing. Surgery typically lasts 1–2 hours in an accredited surgical facility." },
           { title: "Recovery Timeline", body: "First week: mild discomfort, nasal congestion, swelling and possible bruising around the eyes; the splint and internal supports are usually removed around day 7. Weeks 2–4: swelling gradually subsides and most patients return to work or daily activities after 10–14 days. Months 1–12: the final shape refines gradually, with minor residual swelling — especially at the tip — sometimes persisting for up to a year. During recovery, sleep with your head elevated, avoid intense physical activity, don't rest glasses on the nasal bridge for 4–6 weeks, and protect your nose from sun exposure with SPF 30+." },
           { title: "What Makes Our Approach Unique", body: "Digital surgical simulation for personalized planning, functional and aesthetic correction in a single procedure, minimally invasive techniques for optimal recovery, expertise in secondary (revision) rhinoplasty, and multilingual patient care in Armenian, English and Russian." },
           { title: "Frequently Asked Questions", body: "Is rhinoplasty painful?\nMost patients report only mild discomfort, easily managed with medication.\n\nWill I need nasal packing?\nNo. Soft internal splints are used that allow breathing and are removed painlessly at your post-op visit.\n\nWill I see the final result immediately?\nYou'll notice changes right away, but swelling will continue to resolve gradually for 6–12 months.\n\nIs rhinoplasty covered by insurance?\nFunctional corrections (like septoplasty) may be partially covered — our team will help you check your eligibility.\n\nDo you use photo simulations?\nYes. Preoperative imaging helps you visualize possible outcomes and aligns expectations with surgical possibilities." }
@@ -304,12 +305,12 @@ window.CONTENT = {
     experience: [
       { org: "Wigmore Clinic", role: "Oral and Maxillofacial Surgeon", years: "November 2022 – Present", location: "Yerevan, Armenia" },
       { org: "\"Stomion-Orthodontics\" dental clinic", role: "Oral and Maxillofacial Surgeon, Implantologist", years: "2012 – Present", location: "5 Koryun St, Yerevan, RA" },
-      { org: "National Institute of Healthcare, RA", role: "Assistant Professor, Chair of Head and Neck Surgery", years: "2012 – Present" },
+      { org: "National Institute of Healthcare, RA", role: "Lecturer, Department of Head and Neck Surgery", years: "2012 – Present" },
       { org: "Slavmed Medical Center", role: "Oral and Maxillofacial Surgeon", years: "2018 – 2022" },
-      { org: "Armenian Medical Institute of Yerevan", role: "Dept. of Oral and Maxillofacial Surgery, Assistant Lecturer", years: "2012 – 2015", location: "Bldg. 14a, Titogradyan St, 0087, Yerevan", note: "Theoretical and practical classes of oral and maxillofacial surgery." },
-      { org: "Yerevan State Medical University", role: "Chair of Field Surgery, Assistant Professor", years: "February 2005 – February 2012", location: "Koryuni St, Building 2, 0025, Yerevan", note: "Field maxillofacial surgery teaching and maxillofacial surgery practice in hospital." },
+      { org: "Armenian Medical Institute of Yerevan", role: "Assistant Professor, Department of Oral and Maxillofacial Surgery", years: "2012 – 2015", location: "Bldg. 14a, Titogradyan St, 0087, Yerevan", note: "Theoretical and practical classes of oral and maxillofacial surgery." },
+      { org: "Yerevan State Medical University", role: "Assistant Professor, Department of Field Surgery", years: "February 2005 – February 2012", location: "Koryuni St, Building 2, 0025, Yerevan", note: "Field maxillofacial surgery teaching and maxillofacial surgery practice in hospital." },
       { org: "Central Military Clinical Hospital of MOD", role: "Dept. of Maxillofacial Surgery, Oral and Maxillofacial Surgeon", years: "2001 – 2012", location: "Muracan St, 115, Yerevan", note: "Surgery practice, with a significant percentage of patients with gunshot injuries of the face and jaws." },
-      { org: "Armenian Medical Institute of Yerevan", role: "Dept. of Oral and Maxillofacial Surgery, Assistant Lecturer", years: "2001 – 2004", location: "Titogradyan St, Bldg 14a, 0087, Yerevan", note: "Theoretical and practical classes of oral and maxillofacial surgery." },
+      { org: "Armenian Medical Institute of Yerevan", role: "Assistant Professor, Department of Oral and Maxillofacial Surgery", years: "2001 – 2004", location: "Titogradyan St, Bldg 14a, 0087, Yerevan", note: "Theoretical and practical classes of oral and maxillofacial surgery." },
       { org: "Football Federation of Armenia", role: "IT Specialist", years: "1998 – 2004", location: "Khanjyan St, 27, 0010, Yerevan", note: "Part-time work in computer and network services." }
     ],
     educationTitle: "Education",
@@ -347,7 +348,7 @@ window.CONTENT = {
       { title: "Videos", body: "Video library covering procedures,\nlectures and patient education" }
     ],
     insightPages: {
-      publications: { title: "Publications", intro: "A collection of Dr. Galstyan's scientific publications from 1999 to 2024, spanning oral and maxillofacial surgery, craniofacial reconstruction, and dental implantology." },
+      publications: { title: "Publications", intro: "A collection of Dr. Galstyan's scientific publications from 1999 to 2024, spanning oral and maxillofacial surgery, maxillofacial reconstruction, and dental implantology." },
       conferences: { title: "Conferences", intro: "As a dedicated oral and maxillofacial surgeon, I am committed to remaining at the forefront of my field through continuous education and participation in international scientific conferences. Here are some important events I have attended." },
       lectures: { title: "Scientific Presentations & Lectures", intro: "Explore a curated collection of my presentations delivered at leading scientific conferences, symposiums, and professional forums. These talks reflect my commitment to advancing clinical knowledge, sharing surgical experience, and contributing to the academic dialogue in oral and maxillofacial surgery. Whether focused on complex implantology, guided bone regeneration, or interdisciplinary case planning, each presentation offers a window into evidence-based practice and innovation in the field." },
       videos: { title: "Videos", intro: "In this section, you'll find my video interviews, podcast appearances, and public presentations — all featured on open-access channels. These recordings offer insights into my work, expertise, and professional perspective." }
@@ -362,7 +363,8 @@ window.CONTENT = {
   hy: {
     contacts: "ԿԱՊ", langLabel: "ENG",
     nav: ["Գլխավոր", "Կլինիկական գործունեություն", "Ակադեմիական գործունեություն", "Պացիենտներին"],
-    heroName: "ԼԵՎոն Գալստյան",
+    heroPrefix: "դր.",
+    heroName: "ԼԵՎՈՆ Ռ. ԳԱԼՍՏՅԱՆ",
     heroRole: "Դիմածնոտային վիրաբույժ",
     heroBlurb: "Համադրելով բարձր ճշգրտությունն ու պրոֆեսիոնալ խնամքը՝ բժիշկ Գալստյանը վերականգնում է դեմքի կարևոր ֆունկցիաներն ու ինքնավստահությունը՝ օգնելով Ձեզ վերադառնալ լիարժեք ու առողջ կյանքի։",
     cta: "Գրանցվել",
@@ -480,7 +482,7 @@ dentalImplantsIntro: "Ատամնաբուժական իմպլանտները, ըս�
     subServices: {
       rhinoplasty: {
         title: "Քթի ձևի փոփոխություն (ռինոպլաստիկա)",
-        intro: "Նուրբ վիրահատություն, որն ուղղված է քթի ձևի փոփոխմանը՝ էսթետիկ և ֆունկցիոնալ նպատակներով, 3D թվային պլանավորմամբ և անատոմիական ճշգրտությամբ։",
+        intro: "Նուրբ վիրահատություն, որն ուղղված է քթի ձևի փոփոխմանը՝ էսթետիկ և ֆունկցիոնալ նպատակներով, 2D լուսանկարային մոդելավորմամբ և անատոմիական ճշգրտությամբ։",
         sections: [
           { title: "Ինչու է իրականացվում", body: "Ռինոպլաստիկայով հնարավոր է փոխել քթի չափերը, ձևը կամ համաչափությունը։ Այն կարող է իրականացվել վնասվածքից հետո առաջացած խնդիրները շտկելու, ծննդաբերական արատը ուղղելու կամ շնչառական խանգարումները բարելավելու համար։" },
           { title: "Ռիսկերը", body: "Ինչպես յուրաքանչյուր մեծ վիրահատություն, ռինոպլաստիկան էլ ունի որոշ ռիսկեր՝ արյունահոսություն, վարակ, անզգայացման հանդեպ անցանկալի ռեակցիա։ Հատուկ բարդություններից են՝ քթով շնչառության դժվարություններ, մշտական թմրածություն, անհամաչափ ձև, երկարատև ցավ կամ այտուց, սպիավորում, միջնապատի շրջանում անցք, կրկնակի վիրահատության կարիք և հոտառության փոփոխություն։" },
@@ -665,12 +667,12 @@ dentalImplantsIntro: "Ատամնաբուժական իմպլանտները, ըս�
     experience: [
       { org: "Wigmore Clinic", role: "Դիմածնոտային վիրաբույժ", years: "նոյեմբեր 2022 – առ այսօր", location: "Երևան, Հայաստան" },
       { org: "«Ստոմիոն-Օրթոդոնտիկս» ատամնաբուժական կլինիկա", role: "Դիմածնոտային վիրաբույժ, իմպլանտոլոգ", years: "2012 – առ այսօր", location: "Կորյունի 5, Երևան" },
-      { org: "ՀՀ առողջապահության ազգային ինստիտուտ", role: "Գլխի և պարանոցի վիրաբուժության ամբիոնի ասիստենտ պրոֆեսոր", years: "2012 – առ այսօր" },
+      { org: "ՀՀ առողջապահության ազգային ինստիտուտ", role: "Գլխի և պարանոցի վիրաբուժության ամբիոնի դասախոս", years: "2012 – առ այսօր" },
       { org: "Slavmed բժշկական կենտրոն", role: "Դիմածնոտային վիրաբույժ", years: "2018 – 2022" },
-      { org: "Երևանի բժշկական ինստիտուտ", role: "Դիմածնոտային վիրաբուժության ամբիոն, ասիստենտ դասախոս", years: "2012 – 2015", location: "Թիֆլիսյան 14ա, 0087, Երևան", note: "Դիմածնոտային վիրաբուժության տեսական և գործնական պարապմունքներ։" },
-      { org: "Երևանի պետական բժշկական համալսարան", role: "Դաշտային վիրաբուժության ամբիոն, ասիստենտ պրոֆեսոր", years: "փետրվար 2005 – փետրվար 2012", location: "Կորյունի փ., 2 շին., 0025, Երևան", note: "Դաշտային դիմածնոտային վիրաբուժության դասավանդում և պրակտիկա հոսպիտալում։" },
+      { org: "Երևանի բժշկական ինստիտուտ", role: "Դիմածնոտային վիրաբուժության ամբիոնի ասիստենտ", years: "2012 – 2015", location: "Թիֆլիսյան 14ա, 0087, Երևան", note: "Դիմածնոտային վիրաբուժության տեսական և գործնական պարապմունքներ։" },
+      { org: "Երևանի պետական բժշկական համալսարան", role: "Ռազմադաշտային վիրաբուժության ամբիոնի ասիստենտ", years: "փետրվար 2005 – փետրվար 2012", location: "Կորյունի փ., 2 շին., 0025, Երևան", note: "Ռազմադաշտային դիմածնոտային վիրաբուժության դասավանդում և պրակտիկա հոսպիտալում։" },
       { org: "ՊՆ Կենտրոնական զինվորական կլինիկական հոսպիտալ", role: "Դիմածնոտային վիրաբուժության բաժանմունք, դիմածնոտային վիրաբույժ", years: "2001 – 2012", location: "Մուրացանի փ., 115, Երևան", note: "Վիրաբուժական պրակտիկա՝ դեմքի և ծնոտների գնդակային վնասվածքներով պացիենտների զգալի տոկոսով։" },
-      { org: "Երևանի բժշկական ինստիտուտ", role: "Դիմածնոտային վիրաբուժության ամբիոն, ասիստենտ դասախոս", years: "2001 – 2004", location: "Թիֆլիսյան 14ա, 0087, Երևան", note: "Դիմածնոտային վիրաբուժության տեսական և գործնական պարապմունքներ։" },
+      { org: "Երևանի բժշկական ինստիտուտ", role: "Դիմածնոտային վիրաբուժության ամբիոնի ասիստենտ", years: "2001 – 2004", location: "Թիֆլիսյան 14ա, 0087, Երևան", note: "Դիմածնոտային վիրաբուժության տեսական և գործնական պարապմունքներ։" },
       { org: "Հայաստանի ֆուտբոլի ֆեդերացիա", role: "IT մասնագետ", years: "1998 – 2004", location: "Խանջյան 27, 0010, Երևան", note: "Համակարգչային և ցանցային սպասարկման կիսաշխատանքային պաշտոն։" }
     ],
     educationTitle: "Կրթություն",
@@ -708,7 +710,7 @@ dentalImplantsIntro: "Ատամնաբուժական իմպլանտները, ըս�
       { title: "Տեսանյութեր", body: "Վիրահատությունների, դասախոսությունների\nև հիվանդների ուսուցման տեսագրություններ" }
     ],
     insightPages: {
-      publications: { title: "Հրապարակումներ", intro: "Բժիշկ Գալստյանի գիտական հրապարակումների հավաքածու 1999-2024 թթ., ընդգրկելով բերանի և դիմածնոտային վիրաբուժություն, գանգուղեղային վերականգնում և ատամնային իմպլանտոլոգիա։" },
+      publications: { title: "Հրապարակումներ", intro: "Բժիշկ Գալստյանի գիտական հրապարակումների հավաքածու 1999-2024 թթ., ընդգրկելով բերանի և դիմածնոտային վիրաբուժություն, դիմածնոտային վերականգնում և ատամնային իմպլանտոլոգիա։" },
       conferences: { title: "Համաժողովներ", intro: "Որպես նվիրված բերանի և դիմածնոտային վիրաբույժ, ես պարտավորված եմ մնալ իմ ոլորտի առաջատար մասնագետներից՝ շարունակական կրթության և միջազգային գիտաժողովներին մասնակցության միջոցով։ Ահա որոշ կարևոր միջոցառումներ, որոնց ես մասնակցել եմ։" },
       lectures: { title: "Գիտական ներկայացումներ և դասախոսություններ", intro: "Բացահայտեք իմ ներկայացումների ընտրանին, որոնք մատուցվել են առաջատար գիտական կոնֆերանսներում, սիմպոզիումներում և մասնագիտական ֆորումներում: Այս զեկույցներն արտացոլում են իմ նվիրվածությունը կլինիկական գիտելիքների զարգացմանը, վիրաբուժական փորձի փոխանակմանը և բերանի և դիմածնոտային վիրաբուժության ոլորտում ակադեմիական երկխոսությանը նպաստելուն: Անկախ նրանից, թե դրանք կենտրոնացած են բարդ իմպլանտոլոգիայի, ուղղորդված ոսկրային վերականգնման, թե միջդիսցիպլինար դեպքերի պլանավորման վրա, յուրաքանչյուր ներկայացում պատուհան է բացում դեպի ապացույցների վրա հիմնված պրակտիկա և նորարարություն այս ոլորտում:" },
       videos: { title: "Տեսանյութեր", intro: "Այս բաժնում դուք կգտնեք իմ տեսահարցազրույցները, մասնակցությունները փոդքասթներում և հանրային ելույթները — բոլորը հասանելի բաց հասանելիության ալիքներում։ Այս ձայնագրությունները պատկերացում են տալիս իմ աշխատանքի, փորձառության և մասնագիտական տեսակետի մասին։" }
@@ -719,6 +721,84 @@ dentalImplantsIntro: "Ատամնաբուժական իմպլանտները, ըս�
       { title: "Պացիենտներին", links: ["Useful Information", "FAQ", "Services"] },
       { title: "Կապ", links: ["Facebook", "Instagram", "YouTube", "LinkedIn"] }
     ]
+  }
+};
+
+window.FAQ_VIDEOS = {
+  en: {
+    "How to care after paranasal sinus surgery (FESS)?": {
+      title: "Postoperative care after endoscopic paranasal sinus surgery",
+      url: "https://www.youtube-nocookie.com/embed/SXUyqna4QZA?start=0"
+    },
+    "Concerns About Anesthesia": {
+      title: "General anesthesia — patient education animation",
+      url: "https://www.youtube-nocookie.com/embed/r-0Mg9FNchc?start=0&rel=0"
+    }
+  },
+  hy: {
+    "Ինչպե՞ս խնամել քթի հարակից խոռոչների էնդոսկոպիկ վիրահատությունից հետո։": {
+      title: "Հետվիրահատական խնամք՝ հարքթային խոռոչների էնդոսկոպիկ վիրահատությունից հետո",
+      url: "https://www.youtube-nocookie.com/embed/SXUyqna4QZA?start=0"
+    },
+    "Մտահոգություններ անզգայացման վերաբերյալ։": {
+      title: "Ընդհանուր անզգայացում՝ պարզ բժշկական անիմացիա",
+      url: "https://www.youtube-nocookie.com/embed/r-0Mg9FNchc?start=0&rel=0"
+    }
+  }
+};
+
+window.SERVICE_VIDEOS = {
+  en: {
+    services: {
+      2: {
+        heading: "Dental implants or bridges?",
+        title: "Dental implants vs bridges for missing teeth — 3D animation",
+        url: "https://www.youtube-nocookie.com/embed/kT68nibzonY?start=0&rel=0"
+      },
+      5: {
+        heading: "How FESS is performed",
+        title: "Functional Endoscopic Sinus Surgery (FESS) — 3D animation",
+        url: "https://www.youtube-nocookie.com/embed/qKTRyowwaLA?start=0&rel=0"
+      },
+      6: {
+        heading: "How snoring surgery is performed",
+        title: "Elevoplasty snore treatment",
+        url: "https://www.youtube-nocookie.com/embed/wYG2IfV9CyQ?start=0&rel=0"
+      }
+    },
+    subServices: {
+      sinuslifting: {
+        heading: "How sinus lift is performed",
+        title: "Sinus floor elevation — dental animation",
+        url: "https://www.youtube-nocookie.com/embed/DNoDA3JeXyw?start=0&rel=0"
+      }
+    }
+  },
+  hy: {
+    services: {
+      2: {
+        heading: "Ատամնային իմպլա՞նտ, թե՞ կամուրջ",
+        title: "Բացակայող ատամների փոխարինում․ իմպլանտներ և կամուրջներ՝ 3D անիմացիա",
+        url: "https://www.youtube-nocookie.com/embed/kT68nibzonY?start=0&rel=0"
+      },
+      5: {
+        heading: "Ինչպե՞ս է կատարվում FESS վիրահատությունը",
+        title: "Հարքթային խոռոչների ֆունկցիոնալ էնդոսկոպիկ վիրահատություն (FESS)՝ 3D անիմացիա",
+        url: "https://www.youtube-nocookie.com/embed/qKTRyowwaLA?start=0&rel=0"
+      },
+      6: {
+        heading: "Ինչպե՞ս է կատարվում խռմփոցի վիրահատական բուժումը",
+        title: "Խռմփոցի բուժում էլևոպլաստիկայի միջոցով",
+        url: "https://www.youtube-nocookie.com/embed/wYG2IfV9CyQ?start=0&rel=0"
+      }
+    },
+    subServices: {
+      sinuslifting: {
+        heading: "Ինչպե՞ս է կատարվում սինուս-լիֆտինգը",
+        title: "Սինուսի հատակի բարձրացում՝ ատամնաբուժական անիմացիա",
+        url: "https://www.youtube-nocookie.com/embed/DNoDA3JeXyw?start=0&rel=0"
+      }
+    }
   }
 };
 
@@ -966,7 +1046,7 @@ window.LECTURES = { en: [
     "id": 1,
     "date": "01.06.2018",
     "title": "Mouth Breathing and Facial Growth Disorders",
-    "body": "A multidisciplinary overview of the effects of chronic mouth breathing on craniofacial growth, sleep, behavior, and academic performance. Includes anatomical, developmental, and orthodontic consequences, diagnosis protocols, and case management strategies. Presented by Dr. Levon Galstyan."
+    "body": "A multidisciplinary overview of the effects of chronic mouth breathing on facial and jaw growth, sleep, behavior, and academic performance. Includes anatomical, developmental, and orthodontic consequences, diagnosis protocols, and case management strategies. Presented by Dr. Levon Galstyan."
   },
   {
     "id": 12,
@@ -1039,7 +1119,7 @@ window.LECTURES = { en: [
     "id": 1,
     "date": "01.06.2018",
     "title": "Բերանային շնչառություն և դեմքի աճի խանգարումներ",
-    "body": "Բերանային շնչառության երկարաժամկետ ազդեցությունը դեմքի կռանիոֆացիալ աճի, քնի, վարքի և ուսումնական առաջադիմության վրա։ Ներառում է անատոմիական, զարգացման և օրթոդոնտիկ հետևանքները, ախտորոշման և բուժման մոտեցումները։ Ներկայացրել է՝ դոկտ. Լևոն Գալստյան։"
+    "body": "Բերանային շնչառության երկարաժամկետ ազդեցությունը դեմքի և ծնոտների աճի, քնի, վարքի և ուսումնական առաջադիմության վրա։ Ներառում է անատոմիական, զարգացման և օրթոդոնտիկ հետևանքները, ախտորոշման և բուժման մոտեցումները։ Ներկայացրել է՝ դոկտ. Լևոն Գալստյան։"
   },
   {
     "id": 12,
@@ -1115,7 +1195,7 @@ window.CONFERENCES = { en: [
     "date": "Sep 18–21, 2018",
     "place": "Munich, Germany",
     "title": "24th EACMFS Congress",
-    "body": "The premier European conference for cranio-maxillofacial surgery, covering the full spectrum of head and neck surgery, from trauma to oncology."
+    "body": "The premier European conference for oral and maxillofacial surgery, covering the full spectrum of head and neck surgery, from trauma to oncology."
   },
   {
     "date": "Jul 6–8, 2018",
@@ -1200,7 +1280,7 @@ window.CONFERENCES = { en: [
     "date": "2018թ. սեպտեմբերի 18-21",
     "place": "Մյունխեն, Գերմանիա",
     "title": "EACMFS 24-րդ կոնգրես",
-    "body": "Գանգադիմածնոտային վիրաբուժության առաջատար եվրոպական կոնֆերանս, որը ներառում է գլխի և պարանոցի վիրաբուժության ամբողջ սպեկտրը՝ վնասվածքներից մինչև ուռուցքաբանություն։"
+    "body": "Բերանի և դիմածնոտային վիրաբուժության առաջատար եվրոպական կոնֆերանս, որը ներառում է գլխի և պարանոցի վիրաբուժության ամբողջ սպեկտրը՝ վնասվածքներից մինչև ուռուցքաբանություն։"
   },
   {
     "date": "2018թ. հուլիսի 6-8",
