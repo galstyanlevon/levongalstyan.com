@@ -20,18 +20,5 @@ window.PATIENT_NOTES = ['hy', 'en'].map(function (language) {
   };
 });
 
-window.PATIENT_NOTES.push({
-  id: 'test-patient-note-2026-hy',
-  language: 'hy',
-  type: 'handwriting',
-  image: 'images/patient-notes/test-patient-note-2026.jpg',
-  text: 'Թեստային պատկեր՝ Patient Notes հրապարակման ամբողջական ընթացքը ստուգելու համար։',
-  year: 2026,
-  displayName: 'Test',
-  published: true,
-  demo: false,
-  sortOrder: 2
-});
-
 window.PATIENT_LINKS.en.push({ key: "notes", label: "Patient Notes" });
 window.PATIENT_LINKS.hy.push({ key: "notes", label: "Բուժառուների խոսքերը" });
