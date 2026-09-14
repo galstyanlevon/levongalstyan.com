@@ -84,7 +84,33 @@ window.createPatientResourcePages = function (ui) {
       });
       table.appendChild(tbody); section.appendChild(table); return;
     }
-    var paragraph = el('p', block.type === 'next' ? { class: 'guide-next' } : null);
+    if (block.type === 'list' || block.type === 'steps') {
+      var list = el(block.type === 'steps' ? 'ol' : 'ul', { class: 'guide-list guide-' + block.type });
+      (block.items || []).forEach(function (parts) {
+        var item = el('li'); appendParts(item, parts); list.appendChild(item);
+      });
+      section.appendChild(list); return;
+    }
+    if (block.type === 'subheading') {
+      var subheading = el('h4', { class: 'guide-subheading' });
+      appendParts(subheading, block.parts); section.appendChild(subheading); return;
+    }
+    if (block.type === 'timeline') {
+      var timeline = el('dl', { class: 'guide-timeline' });
+      (block.items || []).forEach(function (item) {
+        timeline.appendChild(el('div', null, [el('dt', null, [item.label]), el('dd', null, [item.text])]));
+      });
+      section.appendChild(timeline); return;
+    }
+    if (block.type === 'video') {
+      section.appendChild(el('div', { class: 'guide-video' }, [
+        el('iframe', {
+          src: block.url, title: block.title, loading: 'lazy', allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture', allowfullscreen: ''
+        })
+      ]));
+      return;
+    }
+    var paragraph = el('p', block.type === 'next' ? { class: 'guide-next' } : (block.type === 'highlight' ? { class: 'guide-highlight' } : null));
     appendParts(paragraph, block.parts); section.appendChild(paragraph);
   }
   function buildGuide(key) {
@@ -96,9 +122,9 @@ window.createPatientResourcePages = function (ui) {
     var intro = el('section', { class: 'section-block' }, [el('p', { class: 'guide-author' }, [data.author || L.author])]);
     data.intro.forEach(function (p) { intro.appendChild(el('p', null, [p])); });
     inner.appendChild(intro);
-    inner.appendChild(el('section', { class: 'guide-route' }, [
-      el('h2', null, [data.routeTitle || L.contents]), el('p', null, [data.route]), el('p', null, [data.contacts])
-    ]));
+    var routeParts = [el('h2', null, [data.routeTitle || L.contents]), el('p', null, [data.route])];
+    if (data.contacts) routeParts.push(el('p', null, [data.contacts]));
+    inner.appendChild(el('section', { class: 'guide-route' }, routeParts));
     data.sections.forEach(function (s) {
       var level = s.level || 2;
       var section = el('section', { class: 'section-block guide-section guide-section-level-' + level, id: 'guide-' + s.id, tabindex: '-1' }, [

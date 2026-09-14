@@ -246,6 +246,17 @@ h1, h2, h3, p { margin: 0; }
 .guide-section { scroll-margin-top: 100px; }
 .guide-section h3 { font-size: 18px; font-weight: 500; line-height: 28px; }
 .guide-section-level-1 h2 { font-size: 22px; font-weight: 700; line-height: 30px; }
+.guide-subheading { margin: 4px 0 -8px; font-size: 16px; font-weight: 700; line-height: 26px; }
+.guide-list { margin: 0; padding-left: 24px; color: rgba(39,42,60,0.8); }
+.guide-list li { padding-left: 4px; line-height: 28px; }
+.guide-list li + li { margin-top: 8px; }
+.guide-highlight { padding: 18px 20px; background: var(--blue-tint); border-left: 3px solid var(--lavender); }
+.guide-timeline { display: grid; gap: 0; margin: 0; }
+.guide-timeline > div { display: grid; grid-template-columns: minmax(130px, .7fr) 2fr; gap: 22px; padding: 16px 0; border-bottom: 1px solid rgba(39,42,60,.18); }
+.guide-timeline dt { font-weight: 700; }
+.guide-timeline dd { margin: 0; color: rgba(39,42,60,0.8); }
+.guide-video { position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; border-radius: 8px; background: #000; box-shadow: 0 0 30px rgba(39,42,60,.08); }
+.guide-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .guide-next { padding: 24px; background: var(--peach); border-radius: 4px; }
 .guide-reference-list { margin: 0; padding-left: 24px; color: rgba(39,42,60,0.8); }
 .guide-reference-list li + li { margin-top: 12px; }
@@ -266,6 +277,7 @@ h1, h2, h3, p { margin: 0; }
   .guide-recovery-table th, .guide-recovery-table td { display: block; padding: 14px 0; }
   .guide-recovery-table td::before { content: attr(data-label); display: block; font-weight: 500; margin-bottom: 8px; }
   .guide-route { padding: 20px; }
+  .guide-timeline > div { grid-template-columns: 1fr; gap: 7px; }
   .patient-photo-pair { grid-template-columns: 1fr; }
 }
 .procedure-video-section { padding: var(--pad-y) var(--pad-x); display: flex; justify-content: center; background: var(--paper); }

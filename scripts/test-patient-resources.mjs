@@ -10,11 +10,18 @@ const source = { window: {} };
 vm.runInNewContext(fs.readFileSync('js/content.js', 'utf8'), source);
 vm.runInNewContext(fs.readFileSync('js/patient-resources.js', 'utf8'), source);
 vm.runInNewContext(fs.readFileSync('js/orthognathic-guide.js', 'utf8'), source);
+vm.runInNewContext(fs.readFileSync('js/ent-guides.js', 'utf8'), source);
 assert.deepEqual(
   Array.from(source.window.PATIENT_GUIDES.orthognathic.hy.sections.filter(x => /^Այց [1-5]/.test(x.title)), x => x.title.slice(0, 5)),
   ['Այց 1', 'Այց 2', 'Այց 3', 'Այց 4', 'Այց 5']
 );
 assert.ok(source.window.PATIENT_GUIDES.orthognathic.hy.contacts.includes('հինգ պլանային այց'));
+assert.equal(source.window.PATIENT_GUIDES.septoplasty.en.sections.length, 13);
+assert.equal(source.window.PATIENT_GUIDES.septoplasty.hy.sections.length, 13);
+assert.equal(source.window.PATIENT_GUIDES.fess.en.sections.length, 22);
+assert.equal(source.window.PATIENT_GUIDES.fess.hy.sections.length, 22);
+assert.ok(source.window.PATIENT_GUIDES.fess.en.sections.some(x => x.blocks.some(b => b.type === 'video')));
+assert.ok(source.window.PATIENT_GUIDES.fess.hy.sections.some(x => x.blocks.some(b => b.type === 'video')));
 const mime = { '.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.svg':'image/svg+xml', '.otf':'font/otf', '.jpg':'image/jpeg', '.webp':'image/webp', '.png':'image/png' };
 const server = http.createServer((req,res) => {
   const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
@@ -99,6 +106,26 @@ try {
       await page.waitForURL(base + other + '/service/3/');
       assert.equal(await page.locator('.patient-resource-link').count(), 1);
       assert.equal((await page.goto(base + other + '/gallery/orthognathic/')).status(), 404);
+      for (const entry of [{ service:4, key:'septoplasty' }, { service:5, key:'fess' }]) {
+        await page.goto(base + lang + '/service/' + entry.service + '/');
+        const resource = page.locator('.patient-resource-link');
+        assert.equal(await resource.count(), 1);
+        assert.equal(await resource.locator('p a').getAttribute('href'), base + lang + '/guide/' + entry.key + '/');
+        assert.equal(await page.locator('.contact-form').count(), 1);
+        await resource.locator('p a').click();
+        await page.waitForURL(base + lang + '/guide/' + entry.key + '/');
+        assert.equal(await page.locator('.guide-section').count(), source.window.PATIENT_GUIDES[entry.key][lang].sections.length);
+        assert.equal(await page.locator('.guide-route h2').textContent(), source.window.PATIENT_GUIDES[entry.key][lang].routeTitle);
+        assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth > innerWidth), false);
+        if (entry.key === 'septoplasty') {
+          assert.equal(await page.locator('.guide-recovery-table tbody tr').count(), 4);
+          assert.equal(await page.locator('.guide-timeline > div').count(), 7);
+        } else {
+          assert.equal(await page.locator('.guide-list').count() > 0, true);
+          assert.equal(await page.locator('.guide-video iframe').count(), 1);
+        }
+        await page.screenshot({path:`${artifacts}/${entry.key}-${lang}-${width}.png`, fullPage:entry.key === 'septoplasty'});
+      }
       await page.goto(base + lang + '/procedure/rhinoplasty/');
       assert.equal(await page.locator('.patient-resource-link').count(), 0);
       assert.equal(await page.locator('.contact-form').count(), 1);

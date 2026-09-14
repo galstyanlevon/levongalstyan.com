@@ -7,6 +7,7 @@ on:
     paths:
       - 'js/patient-resource*'
       - 'js/orthognathic-guide.js'
+      - 'js/ent-guides.js'
       - 'js/app.js'
       - 'css/style.css'
       - 'index.html'
