@@ -345,7 +345,7 @@ window.CONTENT = {
       { title: "Publications", body: "Collection of publications from\n1999 to 2024 by Dr. Galstyan." },
       { title: "Conferences", body: "Archive of attendance to various\nScientific events" },
       { title: "Lectures", body: "Lectures and mentoring experience\nof Dr Galstyan from 2003 till now" },
-      { title: "Videos", body: "Video library covering procedures,\nlectures and patient education" }
+      { title: "Videos", body: "Video interviews, podcasts\nand public presentations" }
     ],
     insightPages: {
       publications: { title: "Publications", intro: "A collection of Dr. Galstyan's scientific publications from 1999 to 2024, spanning oral and maxillofacial surgery, maxillofacial reconstruction, and dental implantology." },
@@ -707,7 +707,7 @@ dentalImplantsIntro: "Ատամնաբուժական իմպլանտները, ըս�
       { title: "Հրապարակումներ", body: "Հրապարակումների հավաքածու 1999-2024թթ." },
       { title: "Համաժողովներ", body: "Տարբեր այցելությունների արխիվ\nԳիտական միջոցառումներ" },
       { title: "Դասախոսություններ", body: "Դասախոսություններ և մենթորության փորձ" },
-      { title: "Տեսանյութեր", body: "Վիրահատությունների, դասախոսությունների\nև հիվանդների ուսուցման տեսագրություններ" }
+      { title: "Տեսանյութեր", body: "Տեսահարցազրույցներ, փոդքասթներ\nև հանրային ելույթներ" }
     ],
     insightPages: {
       publications: { title: "Հրապարակումներ", intro: "Բժիշկ Գալստյանի գիտական հրապարակումների հավաքածու 1999-2024 թթ., ընդգրկելով բերանի և դիմածնոտային վիրաբուժություն, դիմածնոտային վերականգնում և ատամնային իմպլանտոլոգիա։" },
