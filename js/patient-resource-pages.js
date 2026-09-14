@@ -122,7 +122,20 @@ window.createPatientResourcePages = function (ui) {
     var intro = el('section', { class: 'section-block' }, [el('p', { class: 'guide-author' }, [data.author || L.author])]);
     data.intro.forEach(function (p) { intro.appendChild(el('p', null, [p])); });
     inner.appendChild(intro);
-    var routeParts = [el('h2', null, [data.routeTitle || L.contents]), el('p', null, [data.route])];
+    var stages = String(data.route || '').split(/\s*→\s*/).filter(Boolean);
+    var routeContent;
+    if (stages.length > 1) {
+      routeContent = el('ol', { class: 'guide-pathway' });
+      stages.forEach(function (stage, index) {
+        routeContent.appendChild(el('li', null, [
+          index ? el('span', { class: 'guide-pathway-arrow', 'aria-hidden': 'true' }, ['→']) : null,
+          el('span', null, [stage])
+        ]));
+      });
+    } else {
+      routeContent = el('p', null, [data.route]);
+    }
+    var routeParts = [el('h2', null, [data.routeTitle || L.contents]), routeContent];
     if (data.contacts) routeParts.push(el('p', null, [data.contacts]));
     inner.appendChild(el('section', { class: 'guide-route' }, routeParts));
     data.sections.forEach(function (s) {

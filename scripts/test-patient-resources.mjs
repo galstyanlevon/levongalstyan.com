@@ -80,6 +80,8 @@ try {
       assert.equal(await page.locator('.guide-reference-list li').count(), 5);
       assert.equal(await page.locator('.guide-writing-line').count(), 0);
       assert.equal(await page.locator('.guide-route h2').textContent(), source.window.PATIENT_GUIDES.orthognathic[lang].routeTitle);
+      assert.equal(await page.locator('.guide-pathway li').count(), 5);
+      assert.equal(await page.locator('.guide-pathway-arrow').count(), 4);
       assert.equal(await page.locator('.guide-contents').count(), 0);
       const footerColours = await page.locator('.site-footer').evaluate(e => ({
         heading: getComputedStyle(e.querySelector('.footer-col p')).color,
@@ -116,6 +118,8 @@ try {
         await page.waitForURL(base + lang + '/guide/' + entry.key + '/');
         assert.equal(await page.locator('.guide-section').count(), source.window.PATIENT_GUIDES[entry.key][lang].sections.length);
         assert.equal(await page.locator('.guide-route h2').textContent(), source.window.PATIENT_GUIDES[entry.key][lang].routeTitle);
+        assert.equal(await page.locator('.guide-pathway li').count(), 5);
+        assert.equal(await page.locator('.guide-pathway-arrow').count(), 4);
         assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth > innerWidth), false);
         if (entry.key === 'septoplasty') {
           assert.equal(await page.locator('.guide-recovery-table tbody tr').count(), 4);
