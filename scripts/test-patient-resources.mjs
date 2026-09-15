@@ -11,6 +11,7 @@ vm.runInNewContext(fs.readFileSync('js/content.js', 'utf8'), source);
 vm.runInNewContext(fs.readFileSync('js/patient-resources.js', 'utf8'), source);
 vm.runInNewContext(fs.readFileSync('js/orthognathic-guide.js', 'utf8'), source);
 vm.runInNewContext(fs.readFileSync('js/ent-guides.js', 'utf8'), source);
+vm.runInNewContext(fs.readFileSync('js/oral-surgery-guides.js', 'utf8'), source);
 assert.deepEqual(
   Array.from(source.window.PATIENT_GUIDES.orthognathic.hy.sections.filter(x => /^Այց [1-5]/.test(x.title)), x => x.title.slice(0, 5)),
   ['Այց 1', 'Այց 2', 'Այց 3', 'Այց 4', 'Այց 5']
@@ -76,7 +77,7 @@ try {
       assert.equal(await page.locator('.guide-recovery-table tbody tr').count(), 6);
       assert.equal(await page.locator('.guide-section').count(), source.window.PATIENT_GUIDES.orthognathic[lang].sections.length);
       assert.equal(await page.locator('.guide-section-level-1').count(), 3);
-      assert.equal(await page.locator('.guide-section-level-2').count(), 13);
+      assert.equal(await page.locator('.guide-section-level-2').count(), 14);
       assert.equal(await page.locator('.guide-reference-list li').count(), 5);
       assert.equal(await page.locator('.guide-writing-line').count(), 0);
       assert.equal(await page.locator('.guide-route h2').textContent(), source.window.PATIENT_GUIDES.orthognathic[lang].routeTitle);
@@ -88,7 +89,7 @@ try {
         link: getComputedStyle(e.querySelector('.footer-col a')).color
       }));
       assert.deepEqual(footerColours, { heading:'rgb(238, 249, 247)', link:'rgb(238, 249, 247)' });
-      assert.equal(await page.getByText(source.window.RESOURCE_LABELS[lang].bibliography, { exact:true }).count(), 0);
+      assert.equal(await page.getByText(lang === 'hy' ? 'Գրականություն' : 'References', { exact:true }).count(), 1);
       assert.equal(await page.locator('.patient-guide + .section-peach .contact-form').count(), 0);
       const paper = await page.locator('.patient-guide > div').evaluate(e => {
         const s = getComputedStyle(e); return { background:s.backgroundColor, border:s.borderTopWidth, borderColor:s.borderTopColor, radius:s.borderRadius };
@@ -129,6 +130,30 @@ try {
           assert.equal(await page.locator('.guide-video iframe').count(), 1);
         }
         await page.screenshot({path:`${artifacts}/${entry.key}-${lang}-${width}.png`, fullPage:entry.key === 'septoplasty'});
+      }
+      await page.goto(base + lang + '/service/2/');
+      assert.equal(await page.locator('.patient-resource-link').count(), 1);
+      assert.equal(await page.locator('.patient-resource-link p a').getAttribute('href'), base + lang + '/guide/dental-implantation/');
+      for (const entry of [{ procedure:'gbr', key:'gbr' }, { procedure:'sinuslifting', key:'sinus-lift' }]) {
+        await page.goto(base + lang + '/procedure/' + entry.procedure + '/');
+        assert.equal(await page.locator('.patient-resource-link').count(), 1);
+        assert.equal(await page.locator('.patient-resource-link p a').getAttribute('href'), base + lang + '/guide/' + entry.key + '/');
+        await page.locator('.patient-resource-link p a').click();
+        await page.waitForURL(base + lang + '/guide/' + entry.key + '/');
+        assert.equal(await page.locator('.guide-section').count(), source.window.PATIENT_GUIDES[entry.key][lang].sections.length);
+        assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth > innerWidth), false);
+      }
+      await page.goto(base + lang + '/faq/');
+      const faqCategory = page.locator('.faq-head').first();
+      await faqCategory.click();
+      const faqQuestions = page.locator('.faq-sub-list').first().locator('.faq-q');
+      const expectedFaqGuides = ['tooth-extraction','dental-implantation','impacted-tooth','sinus-lift','fess','septoplasty'];
+      for (let i = 0; i < expectedFaqGuides.length; i++) {
+        await faqQuestions.nth(i + 1).scrollIntoViewIfNeeded();
+        const before = await page.evaluate(() => scrollY);
+        await faqQuestions.nth(i + 1).click();
+        assert.equal(await page.evaluate(() => scrollY), before);
+        assert.equal(await page.locator('.faq-answer.open .faq-guide-link').getAttribute('href'), base + lang + '/guide/' + expectedFaqGuides[i] + '/');
       }
       await page.goto(base + lang + '/procedure/rhinoplasty/');
       assert.equal(await page.locator('.patient-resource-link').count(), 0);

@@ -1,7 +1,6 @@
 /* Final Armenian and British English orthognathic patient guides.
  * Source: Orthognathic_Patient_Guide_AM_v1.0.docx and
- * Orthognathic_Patient_Guide_EN_v1.0.docx. The bibliography is intentionally
- * omitted from the patient-facing web page.
+ * Orthognathic_Patient_Guide_EN_v1.0.docx.
  */
 window.PATIENT_GUIDES.orthognathic = Object.assign({
   service: 3,
@@ -476,6 +475,34 @@ window.PATIENT_GUIDES.orthognathic = Object.assign({
             ]
           }
         ]
+      },
+      {
+        "id": "references",
+        "level": 2,
+        "title": "Գրականություն",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "parts": [
+              { "type": "text", "text": "Naini FB, Gill DS. Orthognathic Surgery: Principles, Planning and Practice. Պացիենտի ուղին՝ էջ 109–115, վերականգնումը՝ էջ 258–261, 337–338։ " },
+              { "type": "link", "text": "Բացել գիրքը", "href": "https://drive.google.com/file/d/1tpYGxrrITsg1ofkkb5xf33AJ_s8i5VZZ/view" }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "parts": [
+              { "type": "text", "text": "Ayoub A և համահեղինակներ. Handbook of Orthognathic Treatment. Պլանավորումը և օրթոդոնտիան՝ էջ 51–79։ " },
+              { "type": "link", "text": "Բացել գիրքը", "href": "https://drive.google.com/file/d/1h0dcMkRGPIF08KvkF79TU3D9fF5r-ocD/view" }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "parts": [
+              { "type": "text", "text": "Swennen GRJ. 3D Virtual Treatment Planning of Orthognathic Surgery. Ախտորոշիչ տվյալները և պլանի փոխանցումը՝ գլուխներ 1 և 4։ " },
+              { "type": "link", "text": "Բացել գիրքը", "href": "https://drive.google.com/file/d/1OwKWc-gwmqMuOkjUyrcB82_QtoPegkAm/view" }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -944,6 +971,34 @@ window.PATIENT_GUIDES.orthognathic = Object.assign({
                 "type": "text",
                 "text": "Question for my next contact: __________________________________________"
               }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "references",
+        "level": 2,
+        "title": "References",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "parts": [
+              { "type": "text", "text": "Naini FB, Gill DS. Orthognathic Surgery: Principles, Planning and Practice. Patient pathway: pp. 109–115; recovery: pp. 258–261, 337–338. " },
+              { "type": "link", "text": "Open book", "href": "https://drive.google.com/file/d/1tpYGxrrITsg1ofkkb5xf33AJ_s8i5VZZ/view" }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "parts": [
+              { "type": "text", "text": "Ayoub A et al. Handbook of Orthognathic Treatment. Planning and orthodontics: pp. 51–79. " },
+              { "type": "link", "text": "Open book", "href": "https://drive.google.com/file/d/1h0dcMkRGPIF08KvkF79TU3D9fF5r-ocD/view" }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "parts": [
+              { "type": "text", "text": "Swennen GRJ. 3D Virtual Treatment Planning of Orthognathic Surgery. Diagnostic data and transfer of the plan: Chapters 1 and 4. " },
+              { "type": "link", "text": "Open book", "href": "https://drive.google.com/file/d/1OwKWc-gwmqMuOkjUyrcB82_QtoPegkAm/view" }
             ]
           }
         ]

@@ -1,7 +1,7 @@
 name: Preview share pages
 on:
   push:
-    branches: [feature/share-pages, preview/septoplasty-fess-guides]
+    branches: [feature/share-pages, preview/septoplasty-fess-guides, preview/all-patient-guidelines]
   workflow_dispatch:
 permissions:
   contents: read

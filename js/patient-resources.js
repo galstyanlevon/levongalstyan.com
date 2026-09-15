@@ -12,7 +12,7 @@ window.RESOURCE_LABELS = {
     before: 'Before', after: 'After',
     emptyGallery: 'No before and after photographs are available for this procedure yet.',
     missing: 'This patient resource is not available.',
-    bibliography: 'Further reading',
+    bibliography: 'References',
     author: 'Levon Galstyan, DMD, MD, DDS · Oral and Maxillofacial Surgeon'
   },
   hy: {
