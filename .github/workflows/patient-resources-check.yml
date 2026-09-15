@@ -1,7 +1,7 @@
 name: Check patient resources
 on:
   push:
-    branches: [main, feature/patient-guides, publish/patient-guides]
+    branches: [main, feature/patient-guides, publish/patient-guides, preview/septoplasty-fess-guides, preview/all-patient-guidelines]
   pull_request:
     branches: [main]
     paths:
