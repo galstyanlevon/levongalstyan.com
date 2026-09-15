@@ -19,8 +19,9 @@ and empty destinations are neither linked nor generated as public share pages.
   remain hidden until approved pairs are published. Existing contact forms and
   field definitions are unchanged.
 - Published orthognathic guide from the final `Orthognathic_Patient_Guide_AM_v1.0.docx`
-  and `Orthognathic_Patient_Guide_EN_v1.0.docx` files. The text, hierarchy and
-  closing references are preserved.
+  and `Orthognathic_Patient_Guide_EN_v1.0.docx` files. The text and hierarchy are
+  preserved. A closing References section lists compact source titles only for
+  sources whose content and locators were checked against the patient guide.
 - The guide is presented as a white paper sheet with a thin mid-grey perimeter,
   square corners and a restrained shadow on a neutral grey field. It ends with the
   patient's reference points after discharge as a compact bullet list and has no additional contact form.

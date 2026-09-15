@@ -74,7 +74,7 @@ try {
       assert.equal(await page.locator('html').getAttribute('lang'), lang);
       assert.equal(await page.locator('.service-hero .back-link').textContent(), source.window.RESOURCE_LABELS[lang].back);
       assert.equal(await page.locator('.service-hero .back-link').textContent(), lang === 'hy' ? 'Վերադառնալ ծառայության էջին' : 'Back to service');
-      assert.equal(await page.locator('.guide-recovery-table tbody tr').count(), 6);
+      assert.equal(await page.locator('.guide-recovery-table tbody tr').count(), 7);
       assert.equal(await page.locator('.guide-section').count(), source.window.PATIENT_GUIDES.orthognathic[lang].sections.length);
       assert.equal(await page.locator('.guide-section-level-1').count(), 3);
       assert.equal(await page.locator('.guide-section-level-2').count(), 14);
@@ -89,7 +89,10 @@ try {
         link: getComputedStyle(e.querySelector('.footer-col a')).color
       }));
       assert.deepEqual(footerColours, { heading:'rgb(238, 249, 247)', link:'rgb(238, 249, 247)' });
-      assert.equal(await page.getByText(lang === 'hy' ? 'Գրականություն' : 'References', { exact:true }).count(), 1);
+      assert.equal(await page.getByText(source.window.RESOURCE_LABELS[lang].bibliography, { exact:true }).count(), 1);
+      if (lang === 'en') assert.equal(source.window.RESOURCE_LABELS[lang].bibliography, 'References');
+      assert.equal(await page.locator('.guide-bibliography-list li').count(), 4);
+      assert.equal(await page.locator('.guide-bibliography-list a').count(), 2);
       assert.equal(await page.locator('.patient-guide + .section-peach .contact-form').count(), 0);
       const paper = await page.locator('.patient-guide > div').evaluate(e => {
         const s = getComputedStyle(e); return { background:s.backgroundColor, border:s.borderTopWidth, borderColor:s.borderTopColor, radius:s.borderRadius };
@@ -129,6 +132,9 @@ try {
           assert.equal(await page.locator('.guide-list').count() > 0, true);
           assert.equal(await page.locator('.guide-video iframe').count(), 1);
         }
+        assert.equal(await page.getByText(source.window.RESOURCE_LABELS[lang].bibliography, { exact:true }).count(), 1);
+        assert.equal(await page.locator('.guide-bibliography-list li').count(), 2);
+        assert.equal(await page.locator('.guide-bibliography-list a').count(), 2);
         await page.screenshot({path:`${artifacts}/${entry.key}-${lang}-${width}.png`, fullPage:entry.key === 'septoplasty'});
       }
       await page.goto(base + lang + '/service/2/');
@@ -159,7 +165,7 @@ try {
       assert.equal(await page.locator('.patient-resource-link').count(), 0);
       assert.equal(await page.locator('.contact-form').count(), 1);
       await page.goto(base + lang + '/service/2/');
-      assert.equal(await page.locator('.patient-resource-link').count(), 0);
+      assert.equal(await page.locator('.patient-resource-link').count(), 1);
       assert.deepEqual(errors, []);
       console.log(`PASS ${lang}, ${width}px: source content, layout, keyboard, locale routes, guide contents, recovery, galleries and form presence`);
       await context.close();

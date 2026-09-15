@@ -160,6 +160,21 @@ window.createPatientResourcePages = function (ui) {
       }
       inner.appendChild(section);
     });
+    if ((item.references || []).length) {
+      var bibliography = el('section', { class: 'section-block guide-bibliography' }, [
+        el('h2', null, [L.bibliography]), el('div', { class: 'card-divider' })
+      ]);
+      if (data.referenceNote) bibliography.appendChild(el('p', { class: 'guide-reference-note' }, [data.referenceNote]));
+      var bibliographyList = el('ol', { class: 'guide-bibliography-list' });
+      item.references.forEach(function (reference) {
+        var content = reference.url ? el('a', {
+          href: reference.url, target: '_blank', rel: 'noopener noreferrer'
+        }, [reference.text]) : document.createTextNode(reference.text);
+        bibliographyList.appendChild(el('li', null, [content]));
+      });
+      bibliography.appendChild(bibliographyList);
+      inner.appendChild(bibliography);
+    }
     wrap.appendChild(inner); frag.appendChild(wrap);
     return frag;
   }

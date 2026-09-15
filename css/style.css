@@ -269,6 +269,13 @@ h1, h2, h3, p { margin: 0; }
 .guide-next { padding: 24px; background: var(--peach); border-radius: 4px; }
 .guide-reference-list { margin: 0; padding-left: 24px; color: rgba(39,42,60,0.8); }
 .guide-reference-list li + li { margin-top: 12px; }
+.guide-reference-note { max-width: 860px; }
+.guide-bibliography-list { margin: 0; padding-left: 24px; color: rgba(39,42,60,0.8); }
+.guide-bibliography-list li { padding-left: 4px; line-height: 26px; }
+.guide-bibliography-list li + li { margin-top: 14px; }
+.guide-bibliography-list a { color: inherit; text-decoration: underline; text-decoration-color: rgba(39,42,60,.28); text-underline-offset: 4px; }
+.guide-bibliography-list a:hover { color: var(--dark); text-decoration-color: currentColor; }
+.guide-bibliography-list a:focus-visible { outline: 2px solid var(--orange); outline-offset: 4px; }
 .guide-recovery-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 15px; line-height: 28px; }
 .guide-recovery-table th, .guide-recovery-table td { padding: 16px 12px; border-bottom: 1px solid rgba(39,42,60,.2); vertical-align: top; }
 .guide-recovery-table thead { background: var(--blue-tint); }
