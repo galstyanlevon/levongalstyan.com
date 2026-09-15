@@ -19,6 +19,7 @@ window.PATIENT_GUIDES.orthognathic = Object.assign({
     "routeTitle": "Ձեր բուժման ուղին",
     "route": "Ընդհանուր նպատակներ → ատամների նախապատրաստում → պատրաստվածության ստուգում → եռաչափ պլան և վիրահատություն → վերականգնում և օրթոդոնտիկ բուժման ավարտ։",
     "contacts": "Մինչև վիրահատությունը նախատեսվում է հինգ պլանային այց վիրաբույժի հետ։ Քննարկումները կարող են անցկացվել առցանց, իսկ զննումը, սկանավորումը և սպլինտների ստուգումը պահանջում են այցելություն կլինիկա։ Անհրաժեշտության դեպքում ավելացվում են լրացուցիչ այցեր։ Հետվիրահատական զննումները նշանակվում են առանձին։",
+    "referenceNote": "Այս աղբյուրները հիմնավորում են ընդհանուր կլինիկական սկզբունքները։ Այցերի քանակը, էլաստիկների կիրառման սխեման, սննդակարգի փուլերը և վերականգնման ժամկետները ճշգրտվում են՝ ըստ վիրահատության առանձնահատկությունների ու ապաքինման ընթացքի. ձեր վիրաբույժի անհատական ցուցումները առաջնային են։",
     "sections": [
       {
         "id": "first-contact",
@@ -267,17 +268,22 @@ window.PATIENT_GUIDES.orthognathic = Object.assign({
               [
                 "2–3-րդ շաբաթներ",
                 "Հիմնական այտուցը սովորաբար նկատելիորեն նվազում է, սակայն փոքր փքվածությունը դեռ սպասելի է։",
-                "Թույլտվությունից հետո՝ պատառաքաղով հեշտ տրորվող սնունդ։ Անցումը կարող է ավելի ուշ լինել. այն որոշվում է ապաքինմամբ և էլաստիկների կիրառման սխեմայով։"
+                "Շարունակում եք ծամել չպահանջող սնունդը։ Վիրաբույժի թույլտվությամբ ընտրությունը կարելի է ընդլայնել պատառաքաղով հեշտ տրորվող, բայց առանց ծամելու ընդունվող սննդով։"
               ],
               [
                 "3–6-րդ շաբաթներ",
                 "Բերանի բացումը և ծամող մկանների դիմացկունությունն աստիճանաբար լավանում են։ Լավ ինքնազգացողությունը դեռ չի նշանակում ոսկրի լիարժեք ապաքինում։",
-                "Շարունակում եք փափուկ սնունդը։ Թեթև ծամելու հնարավորությունը որոշում է վիրաբույժը։ Կոշտ և կպչուն սնունդը դեռ բացառվում է։"
+                "Մինչև մոտ 6 շաբաթ շարունակում եք ծամել չպահանջող սնունդը, եթե վիրաբույժը այլ ցուցում չի տվել։ Մի սկսեք ծամել միայն այն պատճառով, որ ինքնազգացողությունը լավացել է։"
               ],
               [
-                "Մոտ 6–8 շաբաթ և հետո",
-                "Զննման ժամանակ գնահատում ենք ծանրաբեռնվածությունն ավելացնելու հնարավորությունը և համաձայնեցնում հետագա օրթոդոնտիկ բուժումը։",
-                "Սովորական սննդակարգին վերադառնում եք աստիճանաբար՝ վիրաբույժի թույլտվությունից հետո։ Սովորական և կոշտ սնունդը կարող են վերադառնալ տարբեր ժամկետներում։"
+                "Մոտ 6–8-րդ շաբաթներ",
+                "Զննման ժամանակ գնահատում ենք՝ կարելի՞ է սկսել թեթև ծամել և ավելացնել ծնոտների ծանրաբեռնվածությունը։",
+                "Վիրաբույժի թույլտվությամբ աստիճանաբար անցնում եք փափուկ սննդի և զգույշ ծամելու։ Կոշտ, կպչուն և դժվար ծամվող սնունդը դեռ բացառվում է։"
+              ],
+              [
+                "Մոտ 8 շաբաթից հետո",
+                "Գնահատում ենք ոսկրային ապաքինումը, կծվածքը և հետագա օրթոդոնտիկ բուժման ընթացքը։",
+                "Բավարար ապաքինման դեպքում աստիճանաբար վերադառնում եք սովորական սննդակարգին։ Սովորական և կոշտ սննդի վերադարձի ժամկետները կարող են տարբեր լինել։"
               ],
               [
                 "Հաջորդ ամիսները",
@@ -298,7 +304,7 @@ window.PATIENT_GUIDES.orthognathic = Object.assign({
             "parts": [
               {
                 "type": "text",
-                "text": "Էլաստիկներն ուղղորդում և պահպանում են կծվածքը։ Զննումների ժամանակ վիրաբույժն ու օրթոդոնտը համաձայնեցնում են դրանց ձգման ուժը, տեղադրությունը և կրելու տևողությունը։ Սնվելու կամ բերանի խոռոչի հիգիենայի համար ժամանակավոր հանումը և լրիվ դադարեցումը տարբեր որոշումներ են։ Ինքնուրույն մի փոխեք սխեման. ավելի թույլ էլաստիկներ կարող են անհրաժեշտ լինել նաև օրթոդոնտիկ փուլում։"
+                "text": "Էլաստիկներն ուղղորդում և պահպանում են կծվածքը։ Որպես ընդհանուր կողմնորոշիչ՝ ուղղորդող էլաստիկները հաճախ կիրառվում են մոտ 4 շաբաթ, սակայն կրման ընդհանուր տևողությունը, օրվա ընթացքում կրելու ռեժիմը, ձգման ուժը և տեղադրությունը կարող են փոխվել՝ ըստ վիրահատության առանձնահատկությունների, կծվածքի և ապաքինման ընթացքի։ Դրանք յուրաքանչյուր զննման ժամանակ համաձայնեցնում են վիրաբույժն ու օրթոդոնտը։ Սնվելու կամ բերանի խոռոչի հիգիենայի համար ժամանակավոր հանումը և լրիվ դադարեցումը տարբեր որոշումներ են։ Ինքնուրույն մի փոխեք սխեման. ավելի թույլ էլաստիկներ կարող են անհրաժեշտ լինել նաև օրթոդոնտիկ փուլում։"
               }
             ]
           },
@@ -490,6 +496,7 @@ window.PATIENT_GUIDES.orthognathic = Object.assign({
     "routeTitle": "Your pathway",
     "route": "Shared goals → orthodontic preparation → readiness check → 3D plan and surgery → recovery and completion of orthodontics.",
     "contacts": "Five planned contacts with the surgeon take place before surgery. Discussions may be held online; clinical examinations, scanning and checking the splints require an in-person visit. Additional contacts are arranged when needed. Postoperative reviews are scheduled separately.",
+    "referenceNote": "These sources support the general clinical principles. The number of visits, elastic protocol, stages of diet and recovery time points are adjusted to the operation and the course of healing; your surgeon’s individual instructions take priority.",
     "sections": [
       {
         "id": "first-contact",
@@ -738,17 +745,22 @@ window.PATIENT_GUIDES.orthognathic = Object.assign({
               [
                 "Weeks 2–3",
                 "Most swelling is usually noticeably reduced; some puffiness is still expected.",
-                "With permission, progress to food that is easily mashed with a fork. This transition may be later: it depends on healing and the elastic protocol."
+                "Continue food that does not require chewing. With the surgeon’s permission, the range may be broadened to food that is easily mashed with a fork but can still be eaten without chewing."
               ],
               [
                 "Weeks 3–6",
                 "Mouth opening and the endurance of the chewing muscles gradually improve. Feeling well does not yet mean that the bone has completely healed.",
-                "Continue a soft diet. The surgeon decides whether light chewing is appropriate. Avoid hard and sticky foods."
+                "Continue food that does not require chewing until around 6 weeks, unless your surgeon advises otherwise. Do not begin chewing simply because you feel better."
               ],
               [
-                "Around 6–8 weeks and beyond",
-                "At review, we assess whether loading can be increased and coordinate further orthodontic treatment.",
-                "Return gradually to your usual diet after the surgeon gives permission. Regular and hard foods may be reintroduced at different times."
+                "Around weeks 6–8",
+                "At review, we assess whether gentle chewing and increased jaw loading can begin.",
+                "With the surgeon’s permission, progress gradually to soft food and gentle chewing. Continue to avoid hard, sticky or difficult-to-chew foods."
+              ],
+              [
+                "After around 8 weeks",
+                "We assess bone healing, the bite and the next stage of orthodontic treatment.",
+                "If healing is satisfactory, return gradually to your usual diet. Regular and hard foods may be reintroduced at different times."
               ],
               [
                 "Following months",
@@ -769,7 +781,7 @@ window.PATIENT_GUIDES.orthognathic = Object.assign({
             "parts": [
               {
                 "type": "text",
-                "text": "Elastics guide and support the bite. At follow-up visits, the surgeon and orthodontist agree their strength, position and duration of wear. Temporary removal for eating or oral hygiene and complete discontinuation are separate decisions. Do not change the protocol yourself; lighter elastics may also be needed during the orthodontic phase."
+                "text": "Elastics guide and support the bite. As a general reference, guiding elastics are often worn for around 4 weeks; however, the total duration, daily wear schedule, strength and position may be shorter, longer or modified according to the operation, the bite and the course of healing. The surgeon and orthodontist review and coordinate the protocol at each follow-up visit. Temporary removal for eating or oral hygiene and complete discontinuation are separate decisions. Do not change the protocol yourself; lighter elastics may also be needed during the orthodontic phase."
               }
             ]
           },
@@ -949,5 +961,21 @@ window.PATIENT_GUIDES.orthognathic = Object.assign({
         ]
       }
     ]
-  }
+  },
+  "references": [
+    {
+      "text": "American Association of Oral and Maxillofacial Surgeons. Indications for Orthognathic Surgery. Clinical Paper. 2025. Relevant pages: 1–3.",
+      "url": "https://aaoms.org/wp-content/uploads/2025/01/ortho_indications.pdf"
+    },
+    {
+      "text": "Ayoub A, Khambay B, Benington P, Green L, Moos K, Walker F. Handbook of Orthognathic Treatment: A Team Approach. 1st ed. John Wiley & Sons; 2014. Chapters 3–4, pp. 51–79."
+    },
+    {
+      "text": "Swennen GRJ, editor. 3D Virtual Treatment Planning of Orthognathic Surgery: A Step-by-Step Approach for Orthodontists and Surgeons. Springer; 2017. Chapters 1 and 4; §§1.1.2, 1.2.1, 4.1–4.1.1. DOI: 10.1007/978-3-662-47389-4.",
+      "url": "https://link.springer.com/book/10.1007/978-3-662-47389-4"
+    },
+    {
+      "text": "Jenzer AC, Czerepak JL, Ivory JW. Introduction to Contemporary Orthognathic Surgery. Quintessence Publishing; 2024. Chapter 7, Postoperative Care, pp. 210–213."
+    }
+  ]
 });

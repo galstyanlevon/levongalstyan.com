@@ -7,7 +7,7 @@
   "septoplasty": {
     "service": 4,
     "status": "published",
-    "reviewedDate": "2026-09-14",
+    "reviewedDate": "2026-09-15",
     "en": {
       "title": "Septoplasty and turbinate correction",
       "subtitle": "A structured guide for patients",
@@ -19,6 +19,7 @@
       ],
       "routeTitle": "Your recovery pathway",
       "route": "Assessment → surgery → early nasal care → follow-up → gradual return to activity.",
+      "referenceNote": "These sources support the general clinical principles. Specific timings, frequency of care and return to activity reflect the surgeon’s patient protocol and are adjusted to the extent of surgery and the course of healing; your individual instructions take priority.",
       "sections": [
         {
           "id": "1-before-surgery",
@@ -794,6 +795,7 @@
       ],
       "routeTitle": "Վերականգնման ուղին",
       "route": "Գնահատում → վիրահատություն → քթի վաղ խնամք → հետվիրահատական զննում → աստիճանական վերադարձ ակտիվությանը։",
+      "referenceNote": "Այս աղբյուրները հիմնավորում են ընդհանուր կլինիկական սկզբունքները։ Խնամքի կոնկրետ ժամկետները, հաճախականությունը և ակտիվությանը վերադառնալը արտացոլում են վիրաբույժի պացիենտական արձանագրությունը և ճշգրտվում են՝ ըստ վիրահատության ծավալի ու ապաքինման ընթացքի․ ձեր անհատական ցուցումները առաջնային են։",
       "sections": [
         {
           "id": "1-մինչեւ-վիրահատությունը",
@@ -1557,12 +1559,22 @@
           ]
         }
       ]
-    }
+    },
+    "references": [
+      {
+        "text": "American Academy of Otolaryngology–Head and Neck Surgery. Clinical Indicators: Septoplasty. 7 August 2014. Relevant sections: History; Physical Examination; Postoperative Observations; Outcome Review; Patient Information.",
+        "url": "https://www.entnet.org/resource/clinical-indicators-septoplasty/"
+      },
+      {
+        "text": "American Academy of Otolaryngology–Head and Neck Surgery. Clinical Indicators: Inferior Turbinate Surgery. 7 August 2014. Relevant sections: History; Physical Examination; Postoperative Observations; Outcome Review; Patient Information.",
+        "url": "https://www.entnet.org/resource/clinical-indicators-inferior-turbinate-surgery/"
+      }
+    ]
   },
   "fess": {
     "service": 5,
     "status": "published",
-    "reviewedDate": "2026-09-14",
+    "reviewedDate": "2026-09-15",
     "en": {
       "title": "Endoscopic Sinus Surgery (FESS)",
       "subtitle": "A structured patient guide to surgery, recovery and nasal polyps",
@@ -1572,6 +1584,7 @@
       ],
       "routeTitle": "Your treatment pathway",
       "route": "Assessment and planning → endoscopic surgery → irrigation and follow-up → recovery → long-term control of inflammation.",
+      "referenceNote": "These sources support the general clinical principles. The exact irrigation schedule, follow-up intervals and return to work reflect the surgeon’s patient protocol and are adjusted to the extent of surgery, the disease subtype and the course of healing; your individual instructions take priority.",
       "sections": [
         {
           "id": "1-what-is-endoscopic-sinus-surgery",
@@ -3333,7 +3346,7 @@
               "parts": [
                 {
                   "type": "text",
-                  "text": "The source document notes that approximately three out of four patients may eventually develop recurrent polyps, with an average recurrence interval of several years."
+                  "text": "Polyps may recur even after technically successful surgery. The individual risk varies and depends on the pattern of inflammation, associated conditions and long-term control of the disease."
                 }
               ]
             },
@@ -3814,6 +3827,7 @@
       ],
       "routeTitle": "Բուժման ուղին",
       "route": "Գնահատում և պլանավորում → էնդոսկոպիկ վիրահատություն → լվացումներ և հետվիրահատական հսկողություն → վերականգնում → բորբոքման երկարաժամկետ վերահսկում։",
+      "referenceNote": "Այս աղբյուրները հիմնավորում են ընդհանուր կլինիկական սկզբունքները։ Լվացումների կոնկրետ սխեման, զննումների ժամանակացույցը և աշխատանքի վերադառնալու ժամկետը արտացոլում են վիրաբույժի պացիենտական արձանագրությունը և ճշգրտվում են՝ ըստ վիրահատության ծավալի, հիվանդության տեսակի ու ապաքինման ընթացքի․ ձեր անհատական ցուցումները առաջնային են։",
       "sections": [
         {
           "id": "1-ի՞նչ-է-հարակից-քթածոցերի-էնդոսկոպիկ-վիրահատությունը",
@@ -5627,7 +5641,7 @@
               "parts": [
                 {
                   "type": "text",
-                  "text": "Սկզբնական աղբյուրում նշվում է, որ մոտավորապես չորս պացիենտից երեքի մոտ պոլիպները տարիների ընթացքում կարող են կրկնվել։"
+                  "text": "Պոլիպները կարող են կրկնվել նույնիսկ տեխնիկապես հաջող վիրահատությունից հետո։ Անհատական ռիսկը տարբեր է և կախված է բորբոքման տեսակից, ուղեկցող վիճակներից ու հիվանդության երկարաժամկետ վերահսկումից։"
                 }
               ]
             },
@@ -6107,7 +6121,17 @@
           ]
         }
       ]
-    }
+    },
+    "references": [
+      {
+        "text": "Shin JJ, Wilson M, McKenna M, et al. Clinical Practice Guideline: Surgical Management of Chronic Rhinosinusitis. Otolaryngology–Head and Neck Surgery. 2025;172(S2):S1–S47. Relevant statements: KAS 1A–1B, 2, 4–11. DOI: 10.1002/ohn.1287.",
+        "url": "https://aao-hnsfjournals.onlinelibrary.wiley.com/doi/10.1002/ohn.1287"
+      },
+      {
+        "text": "Payne SC, McKenna M, Buckley J, et al. Clinical Practice Guideline: Adult Sinusitis Update. Otolaryngology–Head and Neck Surgery. 2025;173(S1):S1–S56. Relevant statements: KAS 7b, 8–11. DOI: 10.1002/ohn.1344.",
+        "url": "https://aao-hnsfjournals.onlinelibrary.wiley.com/doi/10.1002/ohn.1344"
+      }
+    ]
   }
 };
   Object.keys(guides).forEach(function (key) { window.PATIENT_GUIDES[key] = guides[key]; });

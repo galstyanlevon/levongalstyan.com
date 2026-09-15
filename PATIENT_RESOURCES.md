@@ -20,7 +20,9 @@ and empty destinations are neither linked nor generated as public share pages.
   field definitions are unchanged.
 - Published orthognathic guide from the final `Orthognathic_Patient_Guide_AM_v1.0.docx`
   and `Orthognathic_Patient_Guide_EN_v1.0.docx` files. The text and hierarchy are
-  preserved; the closing bibliography is intentionally omitted from the website.
+  preserved. A closing bibliography lists only sources whose content and locators
+  were checked against the patient guide; individual clinical schedules are clearly
+  distinguished from the general principles supported by those sources.
 - The guide is presented as a white paper sheet with a thin mid-grey perimeter,
   square corners and a restrained shadow on a neutral grey field. It ends with the
   patient's reference points after discharge as a compact bullet list and has no additional contact form.
