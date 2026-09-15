@@ -77,7 +77,7 @@ try {
       assert.equal(await page.locator('.guide-recovery-table tbody tr').count(), 7);
       assert.equal(await page.locator('.guide-section').count(), source.window.PATIENT_GUIDES.orthognathic[lang].sections.length);
       assert.equal(await page.locator('.guide-section-level-1').count(), 3);
-      assert.equal(await page.locator('.guide-section-level-2').count(), 14);
+      assert.equal(await page.locator('.guide-section-level-2').count(), 13);
       assert.equal(await page.locator('.guide-reference-list li').count(), 5);
       assert.equal(await page.locator('.guide-writing-line').count(), 0);
       assert.equal(await page.locator('.guide-route h2').textContent(), source.window.PATIENT_GUIDES.orthognathic[lang].routeTitle);
