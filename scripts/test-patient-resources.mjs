@@ -89,6 +89,7 @@ try {
       }));
       assert.deepEqual(footerColours, { heading:'rgb(238, 249, 247)', link:'rgb(238, 249, 247)' });
       assert.equal(await page.getByText(source.window.RESOURCE_LABELS[lang].bibliography, { exact:true }).count(), 1);
+      if (lang === 'en') assert.equal(source.window.RESOURCE_LABELS[lang].bibliography, 'References');
       assert.equal(await page.locator('.guide-bibliography-list li').count(), 4);
       assert.equal(await page.locator('.guide-bibliography-list a').count(), 2);
       assert.equal(await page.locator('.patient-guide + .section-peach .contact-form').count(), 0);

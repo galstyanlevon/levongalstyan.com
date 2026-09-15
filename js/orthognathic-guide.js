@@ -19,7 +19,6 @@ window.PATIENT_GUIDES.orthognathic = Object.assign({
     "routeTitle": "Ձեր բուժման ուղին",
     "route": "Ընդհանուր նպատակներ → ատամների նախապատրաստում → պատրաստվածության ստուգում → եռաչափ պլան և վիրահատություն → վերականգնում և օրթոդոնտիկ բուժման ավարտ։",
     "contacts": "Մինչև վիրահատությունը նախատեսվում է հինգ պլանային այց վիրաբույժի հետ։ Քննարկումները կարող են անցկացվել առցանց, իսկ զննումը, սկանավորումը և սպլինտների ստուգումը պահանջում են այցելություն կլինիկա։ Անհրաժեշտության դեպքում ավելացվում են լրացուցիչ այցեր։ Հետվիրահատական զննումները նշանակվում են առանձին։",
-    "referenceNote": "Այս աղբյուրները հիմնավորում են ընդհանուր կլինիկական սկզբունքները։ Այցերի քանակը, էլաստիկների կիրառման սխեման, սննդակարգի փուլերը և վերականգնման ժամկետները ճշգրտվում են՝ ըստ վիրահատության առանձնահատկությունների ու ապաքինման ընթացքի. ձեր վիրաբույժի անհատական ցուցումները առաջնային են։",
     "sections": [
       {
         "id": "first-contact",
@@ -496,7 +495,6 @@ window.PATIENT_GUIDES.orthognathic = Object.assign({
     "routeTitle": "Your pathway",
     "route": "Shared goals → orthodontic preparation → readiness check → 3D plan and surgery → recovery and completion of orthodontics.",
     "contacts": "Five planned contacts with the surgeon take place before surgery. Discussions may be held online; clinical examinations, scanning and checking the splints require an in-person visit. Additional contacts are arranged when needed. Postoperative reviews are scheduled separately.",
-    "referenceNote": "These sources support the general clinical principles. The number of visits, elastic protocol, stages of diet and recovery time points are adjusted to the operation and the course of healing; your surgeon’s individual instructions take priority.",
     "sections": [
       {
         "id": "first-contact",
@@ -964,18 +962,18 @@ window.PATIENT_GUIDES.orthognathic = Object.assign({
   },
   "references": [
     {
-      "text": "American Association of Oral and Maxillofacial Surgeons. Indications for Orthognathic Surgery. Clinical Paper. 2025. Relevant pages: 1–3.",
+      "text": "AAOMS — Indications for Orthognathic Surgery (2025)",
       "url": "https://aaoms.org/wp-content/uploads/2025/01/ortho_indications.pdf"
     },
     {
-      "text": "Ayoub A, Khambay B, Benington P, Green L, Moos K, Walker F. Handbook of Orthognathic Treatment: A Team Approach. 1st ed. John Wiley & Sons; 2014. Chapters 3–4, pp. 51–79."
+      "text": "Handbook of Orthognathic Treatment: A Team Approach (2014)"
     },
     {
-      "text": "Swennen GRJ, editor. 3D Virtual Treatment Planning of Orthognathic Surgery: A Step-by-Step Approach for Orthodontists and Surgeons. Springer; 2017. Chapters 1 and 4; §§1.1.2, 1.2.1, 4.1–4.1.1. DOI: 10.1007/978-3-662-47389-4.",
+      "text": "3D Virtual Treatment Planning of Orthognathic Surgery (2017)",
       "url": "https://link.springer.com/book/10.1007/978-3-662-47389-4"
     },
     {
-      "text": "Jenzer AC, Czerepak JL, Ivory JW. Introduction to Contemporary Orthognathic Surgery. Quintessence Publishing; 2024. Chapter 7, Postoperative Care, pp. 210–213."
+      "text": "Introduction to Contemporary Orthognathic Surgery — Postoperative Care (2024)"
     }
   ]
 });
