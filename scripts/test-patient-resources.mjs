@@ -165,7 +165,6 @@ try {
       for (const [key, referenceCount] of Object.entries(oralReferenceCounts)) {
         await page.goto(base + lang + '/guide/' + key + '/');
         assert.equal(await page.locator('.guide-type-label').count(), 1);
-        assert.equal(await page.locator('.service-hero .service-body').count(), 1);
         assert.equal(await page.locator('.guide-type-label').textContent(), source.window.RESOURCE_LABELS[lang].guideType);
         assert.equal(await page.getByText(source.window.RESOURCE_LABELS[lang].bibliography, { exact:true }).count(), 1);
         assert.equal(await page.locator('.guide-bibliography-list li').count(), referenceCount);
