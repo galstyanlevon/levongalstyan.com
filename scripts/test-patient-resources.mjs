@@ -75,6 +75,7 @@ try {
       assert.equal(await page.locator('html').getAttribute('lang'), lang);
       assert.equal(await page.locator('.service-hero .back-link').textContent(), source.window.RESOURCE_LABELS[lang].back);
       assert.equal(await page.locator('.service-hero .back-link').textContent(), lang === 'hy' ? 'Վերադառնալ ծառայության էջին' : 'Back to service');
+      assert.equal(await page.locator('.service-hero .service-body').count(), 0);
       assert.equal(await page.locator('.guide-recovery-table tbody tr').count(), 7);
       assert.equal(await page.locator('.guide-section').count(), source.window.PATIENT_GUIDES.orthognathic[lang].sections.length);
       assert.equal(await page.locator('.guide-section-level-1').count(), 3);
@@ -125,6 +126,7 @@ try {
         assert.equal(await page.locator('.guide-section').count(), source.window.PATIENT_GUIDES[entry.key][lang].sections.length);
         assert.equal(await page.locator('.guide-route h2').textContent(), source.window.PATIENT_GUIDES[entry.key][lang].routeTitle);
         assert.equal(await page.locator('.guide-type-label').textContent(), source.window.RESOURCE_LABELS[lang].guideType);
+        assert.equal(await page.locator('.service-hero .service-body').count(), 0);
         assert.equal(await page.locator('.guide-pathway li').count(), 5);
         assert.equal(await page.locator('.guide-pathway-arrow').count(), 4);
         assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth > innerWidth), false);
@@ -163,6 +165,7 @@ try {
       for (const [key, referenceCount] of Object.entries(oralReferenceCounts)) {
         await page.goto(base + lang + '/guide/' + key + '/');
         assert.equal(await page.locator('.guide-type-label').count(), 1);
+        assert.equal(await page.locator('.service-hero .service-body').count(), 1);
         assert.equal(await page.locator('.guide-type-label').textContent(), source.window.RESOURCE_LABELS[lang].guideType);
         assert.equal(await page.getByText(source.window.RESOURCE_LABELS[lang].bibliography, { exact:true }).count(), 1);
         assert.equal(await page.locator('.guide-bibliography-list li').count(), referenceCount);
