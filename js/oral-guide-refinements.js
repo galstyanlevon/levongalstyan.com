@@ -1,4 +1,4 @@
-/* Compact references and approved service copy for the oral-surgery patient guides. */
+/* Approved compact references and service copy for the oral-surgery patient guides. */
 (function () {
   'use strict';
 
