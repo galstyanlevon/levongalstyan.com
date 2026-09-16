@@ -47,11 +47,11 @@ window.createPatientResourcePages = function (ui) {
   function titleFor(item) {
     return item.sub ? ui.t().subServices[item.sub].title : ui.t().services[item.service].title.replace(/\n/g, ' ');
   }
-  function header(item, title, subtitle, guideLabel) {
+  function header(item, title, subtitle) {
     return el('section', { class: 'section section-dark service-hero' }, [
       el('a', { class: 'back-link', href: parentRoute(item) }, [labels().back]),
       el('h1', { class: 'service-title' }, [title]),
-      guideLabel ? el('p', { class: 'guide-type-label' }, [guideLabel]) : null,
+      el('p', { class: 'guide-type-label' }, [labels().guideType]),
       subtitle ? el('p', { class: 'service-body' }, [subtitle]) : null
     ]);
   }
@@ -122,7 +122,7 @@ window.createPatientResourcePages = function (ui) {
     var item = window.PATIENT_GUIDES[key];
     if (!item || item.status !== 'published' || !item[state.lang]) return unavailable();
     var data = item[state.lang], L = labels(), frag = document.createDocumentFragment();
-    frag.appendChild(header(item, data.title, data.subtitle, data.guideLabel));
+    frag.appendChild(header(item, data.title, data.subtitle));
     var wrap = el('article', { class: 'sections-col patient-guide' }), inner = el('div');
     var intro = el('section', { class: 'section-block' }, [el('p', { class: 'guide-author' }, [data.author || L.author])]);
     data.intro.forEach(function (p) { intro.appendChild(el('p', null, [p])); });
