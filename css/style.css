@@ -222,6 +222,8 @@ h1, h2, h3, p { margin: 0; }
 .back-link { font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: rgba(238,249,247,0.7); background: none; border: 0; cursor: pointer; padding: 0; }
 .back-link:hover { color: var(--cream); }
 .service-title { font-size: 22px; font-weight: 700; line-height: 28px; text-transform: uppercase; text-align: center; white-space: pre-line; }
+.guide-type-label { margin: -10px 0 0; color: rgba(168,220,211,.9); font-size: 13px; font-weight: 400; line-height: 20px; letter-spacing: .1em; text-align: center; text-transform: uppercase; }
+.guide-type-label + .service-body { margin-top: 0; }
 .service-body { margin: 26px 0 0; max-width: 673px; text-align: center; text-wrap: pretty; }
 .sections-col { padding: var(--pad-y) var(--pad-x); display: flex; justify-content: center; }
 .sections-col > div { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 100px; }
