@@ -5,7 +5,7 @@
  */
 window.RESOURCE_LABELS = {
   en: {
-    guide: 'Patient guide', guideBody: 'Click here to read the guide to preparation and recovery.',
+    guide: 'Patient guide', guideType: 'Patient guideline', guideBody: 'Click here to read the guide to preparation and recovery.',
     gallery: 'Before and after pictures', galleryBody: 'Click here to view photographs taken before and after surgery.',
     back: 'Back to service', contents: 'In this guide', next: 'Next step',
     period: 'Period', expect: 'What to expect', diet: 'Eating and the next stage',
@@ -16,7 +16,7 @@ window.RESOURCE_LABELS = {
     author: 'Levon Galstyan, DMD, MD, DDS · Oral and Maxillofacial Surgeon'
   },
   hy: {
-    guide: 'Պացիենտի ուղեցույց', guideBody: 'Սեղմեք այստեղ՝ նախապատրաստման և վերականգնման մասին ուղեցույցը կարդալու համար։',
+    guide: 'Պացիենտի ուղեցույց', guideType: 'Պացիենտի ուղեցույց', guideBody: 'Սեղմեք այստեղ՝ նախապատրաստման և վերականգնման մասին ուղեցույցը կարդալու համար։',
     gallery: 'Լուսանկարներ՝ միջամտությունից առաջ և հետո', galleryBody: 'Սեղմեք այստեղ՝ միջամտությունից առաջ և հետո արված լուսանկարները դիտելու համար։',
     back: 'Վերադառնալ ծառայության էջին', contents: 'Այս ուղեցույցում', next: 'Հաջորդ քայլը',
     period: 'Ժամանակահատված', expect: 'Ինչ սպասել', diet: 'Սնուցումը և հաջորդ փուլը',

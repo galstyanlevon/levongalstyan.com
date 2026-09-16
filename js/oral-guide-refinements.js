@@ -4,8 +4,6 @@
 
   window.CONTENT.en.dentalImplantsIntro = 'Dr. L. Galstyan uses digital 3D planning and guided implant surgery to restore missing teeth with precise, functional and natural-looking results. Treatment is individually planned, including for complex clinical cases.';
   window.CONTENT.hy.dentalImplantsIntro = 'Բժիշկ Լ. Գալստյանը կիրառում է թվային 3D պլանավորում և ուղղորդված իմպլանտային վիրաբուժություն՝ բացակայող ատամները ճշգրիտ, ֆունկցիոնալ և բնական տեսքով վերականգնելու համար։ Բուժումը պլանավորվում է անհատապես՝ ներառյալ բարդ կլինիկական դեպքերը։';
-  window.PATIENT_GUIDES['dental-implantation'].en.guideLabel = 'Patient guideline';
-  window.PATIENT_GUIDES['dental-implantation'].hy.guideLabel = 'Պացիենտի ուղեցույց';
 
   var references = {
     'tooth-extraction': [
