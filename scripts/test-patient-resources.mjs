@@ -160,6 +160,10 @@ try {
       };
       for (const [key, referenceCount] of Object.entries(oralReferenceCounts)) {
         await page.goto(base + lang + '/guide/' + key + '/');
+        assert.equal(await page.locator('.guide-type-label').count(), key === 'dental-implantation' ? 1 : 0);
+        if (key === 'dental-implantation') {
+          assert.equal(await page.locator('.guide-type-label').textContent(), lang === 'hy' ? 'Պացիենտի ուղեցույց' : 'Patient guideline');
+        }
         assert.equal(await page.getByText(source.window.RESOURCE_LABELS[lang].bibliography, { exact:true }).count(), 1);
         assert.equal(await page.locator('.guide-bibliography-list li').count(), referenceCount);
         assert.equal(await page.locator('.guide-bibliography-list a').count(), referenceCount);
