@@ -6,6 +6,7 @@
 window.PATIENT_GUIDES.orthognathic = Object.assign({
   service: 3,
   status: 'published',
+  hideHeroSubtitle: true,
   reviewedDate: '2026-09-13'
 }, {
   "hy": {
