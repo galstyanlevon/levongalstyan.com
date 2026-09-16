@@ -9,6 +9,7 @@ on:
       - 'js/orthognathic-guide.js'
       - 'js/ent-guides.js'
       - 'js/oral-surgery-guides.js'
+      - 'js/oral-guide-refinements.js'
       - 'js/app.js'
       - 'css/style.css'
       - 'index.html'

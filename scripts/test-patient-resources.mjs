@@ -12,6 +12,7 @@ vm.runInNewContext(fs.readFileSync('js/patient-resources.js', 'utf8'), source);
 vm.runInNewContext(fs.readFileSync('js/orthognathic-guide.js', 'utf8'), source);
 vm.runInNewContext(fs.readFileSync('js/ent-guides.js', 'utf8'), source);
 vm.runInNewContext(fs.readFileSync('js/oral-surgery-guides.js', 'utf8'), source);
+vm.runInNewContext(fs.readFileSync('js/oral-guide-refinements.js', 'utf8'), source);
 assert.deepEqual(
   Array.from(source.window.PATIENT_GUIDES.orthognathic.hy.sections.filter(x => /^Այց [1-5]/.test(x.title)), x => x.title.slice(0, 5)),
   ['Այց 1', 'Այց 2', 'Այց 3', 'Այց 4', 'Այց 5']
@@ -140,6 +141,7 @@ try {
       await page.goto(base + lang + '/service/2/');
       assert.equal(await page.locator('.patient-resource-link').count(), 1);
       assert.equal(await page.locator('.patient-resource-link p a').getAttribute('href'), base + lang + '/guide/dental-implantation/');
+      assert.equal(await page.locator('.service-body').textContent(), source.window.CONTENT[lang].dentalImplantsIntro);
       for (const entry of [{ procedure:'gbr', key:'gbr' }, { procedure:'sinuslifting', key:'sinus-lift' }]) {
         await page.goto(base + lang + '/procedure/' + entry.procedure + '/');
         assert.equal(await page.locator('.patient-resource-link').count(), 1);
@@ -147,6 +149,22 @@ try {
         await page.locator('.patient-resource-link p a').click();
         await page.waitForURL(base + lang + '/guide/' + entry.key + '/');
         assert.equal(await page.locator('.guide-section').count(), source.window.PATIENT_GUIDES[entry.key][lang].sections.length);
+        assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth > innerWidth), false);
+      }
+      const oralReferenceCounts = {
+        'tooth-extraction':1,
+        'impacted-tooth':2,
+        gbr:2,
+        'sinus-lift':2,
+        'dental-implantation':3
+      };
+      for (const [key, referenceCount] of Object.entries(oralReferenceCounts)) {
+        await page.goto(base + lang + '/guide/' + key + '/');
+        assert.equal(await page.getByText(source.window.RESOURCE_LABELS[lang].bibliography, { exact:true }).count(), 1);
+        assert.equal(await page.locator('.guide-bibliography-list li').count(), referenceCount);
+        assert.equal(await page.locator('.guide-bibliography-list a').count(), referenceCount);
+        assert.equal(await page.getByText(lang === 'hy' ? 'Աղբյուրներ' : 'Sources', { exact:true }).count(), 0);
+        assert.equal(await page.locator('#guide-evidence-base').count(), 0);
         assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth > innerWidth), false);
       }
       await page.goto(base + lang + '/faq/');
