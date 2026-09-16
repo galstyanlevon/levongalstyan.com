@@ -7,6 +7,7 @@
   "septoplasty": {
     "service": 4,
     "status": "published",
+    "hideHeroSubtitle": true,
     "reviewedDate": "2026-09-15",
     "en": {
       "title": "Septoplasty and turbinate correction",
@@ -1572,6 +1573,7 @@
   "fess": {
     "service": 5,
     "status": "published",
+    "hideHeroSubtitle": true,
     "reviewedDate": "2026-09-15",
     "en": {
       "title": "Endoscopic Sinus Surgery (FESS)",
