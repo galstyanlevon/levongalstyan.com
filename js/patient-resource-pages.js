@@ -122,7 +122,7 @@ window.createPatientResourcePages = function (ui) {
     var item = window.PATIENT_GUIDES[key];
     if (!item || item.status !== 'published' || !item[state.lang]) return unavailable();
     var data = item[state.lang], L = labels(), frag = document.createDocumentFragment();
-    frag.appendChild(header(item, data.title, data.subtitle));
+    frag.appendChild(header(item, data.title, item.hideHeroSubtitle ? null : data.subtitle));
     var wrap = el('article', { class: 'sections-col patient-guide' }), inner = el('div');
     var intro = el('section', { class: 'section-block' }, [el('p', { class: 'guide-author' }, [data.author || L.author])]);
     data.intro.forEach(function (p) { intro.appendChild(el('p', null, [p])); });
