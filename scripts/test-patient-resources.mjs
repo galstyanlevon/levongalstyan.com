@@ -11,6 +11,8 @@ vm.runInNewContext(fs.readFileSync('js/content.js', 'utf8'), source);
 vm.runInNewContext(fs.readFileSync('js/patient-resources.js', 'utf8'), source);
 vm.runInNewContext(fs.readFileSync('js/orthognathic-guide.js', 'utf8'), source);
 vm.runInNewContext(fs.readFileSync('js/ent-guides.js', 'utf8'), source);
+vm.runInNewContext(fs.readFileSync('js/oral-surgery-guides.js', 'utf8'), source);
+vm.runInNewContext(fs.readFileSync('js/oral-guide-refinements.js', 'utf8'), source);
 assert.deepEqual(
   Array.from(source.window.PATIENT_GUIDES.orthognathic.hy.sections.filter(x => /^Այց [1-5]/.test(x.title)), x => x.title.slice(0, 5)),
   ['Այց 1', 'Այց 2', 'Այց 3', 'Այց 4', 'Այց 5']
@@ -73,13 +75,14 @@ try {
       assert.equal(await page.locator('html').getAttribute('lang'), lang);
       assert.equal(await page.locator('.service-hero .back-link').textContent(), source.window.RESOURCE_LABELS[lang].back);
       assert.equal(await page.locator('.service-hero .back-link').textContent(), lang === 'hy' ? 'Վերադառնալ ծառայության էջին' : 'Back to service');
-      assert.equal(await page.locator('.guide-recovery-table tbody tr').count(), 6);
+      assert.equal(await page.locator('.guide-recovery-table tbody tr').count(), 7);
       assert.equal(await page.locator('.guide-section').count(), source.window.PATIENT_GUIDES.orthognathic[lang].sections.length);
       assert.equal(await page.locator('.guide-section-level-1').count(), 3);
       assert.equal(await page.locator('.guide-section-level-2').count(), 13);
       assert.equal(await page.locator('.guide-reference-list li').count(), 5);
       assert.equal(await page.locator('.guide-writing-line').count(), 0);
       assert.equal(await page.locator('.guide-route h2').textContent(), source.window.PATIENT_GUIDES.orthognathic[lang].routeTitle);
+      assert.equal(await page.locator('.guide-type-label').textContent(), source.window.RESOURCE_LABELS[lang].guideType);
       assert.equal(await page.locator('.guide-pathway li').count(), 5);
       assert.equal(await page.locator('.guide-pathway-arrow').count(), 4);
       assert.equal(await page.locator('.guide-contents').count(), 0);
@@ -88,7 +91,10 @@ try {
         link: getComputedStyle(e.querySelector('.footer-col a')).color
       }));
       assert.deepEqual(footerColours, { heading:'rgb(238, 249, 247)', link:'rgb(238, 249, 247)' });
-      assert.equal(await page.getByText(source.window.RESOURCE_LABELS[lang].bibliography, { exact:true }).count(), 0);
+      assert.equal(await page.getByText(source.window.RESOURCE_LABELS[lang].bibliography, { exact:true }).count(), 1);
+      if (lang === 'en') assert.equal(source.window.RESOURCE_LABELS[lang].bibliography, 'References');
+      assert.equal(await page.locator('.guide-bibliography-list li').count(), 4);
+      assert.equal(await page.locator('.guide-bibliography-list a').count(), 2);
       assert.equal(await page.locator('.patient-guide + .section-peach .contact-form').count(), 0);
       const paper = await page.locator('.patient-guide > div').evaluate(e => {
         const s = getComputedStyle(e); return { background:s.backgroundColor, border:s.borderTopWidth, borderColor:s.borderTopColor, radius:s.borderRadius };
@@ -118,6 +124,7 @@ try {
         await page.waitForURL(base + lang + '/guide/' + entry.key + '/');
         assert.equal(await page.locator('.guide-section').count(), source.window.PATIENT_GUIDES[entry.key][lang].sections.length);
         assert.equal(await page.locator('.guide-route h2').textContent(), source.window.PATIENT_GUIDES[entry.key][lang].routeTitle);
+        assert.equal(await page.locator('.guide-type-label').textContent(), source.window.RESOURCE_LABELS[lang].guideType);
         assert.equal(await page.locator('.guide-pathway li').count(), 5);
         assert.equal(await page.locator('.guide-pathway-arrow').count(), 4);
         assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth > innerWidth), false);
@@ -128,13 +135,59 @@ try {
           assert.equal(await page.locator('.guide-list').count() > 0, true);
           assert.equal(await page.locator('.guide-video iframe').count(), 1);
         }
+        assert.equal(await page.getByText(source.window.RESOURCE_LABELS[lang].bibliography, { exact:true }).count(), 1);
+        assert.equal(await page.locator('.guide-bibliography-list li').count(), 2);
+        assert.equal(await page.locator('.guide-bibliography-list a').count(), 2);
         await page.screenshot({path:`${artifacts}/${entry.key}-${lang}-${width}.png`, fullPage:entry.key === 'septoplasty'});
+      }
+      await page.goto(base + lang + '/service/2/');
+      assert.equal(await page.locator('.patient-resource-link').count(), 1);
+      assert.equal(await page.locator('.patient-resource-link p a').getAttribute('href'), base + lang + '/guide/dental-implantation/');
+      assert.equal(await page.locator('.service-body').textContent(), source.window.CONTENT[lang].dentalImplantsIntro);
+      for (const entry of [{ procedure:'gbr', key:'gbr' }, { procedure:'sinuslifting', key:'sinus-lift' }]) {
+        await page.goto(base + lang + '/procedure/' + entry.procedure + '/');
+        assert.equal(await page.locator('.patient-resource-link').count(), 1);
+        assert.equal(await page.locator('.patient-resource-link p a').getAttribute('href'), base + lang + '/guide/' + entry.key + '/');
+        await page.locator('.patient-resource-link p a').click();
+        await page.waitForURL(base + lang + '/guide/' + entry.key + '/');
+        assert.equal(await page.locator('.guide-section').count(), source.window.PATIENT_GUIDES[entry.key][lang].sections.length);
+        assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth > innerWidth), false);
+      }
+      const oralReferenceCounts = {
+        'tooth-extraction':1,
+        'impacted-tooth':2,
+        gbr:2,
+        'sinus-lift':2,
+        'dental-implantation':3
+      };
+      for (const [key, referenceCount] of Object.entries(oralReferenceCounts)) {
+        await page.goto(base + lang + '/guide/' + key + '/');
+        assert.equal(await page.locator('.guide-type-label').count(), 1);
+        assert.equal(await page.locator('.guide-type-label').textContent(), source.window.RESOURCE_LABELS[lang].guideType);
+        assert.equal(await page.getByText(source.window.RESOURCE_LABELS[lang].bibliography, { exact:true }).count(), 1);
+        assert.equal(await page.locator('.guide-bibliography-list li').count(), referenceCount);
+        assert.equal(await page.locator('.guide-bibliography-list a').count(), referenceCount);
+        assert.equal(await page.getByText(lang === 'hy' ? 'Աղբյուրներ' : 'Sources', { exact:true }).count(), 0);
+        assert.equal(await page.locator('#guide-evidence-base').count(), 0);
+        assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth > innerWidth), false);
+      }
+      await page.goto(base + lang + '/faq/');
+      const faqCategory = page.locator('.faq-head').first();
+      await faqCategory.click();
+      const faqQuestions = page.locator('.faq-sub-list').first().locator('.faq-q');
+      const expectedFaqGuides = ['tooth-extraction','dental-implantation','impacted-tooth','sinus-lift','fess','septoplasty'];
+      for (let i = 0; i < expectedFaqGuides.length; i++) {
+        await faqQuestions.nth(i + 1).scrollIntoViewIfNeeded();
+        const before = await page.evaluate(() => scrollY);
+        await faqQuestions.nth(i + 1).click();
+        assert.equal(await page.evaluate(() => scrollY), before);
+        assert.equal(await page.locator('.faq-answer.open .faq-guide-link').getAttribute('href'), base + lang + '/guide/' + expectedFaqGuides[i] + '/');
       }
       await page.goto(base + lang + '/procedure/rhinoplasty/');
       assert.equal(await page.locator('.patient-resource-link').count(), 0);
       assert.equal(await page.locator('.contact-form').count(), 1);
       await page.goto(base + lang + '/service/2/');
-      assert.equal(await page.locator('.patient-resource-link').count(), 0);
+      assert.equal(await page.locator('.patient-resource-link').count(), 1);
       assert.deepEqual(errors, []);
       console.log(`PASS ${lang}, ${width}px: source content, layout, keyboard, locale routes, guide contents, recovery, galleries and form presence`);
       await context.close();

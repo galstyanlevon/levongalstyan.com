@@ -40,7 +40,10 @@ window.createPatientResourcePages = function (ui) {
     if (gallery) inner.appendChild(resourceLink('gallery', gallery));
   }
   function hasLinks(service, sub) { return !!(guideFor(service, sub) || galleryFor(service, sub)); }
-  function parentRoute(item) { return routeHref(item.sub ? '#/sub/' + item.sub : '#/service/' + item.service); }
+  function parentRoute(item) {
+    if (item.entry === 'faq') return routeHref('#faq');
+    return routeHref(item.sub ? '#/sub/' + item.sub : '#/service/' + item.service);
+  }
   function titleFor(item) {
     return item.sub ? ui.t().subServices[item.sub].title : ui.t().services[item.service].title.replace(/\n/g, ' ');
   }
@@ -48,6 +51,7 @@ window.createPatientResourcePages = function (ui) {
     return el('section', { class: 'section section-dark service-hero' }, [
       el('a', { class: 'back-link', href: parentRoute(item) }, [labels().back]),
       el('h1', { class: 'service-title' }, [title]),
+      el('p', { class: 'guide-type-label' }, [labels().guideType]),
       subtitle ? el('p', { class: 'service-body' }, [subtitle]) : null
     ]);
   }
@@ -65,6 +69,7 @@ window.createPatientResourcePages = function (ui) {
   function appendParts(parent, parts) {
     (parts || []).forEach(function (part) {
       if (part.type === 'strong') parent.appendChild(el('strong', null, [part.text]));
+      else if (part.type === 'link') parent.appendChild(el('a', { href: part.href, target: '_blank', rel: 'noopener' }, [part.text]));
       else parent.appendChild(document.createTextNode(part.text));
     });
   }
@@ -156,6 +161,21 @@ window.createPatientResourcePages = function (ui) {
       }
       inner.appendChild(section);
     });
+    if ((item.references || []).length) {
+      var bibliography = el('section', { class: 'section-block guide-bibliography' }, [
+        el('h2', null, [L.bibliography]), el('div', { class: 'card-divider' })
+      ]);
+      if (data.referenceNote) bibliography.appendChild(el('p', { class: 'guide-reference-note' }, [data.referenceNote]));
+      var bibliographyList = el('ol', { class: 'guide-bibliography-list' });
+      item.references.forEach(function (reference) {
+        var content = reference.url ? el('a', {
+          href: reference.url, target: '_blank', rel: 'noopener noreferrer'
+        }, [reference.text]) : document.createTextNode(reference.text);
+        bibliographyList.appendChild(el('li', null, [content]));
+      });
+      bibliography.appendChild(bibliographyList);
+      inner.appendChild(bibliography);
+    }
     wrap.appendChild(inner); frag.appendChild(wrap);
     return frag;
   }
@@ -184,5 +204,11 @@ window.createPatientResourcePages = function (ui) {
     section.appendChild(inner); frag.appendChild(section); frag.appendChild(contact());
     return frag;
   }
-  return { appendLinks: appendLinks, hasLinks: hasLinks, buildGuide: buildGuide, buildGallery: buildGallery };
+  return {
+    appendLinks: appendLinks,
+    hasLinks: hasLinks,
+    guideHref: function (key) { return routeHref('#/guide/' + key); },
+    buildGuide: buildGuide,
+    buildGallery: buildGallery
+  };
 };

@@ -20,7 +20,8 @@ for (const p of pages) {
   assert.equal(new URL(relativeBase,new URL(p.path,base)).href,base);
   for(const [,src] of html.matchAll(/(?:src|href)="([^"]+)"/g)){
     if(src.startsWith('http')||src===relativeBase)continue;
-    assert.ok(fs.existsSync(path.join('dist',src)),`${filename}: ${src}`);
+    const assetPath=src.split('?')[0];
+    assert.ok(fs.existsSync(path.join('dist',assetPath)),`${filename}: ${src}`);
   }
   assert.ok(!html.includes('undefined'));
 }

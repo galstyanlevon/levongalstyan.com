@@ -144,6 +144,9 @@ h1, h2, h3, p { margin: 0; }
 .faq-answer { display: none; padding: 0 0 26px; flex-direction: column; gap: 20px; max-width: 820px; }
 .faq-answer.open { display: flex; }
 .faq-answer p { color: rgba(39,42,60,0.8); white-space: pre-line; text-wrap: pretty; }
+.faq-guide-link { color: inherit; text-decoration: underline; text-decoration-color: rgba(39,42,60,.28); text-underline-offset: 5px; }
+.faq-guide-link:hover { color: var(--dark); text-decoration-color: currentColor; }
+.faq-guide-link:focus-visible { outline: 2px solid var(--orange); outline-offset: 4px; }
 .faq-media-row { display: flex; flex-wrap: wrap; gap: 20px; }
 .faq-media { width: 280px; aspect-ratio: 16/9; border-radius: 8px; background-color: var(--cream); background-image: repeating-linear-gradient(135deg, rgba(39,42,60,0.06) 0 8px, transparent 8px 16px); display: flex; align-items: center; justify-content: center; }
 .faq-media.video { flex-direction: column; gap: 10px; }
@@ -219,6 +222,8 @@ h1, h2, h3, p { margin: 0; }
 .back-link { font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: rgba(238,249,247,0.7); background: none; border: 0; cursor: pointer; padding: 0; }
 .back-link:hover { color: var(--cream); }
 .service-title { font-size: 22px; font-weight: 700; line-height: 28px; text-transform: uppercase; text-align: center; white-space: pre-line; }
+.guide-type-label { margin: -10px 0 0; color: rgba(168,220,211,.9); font-size: 13px; font-weight: 400; line-height: 20px; letter-spacing: .1em; text-align: center; text-transform: uppercase; }
+.guide-type-label + .service-body { margin-top: 0; }
 .service-body { margin: 26px 0 0; max-width: 673px; text-align: center; text-wrap: pretty; }
 .sections-col { padding: var(--pad-y) var(--pad-x); display: flex; justify-content: center; }
 .sections-col > div { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 100px; }
@@ -249,6 +254,8 @@ h1, h2, h3, p { margin: 0; }
 .guide-pathway-arrow { color: var(--ink); font-weight: 700; }
 .guide-section { scroll-margin-top: 100px; }
 .guide-section h3 { font-size: 18px; font-weight: 500; line-height: 28px; }
+.guide-section a { text-decoration: underline; text-decoration-color: rgba(39,42,60,.28); text-underline-offset: 4px; overflow-wrap: anywhere; }
+.guide-section a:hover { color: var(--dark); text-decoration-color: currentColor; }
 .guide-section-level-1 h2 { font-size: 22px; font-weight: 700; line-height: 30px; }
 .guide-subheading { margin: 4px 0 -8px; font-size: 16px; font-weight: 700; line-height: 26px; }
 .guide-list { margin: 0; padding-left: 24px; color: rgba(39,42,60,0.8); }
@@ -264,6 +271,13 @@ h1, h2, h3, p { margin: 0; }
 .guide-next { padding: 24px; background: var(--peach); border-radius: 4px; }
 .guide-reference-list { margin: 0; padding-left: 24px; color: rgba(39,42,60,0.8); }
 .guide-reference-list li + li { margin-top: 12px; }
+.guide-reference-note { max-width: 860px; }
+.guide-bibliography-list { margin: 0; padding-left: 24px; color: rgba(39,42,60,0.8); }
+.guide-bibliography-list li { padding-left: 4px; line-height: 26px; }
+.guide-bibliography-list li + li { margin-top: 14px; }
+.guide-bibliography-list a { color: inherit; text-decoration: underline; text-decoration-color: rgba(39,42,60,.28); text-underline-offset: 4px; }
+.guide-bibliography-list a:hover { color: var(--dark); text-decoration-color: currentColor; }
+.guide-bibliography-list a:focus-visible { outline: 2px solid var(--orange); outline-offset: 4px; }
 .guide-recovery-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 15px; line-height: 28px; }
 .guide-recovery-table th, .guide-recovery-table td { padding: 16px 12px; border-bottom: 1px solid rgba(39,42,60,.2); vertical-align: top; }
 .guide-recovery-table thead { background: var(--blue-tint); }

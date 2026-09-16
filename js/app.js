@@ -528,9 +528,10 @@
       var questions = [];
       f.items.forEach(function (it, j) {
         var mix = faqMix(i, j);
+        var faqGuide = window.FAQ_GUIDE_LINKS && window.FAQ_GUIDE_LINKS[state.lang] && window.FAQ_GUIDE_LINKS[state.lang][it.q];
         var faqVideo = window.FAQ_VIDEOS && window.FAQ_VIDEOS[state.lang] && window.FAQ_VIDEOS[state.lang][it.q];
-        var hasPhoto = mix === 1 || mix === 3 || mix === 5;
-        var hasVideo = !!faqVideo || mix === 2 || mix === 3 || mix === 6;
+        var hasPhoto = !faqGuide && (mix === 1 || mix === 3 || mix === 5);
+        var hasVideo = !faqGuide && (!!faqVideo || mix === 2 || mix === 3 || mix === 6);
         var key = i + ":" + j;
         var qOpen = state.openQ === key;
         var li = el("li", { class: "faq-sub-item" });
@@ -545,7 +546,10 @@
         } }, [
           el("span", null, [it.q]), iconsRow
         ]));
-        var ans = el("div", { class: "faq-answer" + (qOpen ? " open" : "") }, [el("p", null, [it.a || T.answerPlaceholder])]);
+        var answerContent = faqGuide ? el("a", {
+          href: resourcePages.guideHref(faqGuide), class: "faq-guide-link"
+        }, [window.RESOURCE_LABELS[state.lang].guideBody]) : (it.a || T.answerPlaceholder);
+        var ans = el("div", { class: "faq-answer" + (qOpen ? " open" : "") }, [el("p", null, [answerContent])]);
         if (hasPhoto || hasVideo) {
           var mediaRow = el("div", { class: "faq-media-row" });
           if (hasPhoto) mediaRow.appendChild(el("div", { class: "faq-media" }, [el("span", null, [T.photoSlot])]));

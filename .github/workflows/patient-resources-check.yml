@@ -1,13 +1,15 @@
 name: Check patient resources
 on:
   push:
-    branches: [main, feature/patient-guides, publish/patient-guides]
+    branches: [main, feature/patient-guides, publish/patient-guides, preview/septoplasty-fess-guides, preview/all-patient-guidelines]
   pull_request:
     branches: [main]
     paths:
       - 'js/patient-resource*'
       - 'js/orthognathic-guide.js'
       - 'js/ent-guides.js'
+      - 'js/oral-surgery-guides.js'
+      - 'js/oral-guide-refinements.js'
       - 'js/app.js'
       - 'css/style.css'
       - 'index.html'
