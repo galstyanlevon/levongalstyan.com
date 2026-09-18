@@ -492,8 +492,6 @@
     return section;
   }
 
-  function faqMix(i, j) { return (i * 7 + j * 11 + ((i + 1) * (j + 3))) % 7; }
-
   function buildFaq() {
     var T = t();
     var section = el("section", { id: "faq", class: "section section-dark" });
@@ -527,16 +525,13 @@
       var ul = el("ul", { class: "faq-sub-list" + (isOpen ? " open" : "") });
       var questions = [];
       f.items.forEach(function (it, j) {
-        var mix = faqMix(i, j);
         var faqGuide = window.FAQ_GUIDE_LINKS && window.FAQ_GUIDE_LINKS[state.lang] && window.FAQ_GUIDE_LINKS[state.lang][it.q];
         var faqVideo = window.FAQ_VIDEOS && window.FAQ_VIDEOS[state.lang] && window.FAQ_VIDEOS[state.lang][it.q];
-        var hasPhoto = !faqGuide && (mix === 1 || mix === 3 || mix === 5);
-        var hasVideo = !faqGuide && (!!faqVideo || mix === 2 || mix === 3 || mix === 6);
+        var hasVideo = !faqGuide && !!faqVideo;
         var key = i + ":" + j;
         var qOpen = state.openQ === key;
         var li = el("li", { class: "faq-sub-item" });
         var iconsRow = el("span", { class: "faq-q-icons" });
-        if (hasPhoto) iconsRow.appendChild(photoIcon());
         if (hasVideo) iconsRow.appendChild(videoIcon());
         var questionChevron = chevron(qOpen, "rgba(39,42,60,0.6)");
         iconsRow.appendChild(questionChevron);
@@ -548,14 +543,13 @@
         ]));
         var answerContent = faqGuide ? el("a", {
           href: resourcePages.guideHref(faqGuide), class: "faq-guide-link"
-        }, [window.RESOURCE_LABELS[state.lang].guideBody]) : (it.a || T.answerPlaceholder);
+        }, [window.RESOURCE_LABELS[state.lang].guideBody]) : (it.a || "");
         var ans = el("div", { class: "faq-answer" + (qOpen ? " open" : "") }, [el("p", null, [answerContent])]);
-        if (hasPhoto || hasVideo) {
+        if (hasVideo) {
           var mediaRow = el("div", { class: "faq-media-row" });
-          if (hasPhoto) mediaRow.appendChild(el("div", { class: "faq-media" }, [el("span", null, [T.photoSlot])]));
-          if (hasVideo) mediaRow.appendChild(el("div", { class: "faq-media video" }, faqVideo ? [
+          mediaRow.appendChild(el("div", { class: "faq-media video" }, [
             el("iframe", { src: faqVideo.url, title: faqVideo.title, loading: "lazy", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowfullscreen: "true", referrerpolicy: "strict-origin-when-cross-origin" })
-          ] : [el("span", { class: "play-btn" }, [el("i")]), el("span", null, [T.videoSlot])]));
+          ]));
           ans.appendChild(mediaRow);
         }
         li.appendChild(ans);
