@@ -80,12 +80,6 @@
       { d: "M 5 2.6 L 9.4 7 L 5 11.4", stroke: "#272A3C", "stroke-width": "1.5", "stroke-linecap": "round", "stroke-linejoin": "round", fill: "none" }
     ]);
   }
-  function photoIcon() {
-    return svg({ width: "18", height: "14", viewBox: "0 0 18 14", "aria-hidden": "true" }, [
-      { tag: "rect", x: "1", y: "2", width: "16", height: "10", rx: "1.5", stroke: "rgba(39,42,60,0.6)", "stroke-width": "1.5", fill: "none" },
-      { tag: "circle", cx: "4.6", cy: "5.4", r: "1.1", fill: "rgba(39,42,60,0.6)" }
-    ]);
-  }
   function videoIcon() {
     return svg({ width: "14", height: "14", viewBox: "0 0 14 14", "aria-hidden": "true" }, [
       { d: "M 12.2 7 L 2.4 12.6 L 2.4 1.4 Z", stroke: "rgba(39,42,60,0.6)", "stroke-width": "1.5", "stroke-linecap": "round", "stroke-linejoin": "round", fill: "none" }
@@ -705,10 +699,9 @@
       var grid = el("div", { class: "grid grid-narrow" });
       subs.forEach(function (sub) {
         var img = SUB_IMAGES[sub.key];
-        grid.appendChild(el("button", { type: "button", class: "tile", onclick: function () { goSub(sub.key); } }, [
-          img ? el("div", { class: "tile-thumb", style: { backgroundImage: "url('" + img + "')", backgroundSize: "cover", backgroundPosition: "center" } }) : el("div", { class: "tile-thumb" }, [el("span", null, [T.photoSlot])]),
-          el("span", { class: "tile-label" }, [sub.title])
-        ]));
+        var tileChildren = [el("span", { class: "tile-label" }, [sub.title])];
+        if (img) tileChildren.unshift(el("div", { class: "tile-thumb", style: { backgroundImage: "url('" + img + "')", backgroundSize: "cover", backgroundPosition: "center" } }));
+        grid.appendChild(el("button", { type: "button", class: "tile", onclick: function () { goSub(sub.key); } }, tileChildren));
       });
       sSec.appendChild(grid);
       frag.appendChild(sSec);
@@ -849,10 +842,9 @@
     var grid = el("div", { class: "grid grid-narrow" });
     Object.keys(T.subServices).filter(function (k) { return k !== key; }).forEach(function (k) {
       var img = SUB_IMAGES[k];
-      grid.appendChild(el("button", { type: "button", class: "tile", onclick: function () { goSub(k); } }, [
-        img ? el("div", { class: "tile-thumb", style: { backgroundImage: "url('" + img + "')", backgroundSize: "cover", backgroundPosition: "center" } }) : el("div", { class: "tile-thumb" }, [el("span", null, [T.photoSlot])]),
-        el("span", { class: "tile-label" }, [T.subServices[k].title])
-      ]));
+      var procedureChildren = [el("span", { class: "tile-label" }, [T.subServices[k].title])];
+      if (img) procedureChildren.unshift(el("div", { class: "tile-thumb", style: { backgroundImage: "url('" + img + "')", backgroundSize: "cover", backgroundPosition: "center" } }));
+      grid.appendChild(el("button", { type: "button", class: "tile", onclick: function () { goSub(k); } }, procedureChildren));
     });
     otherSec.appendChild(grid);
     frag.appendChild(otherSec);
@@ -1136,15 +1128,6 @@
       frag.appendChild(buildOtherInsights(key));
       return frag;
     }
-    var grid = el("div", { class: "grid grid-narrow" });
-    for (var i = 0; i < 3; i++) {
-      grid.appendChild(el("div", { class: "card card-peach" }, [
-        el("div", { class: "faq-media", style: { width: "100%" } }, [el("span", null, [key === "videos" ? T.videoSlot : T.photoSlot])]),
-        el("a", { href: "#contact", class: "card-link" }, [T.readMore])
-      ]));
-    }
-    section.appendChild(grid);
-    frag.appendChild(section);
     frag.appendChild(buildOtherInsights(key));
     return frag;
   }
