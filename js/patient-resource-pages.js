@@ -204,8 +204,8 @@ window.createPatientResourcePages = function (ui) {
     }
     wrap.appendChild(inner); frag.appendChild(wrap);
     if (key === 'tooth-extraction') {
-      frag.appendChild(contact());
       frag.appendChild(extractionRelatedProcedures());
+      frag.appendChild(contact());
     }
     return frag;
   }
