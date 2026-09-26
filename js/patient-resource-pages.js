@@ -60,6 +60,32 @@ window.createPatientResourcePages = function (ui) {
       el('h2', { class: 'uppercase-title' }, [ui.t().scheduleTitle]), ui.buildContactForm()
     ]);
   }
+  function extractionRelatedProcedures() {
+    var T = ui.t(), armenian = state.lang === 'hy';
+    var procedures = [
+      { route: '#/sub/digitalimplant', title: T.subServices.digitalimplant.title, image: 'images/subs/digitalimplant.jpeg' },
+      { route: '#/sub/immediateimplants', title: armenian ? 'Անմիջական իմպլանտացիա' : T.subServices.immediateimplants.title, image: 'images/subs/immediateimplants.jpg' },
+      { route: '#/service/2', title: T.services[2].title.replace(/\n/g, ' '), image: 'images/subs/fixeddentures.jpg' },
+      { route: '#/sub/gbr', title: armenian ? 'Ուղղորդված ոսկրային վերականգնում (GBR)' : T.subServices.gbr.title, image: 'images/subs/gbr.jpg' }
+    ];
+    var section = el('section', { class: 'section center-col' }, [
+      el('h2', { class: 'uppercase-title' }, [T.relatedProcedures])
+    ]);
+    var grid = el('div', { class: 'grid grid-narrow' });
+    procedures.forEach(function (procedure) {
+      grid.appendChild(el('button', {
+        type: 'button', class: 'tile',
+        onclick: function () { window.location.href = routeHref(procedure.route); }
+      }, [
+        el('div', { class: 'tile-thumb', style: {
+          backgroundImage: "url('" + procedure.image + "')", backgroundSize: 'cover', backgroundPosition: 'center'
+        } }),
+        el('span', { class: 'tile-label' }, [procedure.title])
+      ]));
+    });
+    section.appendChild(grid);
+    return section;
+  }
   function unavailable() {
     return el('section', { class: 'section center-col' }, [
       el('h1', { class: 'service-title' }, [labels().missing]),
@@ -177,6 +203,10 @@ window.createPatientResourcePages = function (ui) {
       inner.appendChild(bibliography);
     }
     wrap.appendChild(inner); frag.appendChild(wrap);
+    if (key === 'tooth-extraction') {
+      frag.appendChild(contact());
+      frag.appendChild(extractionRelatedProcedures());
+    }
     return frag;
   }
   function buildGallery(key) {
