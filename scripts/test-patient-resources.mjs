@@ -13,6 +13,8 @@ vm.runInNewContext(fs.readFileSync('js/orthognathic-guide.js', 'utf8'), source);
 vm.runInNewContext(fs.readFileSync('js/ent-guides.js', 'utf8'), source);
 vm.runInNewContext(fs.readFileSync('js/oral-surgery-guides.js', 'utf8'), source);
 vm.runInNewContext(fs.readFileSync('js/oral-guide-refinements.js', 'utf8'), source);
+vm.runInNewContext(fs.readFileSync('js/aesthetic-guides.js', 'utf8'), source);
+vm.runInNewContext(fs.readFileSync('js/aesthetic-guides-hy.js', 'utf8'), source);
 assert.deepEqual(
   Array.from(source.window.PATIENT_GUIDES.orthognathic.hy.sections.filter(x => /^Այց [1-5]/.test(x.title)), x => x.title.slice(0, 5)),
   ['Այց 1', 'Այց 2', 'Այց 3', 'Այց 4', 'Այց 5']
@@ -185,9 +187,21 @@ try {
         assert.equal(await page.evaluate(() => scrollY), before);
         assert.equal(await page.locator('.faq-answer.open .faq-guide-link').getAttribute('href'), base + lang + '/guide/' + expectedFaqGuides[i] + '/');
       }
-      await page.goto(base + lang + '/procedure/rhinoplasty/');
-      assert.equal(await page.locator('.patient-resource-link').count(), 0);
-      assert.equal(await page.locator('.contact-form').count(), 1);
+      for (const [key, sub, references] of [
+        ['rhinoplasty', 'rhinoplasty', 4], ['blepharoplasty', 'blepharoplasty', 4],
+        ['otoplasty', 'ottoplasty', 4], ['cheiloplasty', 'cheiloplasty', 2], ['browlift', 'browlift', 4]
+      ]) {
+        await page.goto(base + lang + '/procedure/' + sub + '/');
+        assert.equal(await page.locator('.patient-resource-link').count(), 1);
+        assert.equal(await page.locator('.contact-form').count(), 1);
+        await page.locator('.patient-resource-link a').click();
+        await page.waitForURL(base + lang + '/guide/' + key + '/');
+        assert.equal(await page.locator('.guide-section').count(), 12);
+        assert.equal(await page.locator('.guide-bibliography-list a').count(), references);
+        assert.equal(await page.locator('.guide-type-label').count(), 1);
+        assert.equal(await page.locator('.patient-guide').innerText().then(text => text.includes('|')), false);
+        assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+      }
       await page.goto(base + lang + '/service/2/');
       assert.equal(await page.locator('.patient-resource-link').count(), 1);
       const relatedRoutes = {
@@ -198,7 +212,12 @@ try {
         'impacted-tooth': ['service/11/', 'service/12/'],
         septoplasty: ['service/4/', 'service/5/', 'procedure/rhinoplasty/'],
         fess: ['service/5/', 'service/4/'],
-        orthognathic: ['service/3/', 'service/4/', 'service/6/']
+        orthognathic: ['service/3/', 'service/4/', 'service/6/'],
+        rhinoplasty: ['procedure/rhinoplasty/', 'service/4/'],
+        blepharoplasty: ['procedure/blepharoplasty/', 'procedure/browlift/'],
+        otoplasty: ['procedure/ottoplasty/'],
+        cheiloplasty: ['procedure/cheiloplasty/'],
+        browlift: ['procedure/browlift/', 'procedure/blepharoplasty/']
       };
       for (const [key, routes] of Object.entries(relatedRoutes)) {
         const guideUrl = base + lang + '/guide/' + key + '/';
