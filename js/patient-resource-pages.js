@@ -70,7 +70,12 @@ window.createPatientResourcePages = function (ui) {
       'impacted-tooth': ['inflammation', 'jawcysts'],
       septoplasty: ['breathing', 'fess', 'rhinoplasty'],
       fess: ['fess', 'breathing'],
-      orthognathic: ['orthognathic', 'breathing', 'snoring']
+      orthognathic: ['orthognathic', 'breathing', 'snoring'],
+      rhinoplasty: ['rhinoplasty', 'breathing'],
+      blepharoplasty: ['blepharoplasty', 'browlift'],
+      otoplasty: ['ottoplasty'],
+      cheiloplasty: ['cheiloplasty'],
+      browlift: ['browlift', 'blepharoplasty']
     };
     var services = { implants: 2, orthognathic: 3, breathing: 4, fess: 5, snoring: 6, inflammation: 11, jawcysts: 12 };
     var images = {
@@ -80,7 +85,11 @@ window.createPatientResourcePages = function (ui) {
       gbr: 'images/subs/gbr.jpg',
       sinuslifting: 'images/subs/sinuslifting.jpg',
       mucogingival: 'images/subs/mucogingival.jpg',
-      rhinoplasty: 'images/subs/rhinoplasty.png'
+      rhinoplasty: 'images/subs/rhinoplasty.png',
+      blepharoplasty: 'images/subs/blepharoplasty.png',
+      browlift: 'images/subs/browlift.jpg',
+      ottoplasty: 'images/subs/ottoplasty.png',
+      cheiloplasty: 'images/subs/cheiloplasty.png'
     };
     var keys = groups[key];
     if (!keys) return null;
@@ -176,7 +185,13 @@ window.createPatientResourcePages = function (ui) {
     frag.appendChild(header(item, data.title, item.hideHeroSubtitle ? null : data.subtitle));
     var wrap = el('article', { class: 'sections-col patient-guide' }), inner = el('div');
     var intro = el('section', { class: 'section-block' }, [el('p', { class: 'guide-author' }, [data.author || L.author])]);
-    data.intro.forEach(function (p) { intro.appendChild(el('p', null, [p])); });
+    data.intro.forEach(function (p) {
+      var split = p.indexOf('|');
+      if (split < 0) intro.appendChild(el('p', null, [p]));
+      else intro.appendChild(el('p', null, [
+        el('strong', null, [p.slice(0, split) + ' ']), p.slice(split + 1)
+      ]));
+    });
     inner.appendChild(intro);
     var stages = String(data.route || '').split(/\s*→\s*/).filter(Boolean);
     var routeContent;
