@@ -1161,9 +1161,7 @@
     footer.appendChild(logoIcon("#EEF9F7"));
     footer.querySelector("svg").setAttribute("class", "footer-logo");
     footer.appendChild(el("p", { class: "footer-year" }, ["2026"]));
-    footer.appendChild(el("button", { type: "button", class: "analytics-settings", onclick: function () {
-      if (window.SiteAnalytics) window.SiteAnalytics.openSettings();
-    } }, [state.lang === "hy" ? "Վերլուծության կարգավորումներ" : "Analytics settings"]));
+    // Analytics settings link temporarily hidden at the site owner's request.
     return footer;
   }
 
