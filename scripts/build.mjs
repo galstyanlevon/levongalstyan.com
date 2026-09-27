@@ -4,6 +4,7 @@ import path from 'node:path';
 const out = process.env.OUT_DIR || 'dist';
 const site = (process.env.SITE_URL || 'https://www.levongalstyan.com').replace(/\/$/, '') + '/';
 const canonical = 'https://www.levongalstyan.com/';
+const isPreview = /\/preview(?:\/|$)/.test(new URL(site).pathname);
 const context = { window: {} };
 vm.runInNewContext(fs.readFileSync('js/content.js', 'utf8'), context);
 vm.runInNewContext(fs.readFileSync('js/patient-notes-data.js', 'utf8'), context);
@@ -12,6 +13,9 @@ vm.runInNewContext(fs.readFileSync('js/orthognathic-guide.js', 'utf8'), context)
 vm.runInNewContext(fs.readFileSync('js/ent-guides.js', 'utf8'), context);
 vm.runInNewContext(fs.readFileSync('js/oral-surgery-guides.js', 'utf8'), context);
 vm.runInNewContext(fs.readFileSync('js/oral-guide-refinements.js', 'utf8'), context);
+vm.runInNewContext(fs.readFileSync('js/aesthetic-guides.js', 'utf8'), context);
+vm.runInNewContext(fs.readFileSync('js/aesthetic-guides-hy.js', 'utf8'), context);
+vm.runInNewContext(fs.readFileSync('js/aesthetic-guide-checklists.js', 'utf8'), context);
 const { CONTENT, LECTURES, PATIENT_LINKS } = context.window;
 const pages = [];
 const homeMeta = {
@@ -60,7 +64,7 @@ function html(p, root=false) {
   const url = site+(root?'':p.path), canon=canonical+(root?'':p.path);
   const image = site + p.image;
   const tags = `<base href="${base}">\n<link rel="canonical" href="${esc(canon)}">\n<meta name="description" content="${esc(p.description)}">\n<meta property="og:type" content="website">\n<meta property="og:site_name" content="Dr. Levon Galstyan">\n<meta property="og:title" content="${esc(p.title)}">\n<meta property="og:description" content="${esc(p.description)}">\n<meta property="og:url" content="${esc(url)}">\n<meta property="og:image" content="${esc(image)}">\n<meta property="og:image:type" content="image/jpeg">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n<meta property="og:image:alt" content="${esc(p.title)}">\n<meta property="og:locale" content="${p.lang==='hy'?'hy_AM':'en_US'}">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="${esc(p.title)}">\n<meta name="twitter:description" content="${esc(p.description)}">\n<meta name="twitter:image" content="${esc(image)}">`;
-  const reviewMeta = p.draft ? '\n<meta name="robots" content="noindex, nofollow">' : '';
+  const reviewMeta = p.draft || isPreview ? '\n<meta name="robots" content="noindex, nofollow">' : '';
   return template.replace('<html lang="en">',`<html lang="${p.lang}" data-page-lang="${root?'':p.lang}">`).replace(/<title>.*?<\/title>/,`<title>${esc(p.title)} — Dr. Levon Galstyan</title>\n${tags}${reviewMeta}`);
 }
 fs.writeFileSync(path.join(out,'js/share-pages.js'),'window.SHARE_PAGES = '+JSON.stringify(pages)+';\n');

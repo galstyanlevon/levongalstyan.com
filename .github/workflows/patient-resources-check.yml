@@ -10,6 +10,7 @@ on:
       - 'js/ent-guides.js'
       - 'js/oral-surgery-guides.js'
       - 'js/oral-guide-refinements.js'
+      - 'js/aesthetic-guide*.js'
       - 'js/app.js'
       - 'css/style.css'
       - 'index.html'

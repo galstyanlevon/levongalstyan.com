@@ -67,32 +67,51 @@ window.createPatientResourcePages = function (ui) {
       'dental-implantation': ['digitalimplant', 'immediateimplants', 'gbr', 'sinuslifting'],
       gbr: ['digitalimplant', 'implants', 'mucogingival'],
       'sinus-lift': ['digitalimplant', 'implants', 'gbr', 'fess'],
-      'impacted-tooth': ['inflammation', 'jawcysts'],
+      'impacted-tooth': ['inflammation', 'jawcysts', 'implants', 'gbr'],
       septoplasty: ['breathing', 'fess', 'rhinoplasty'],
       fess: ['fess', 'breathing'],
-      orthognathic: ['orthognathic', 'breathing', 'snoring']
+      orthognathic: ['orthognathic', 'breathing', 'snoring'],
+      rhinoplasty: ['implants', 'blepharoplasty', 'snoring', 'orthognathic', 'impacted-tooth'],
+      blepharoplasty: ['breathing', 'implants', 'browlift', 'tearduct', 'impacted-tooth'],
+      otoplasty: ['breathing', 'implants', 'rhinoplasty', 'snoring', 'impacted-tooth'],
+      cheiloplasty: ['implants', 'breathing', 'orthognathic', 'blepharoplasty', 'impacted-tooth'],
+      browlift: ['blepharoplasty', 'breathing', 'implants', 'cheiloplasty', 'impacted-tooth']
     };
-    var services = { implants: 2, orthognathic: 3, breathing: 4, fess: 5, snoring: 6, inflammation: 11, jawcysts: 12 };
+    var services = { implants: 2, orthognathic: 3, breathing: 4, fess: 5, snoring: 6, tearduct: 7, inflammation: 11, jawcysts: 12 };
     var images = {
+      breathing: 'images/services/breathing.jpg',
+      snoring: 'images/services/snoring.jpg',
+      tearduct: 'images/services/tearduct.png',
+      inflammation: 'images/services/inflammation.jpg',
+      // FESS, jaw cysts and orthognathic surgery retain the logo placeholder pending image selection.
       digitalimplant: 'images/subs/digitalimplant.jpeg',
       immediateimplants: 'images/subs/immediateimplants.jpg',
       implants: 'images/subs/fixeddentures.jpg',
       gbr: 'images/subs/gbr.jpg',
       sinuslifting: 'images/subs/sinuslifting.jpg',
       mucogingival: 'images/subs/mucogingival.jpg',
-      rhinoplasty: 'images/subs/rhinoplasty.png'
+      rhinoplasty: 'images/subs/rhinoplasty.png',
+      blepharoplasty: 'images/subs/blepharoplasty.png',
+      browlift: 'images/subs/browlift.jpg',
+      ottoplasty: 'images/subs/ottoplasty.png',
+      cheiloplasty: 'images/subs/cheiloplasty.png'
     };
+    var otherPractice = ['rhinoplasty', 'blepharoplasty', 'otoplasty', 'cheiloplasty', 'browlift'].indexOf(key) !== -1;
     var keys = groups[key];
     if (!keys) return null;
     var procedures = keys.map(function (name) {
+      if (name === 'impacted-tooth') return {
+        route: '#/guide/impacted-tooth', title: armenian ? 'Ռետենցված ատամներ' : 'Impacted Teeth'
+      };
       var service = services[name], isService = typeof service === 'number';
       var title = isService ? T.services[service].title.replace(/\n/g, ' ') : T.subServices[name].title;
+      if (otherPractice && name === 'breathing') title = armenian ? 'Սեպտոպլաստիկա և քթային խեցիների վիրահատություն' : 'Septoplasty & Turbinate Surgery';
       if (armenian && name === 'immediateimplants') title = 'Անմիջական իմպլանտացիա';
       if (armenian && name === 'gbr') title = 'Ուղղորդված ոսկրային վերականգնում (GBR)';
       return { route: isService ? '#/service/' + service : '#/sub/' + name, title: title, image: images[name] };
     });
     var section = el('section', { class: 'section center-col' }, [
-      el('h2', { class: 'uppercase-title' }, [T.relatedProcedures])
+      el('h2', { class: 'uppercase-title' }, [otherPractice ? (armenian ? 'Իմ գործունեության այլ ուղղությունները' : 'Other areas of my practice') : T.relatedProcedures])
     ]);
     var grid = el('div', { class: 'grid grid-narrow' });
     procedures.forEach(function (procedure) {
@@ -176,7 +195,13 @@ window.createPatientResourcePages = function (ui) {
     frag.appendChild(header(item, data.title, item.hideHeroSubtitle ? null : data.subtitle));
     var wrap = el('article', { class: 'sections-col patient-guide' }), inner = el('div');
     var intro = el('section', { class: 'section-block' }, [el('p', { class: 'guide-author' }, [data.author || L.author])]);
-    data.intro.forEach(function (p) { intro.appendChild(el('p', null, [p])); });
+    data.intro.forEach(function (p) {
+      var split = p.indexOf('|');
+      if (split < 0) intro.appendChild(el('p', null, [p]));
+      else intro.appendChild(el('p', null, [
+        el('strong', null, [p.slice(0, split) + ' ']), p.slice(split + 1)
+      ]));
+    });
     inner.appendChild(intro);
     var stages = String(data.route || '').split(/\s*→\s*/).filter(Boolean);
     var routeContent;
@@ -226,6 +251,21 @@ window.createPatientResourcePages = function (ui) {
       });
       bibliography.appendChild(bibliographyList);
       inner.appendChild(bibliography);
+    }
+    var checklist = window.AESTHETIC_CHECKLISTS && window.AESTHETIC_CHECKLISTS[key] && window.AESTHETIC_CHECKLISTS[key][state.lang];
+    if (checklist) {
+      var reminder = el('section', { class: 'section-block guide-checklist', id: 'guide-checklist' }, [
+        el('h2', null, [checklist.title]), el('div', { class: 'card-divider' })
+      ]);
+      var reminderList = el('ul', { class: 'guide-list' });
+      checklist.items.forEach(function (text) {
+        var split = text.indexOf('|');
+        reminderList.appendChild(el('li', null, split < 0 ? [text] : [
+          el('strong', null, [text.slice(0, split) + ' ']), text.slice(split + 1)
+        ]));
+      });
+      reminder.appendChild(reminderList);
+      inner.appendChild(reminder);
     }
     wrap.appendChild(inner); frag.appendChild(wrap);
     var related = guideRelatedProcedures(key);
