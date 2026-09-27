@@ -67,15 +67,15 @@ window.createPatientResourcePages = function (ui) {
       'dental-implantation': ['digitalimplant', 'immediateimplants', 'gbr', 'sinuslifting'],
       gbr: ['digitalimplant', 'implants', 'mucogingival'],
       'sinus-lift': ['digitalimplant', 'implants', 'gbr', 'fess'],
-      'impacted-tooth': ['inflammation', 'jawcysts'],
+      'impacted-tooth': ['inflammation', 'jawcysts', 'implants', 'gbr'],
       septoplasty: ['breathing', 'fess', 'rhinoplasty'],
       fess: ['fess', 'breathing'],
       orthognathic: ['orthognathic', 'breathing', 'snoring'],
-      rhinoplasty: ['implants', 'blepharoplasty', 'snoring', 'orthognathic'],
-      blepharoplasty: ['breathing', 'implants', 'browlift', 'tearduct'],
-      otoplasty: ['breathing', 'implants', 'rhinoplasty', 'snoring'],
-      cheiloplasty: ['implants', 'breathing', 'orthognathic', 'blepharoplasty'],
-      browlift: ['blepharoplasty', 'breathing', 'implants', 'cheiloplasty']
+      rhinoplasty: ['implants', 'blepharoplasty', 'snoring', 'orthognathic', 'impacted-tooth'],
+      blepharoplasty: ['breathing', 'implants', 'browlift', 'tearduct', 'impacted-tooth'],
+      otoplasty: ['breathing', 'implants', 'rhinoplasty', 'snoring', 'impacted-tooth'],
+      cheiloplasty: ['implants', 'breathing', 'orthognathic', 'blepharoplasty', 'impacted-tooth'],
+      browlift: ['blepharoplasty', 'breathing', 'implants', 'cheiloplasty', 'impacted-tooth']
     };
     var services = { implants: 2, orthognathic: 3, breathing: 4, fess: 5, snoring: 6, tearduct: 7, inflammation: 11, jawcysts: 12 };
     var images = {
@@ -100,6 +100,9 @@ window.createPatientResourcePages = function (ui) {
     var keys = groups[key];
     if (!keys) return null;
     var procedures = keys.map(function (name) {
+      if (name === 'impacted-tooth') return {
+        route: '#/guide/impacted-tooth', title: armenian ? 'Ռետենցված ատամներ' : 'Impacted Teeth'
+      };
       var service = services[name], isService = typeof service === 'number';
       var title = isService ? T.services[service].title.replace(/\n/g, ' ') : T.subServices[name].title;
       if (otherPractice && name === 'breathing') title = armenian ? 'Սեպտոպլաստիկա և քթային խեցիների վիրահատություն' : 'Septoplasty & Turbinate Surgery';
@@ -248,6 +251,21 @@ window.createPatientResourcePages = function (ui) {
       });
       bibliography.appendChild(bibliographyList);
       inner.appendChild(bibliography);
+    }
+    var checklist = window.AESTHETIC_CHECKLISTS && window.AESTHETIC_CHECKLISTS[key] && window.AESTHETIC_CHECKLISTS[key][state.lang];
+    if (checklist) {
+      var reminder = el('section', { class: 'section-block guide-checklist', id: 'guide-checklist' }, [
+        el('h2', null, [checklist.title]), el('div', { class: 'card-divider' })
+      ]);
+      var reminderList = el('ul', { class: 'guide-list' });
+      checklist.items.forEach(function (text) {
+        var split = text.indexOf('|');
+        reminderList.appendChild(el('li', null, split < 0 ? [text] : [
+          el('strong', null, [text.slice(0, split) + ' ']), text.slice(split + 1)
+        ]));
+      });
+      reminder.appendChild(reminderList);
+      inner.appendChild(reminder);
     }
     wrap.appendChild(inner); frag.appendChild(wrap);
     var related = guideRelatedProcedures(key);

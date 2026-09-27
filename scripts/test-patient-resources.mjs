@@ -179,7 +179,7 @@ try {
       const faqCategory = page.locator('.faq-head').first();
       await faqCategory.click();
       const faqQuestions = page.locator('.faq-sub-list').first().locator('.faq-q');
-      const expectedFaqGuides = ['tooth-extraction','dental-implantation','impacted-tooth','sinus-lift','fess','septoplasty'];
+      const expectedFaqGuides = ['tooth-extraction','dental-implantation','impacted-tooth','sinus-lift','fess','septoplasty','rhinoplasty','blepharoplasty'];
       for (let i = 0; i < expectedFaqGuides.length; i++) {
         await faqQuestions.nth(i + 1).scrollIntoViewIfNeeded();
         const before = await page.evaluate(() => scrollY);
@@ -197,6 +197,9 @@ try {
         await page.locator('.patient-resource-link a').click();
         await page.waitForURL(base + lang + '/guide/' + key + '/');
         assert.equal(await page.locator('.guide-section').count(), 12);
+        assert.equal(await page.locator('.guide-checklist').count(), 1);
+        assert.ok(await page.locator('.guide-checklist li').count() >= 8);
+        assert.equal(await page.locator('.guide-bibliography + .guide-checklist').count(), 1);
         assert.equal(await page.locator('.guide-bibliography-list a').count(), references);
         assert.equal(await page.locator('.guide-type-label').count(), 1);
         assert.equal(await page.locator('.patient-guide').innerText().then(text => text.includes('|')), false);
@@ -209,15 +212,15 @@ try {
         'dental-implantation': ['procedure/digitalimplant/', 'procedure/immediateimplants/', 'procedure/gbr/', 'procedure/sinuslifting/'],
         gbr: ['procedure/digitalimplant/', 'service/2/', 'procedure/mucogingival/'],
         'sinus-lift': ['procedure/digitalimplant/', 'service/2/', 'procedure/gbr/', 'service/5/'],
-        'impacted-tooth': ['service/11/', 'service/12/'],
+        'impacted-tooth': ['service/11/', 'service/12/', 'service/2/', 'procedure/gbr/'],
         septoplasty: ['service/4/', 'service/5/', 'procedure/rhinoplasty/'],
         fess: ['service/5/', 'service/4/'],
         orthognathic: ['service/3/', 'service/4/', 'service/6/'],
-        rhinoplasty: ['service/2/', 'procedure/blepharoplasty/', 'service/6/', 'service/3/'],
-        blepharoplasty: ['service/4/', 'service/2/', 'procedure/browlift/', 'service/7/'],
-        otoplasty: ['service/4/', 'service/2/', 'procedure/rhinoplasty/', 'service/6/'],
-        cheiloplasty: ['service/2/', 'service/4/', 'service/3/', 'procedure/blepharoplasty/'],
-        browlift: ['procedure/blepharoplasty/', 'service/4/', 'service/2/', 'procedure/cheiloplasty/']
+        rhinoplasty: ['service/2/', 'procedure/blepharoplasty/', 'service/6/', 'service/3/', 'guide/impacted-tooth/'],
+        blepharoplasty: ['service/4/', 'service/2/', 'procedure/browlift/', 'service/7/', 'guide/impacted-tooth/'],
+        otoplasty: ['service/4/', 'service/2/', 'procedure/rhinoplasty/', 'service/6/', 'guide/impacted-tooth/'],
+        cheiloplasty: ['service/2/', 'service/4/', 'service/3/', 'procedure/blepharoplasty/', 'guide/impacted-tooth/'],
+        browlift: ['procedure/blepharoplasty/', 'service/4/', 'service/2/', 'procedure/cheiloplasty/', 'guide/impacted-tooth/']
       };
       for (const [key, routes] of Object.entries(relatedRoutes)) {
         const guideUrl = base + lang + '/guide/' + key + '/';

@@ -45,7 +45,7 @@
           ['Nasal care and medicines',
             'Saline spray|Saline usually helps moisten the nose and clear discharge; it often begins the next day, but confirm the timing and frequency at discharge. Do not use a forceful stream or irrigate against marked resistance.',
             'Blowing and sneezing|Do not blow your nose for at least the first week, or longer if instructed. You may gently clear secretions backwards through the nasopharynx into the throat and spit them out without forceful suction or pressure. Sneeze with your mouth open; do not pick crusts or insert swabs deeply.',
-            'Incision and medicines|Clean the external incision only as instructed. Use prescribed ointments, drops, sprays and pain medicine as directed. Do not add aspirin, other painkillers, antibiotics or steroids without asking the doctor.'],
+            'Incision and medicines|Clean the external incision only as instructed. Use prescribed ointments, drops, sprays and pain medicine as directed. Do not add aspirin, other painkillers, antibiotics or steroids without asking the doctor, or extend an antibiotic or steroid course yourself.'],
           ['Daily life',
             'Washing|A brief warm shower is possible when allowed, keeping the splint dry. Avoid hot baths, saunas and overheating in the first weeks; do not put cosmetics on an open incision.',
             'Glasses|Frames must not press on the operated bridge. The duration depends on bone and cartilage work. Discuss contact lenses or support for glasses before resuming them.',
@@ -65,9 +65,9 @@
             'Surgical risks|Bleeding, infection, unfavourable scarring, persistent irregularity or asymmetry, altered sensation or smell, and persistent or worse breathing are possible. Septal surgery can rarely leave a perforation.',
             'Individual risks|Anaesthetic risks and those of revision surgery are discussed before the operation. This guide supplements the consultation and consent discussion.'],
           ['When to contact the team',
-            'Contact your surgeon the same day|Seek advice for more than slight blood-stained discharge, recurrent bleeding, a temperature of 38 °C or higher, chills, increasing pain or one-sided swelling, worsening obstruction, pus or persistent bad smell, repeated vomiting or inability to drink.',
+            'Contact your surgeon the same day|Seek advice for more than slight blood-stained discharge, recurrent bleeding, a temperature of 38 °C or higher, chills, increasing pain, redness or one-sided swelling, worsening obstruction, pus or persistent bad smell, repeated vomiting, inability to drink or a possible reaction to medicine.',
             'Get emergency help|Heavy bleeding that does not stop, breathing difficulty beyond expected congestion, fainting, sudden visual loss or chest pain need urgent care. Do not wait for a reply through the website form.',
-            'If bleeding starts|Sit upright and lean slightly forward. Do not tilt your head back, blow your nose, remove the splint or insert packing yourself. Before discharge, confirm your prescriptions, review date and direct clinical contact details.']
+            'If bleeding starts|Sit upright and lean slightly forward. Do not tilt your head back, blow your nose, remove the splint, insert packing or press on the reconstructed nose without the surgeon’s instruction. Before discharge, confirm your prescriptions, review date and direct clinical contact details.']
         ]
       }
     },
@@ -131,8 +131,8 @@
             'Specific risks|Bleeding, infection, visible scarring, asymmetry, persistent dryness, ptosis, lower lid retraction or eversion, double vision, eye muscle damage and further surgery are possible.',
             'Threat to sight|Rare bleeding behind the eye can compress the optic nerve and requires immediate assessment and treatment. Anaesthetic and combined-operation risks are discussed individually.'],
           ['When to contact the team',
-            'Emergency care immediately|Sudden loss or worsening of vision, new severe eye pain, a rapidly increasing tense swelling around an eye, or new double vision require urgent assessment. Do not wait for a website response. Chest pain, difficulty breathing, fainting or a severe allergic reaction also need emergency care.',
-            'Contact your surgeon the same day|Report increasing pain or swelling, persistent bleeding, fever of 38 °C or higher, pus, worsening redness, significant difficulty closing the eye or worsening dryness.',
+            'Emergency care immediately|Sudden loss or worsening of vision, new or rapidly worsening severe pain in or behind an eye, rapidly increasing tense swelling, a bulging eye, restricted eye movement or new double vision require urgent assessment. Heavy bleeding that does not stop, or visual changes or severe eye pain together with nausea or vomiting, also require immediate help. Do not wait for a website response. Chest pain, difficulty breathing, fainting or a severe allergic reaction also need emergency care.',
+            'Contact your surgeon the same day|Report increasing pain or swelling, persistent bleeding, fever of 38 °C or higher, pus, worsening redness, wound separation, significant difficulty closing the eye or worsening dryness.',
             'Before discharge|Confirm medicines and eye care, review and suture-removal dates, and a direct contact for urgent postoperative questions.']
         ]
       }
@@ -176,21 +176,22 @@
           ['Ear and incision care',
             'Water and hair|Do not wet the main dressing or wash hair while it is in place. After removal, wash gently only if cleared; do not rub the ears and pat behind them dry.',
             'Wound care|Clean incisions and use ointments only as instructed. Do not pick crusts or apply unprescribed antiseptics.',
-            'Pressure and jewellery|Protect ears from headphones, helmets, masks, glasses or hair accessories that squeeze or bend them. Discuss earrings and new piercings with the surgeon before resuming.'],
+            'Pressure and jewellery|Protect ears from headphones, helmets, masks, glasses or hair accessories that squeeze or bend them. Agree how to use glasses or a hearing aid during the first weeks. Resume earrings and new piercings only after full healing and the surgeon’s permission.'],
           ['Daily life',
             'Clothes and hair|Wear front-fastening or loose clothing; take care when combing or styling hair near the ears.',
             'Sun and substances|Protect healed scars from sun with a hat and SPF 50 or higher. Avoid smoking and smoke exposure. Avoid alcohol for at least 72 hours and while taking incompatible medicines.'],
           ['Work and activity',
             'Work or school|Many return to quiet work or study in about one to two weeks, after the dressing review and when comfortable. A child’s return and protection at school need individual planning.',
-            'Activity|Walk gently in the first days; avoid strenuous exercise, straining and heavy lifting during the early weeks. Sport with pressure, bending or impact to the ears requires the surgeon’s clearance and any advised protection. Stop and ask for advice if pain, bleeding or swelling rises.'],
+            'First two weeks|Walk gently in the first days and avoid bending, straining or sudden movements. For the first two weeks, avoid strenuous exercise and heavy lifting; protect the ears from impact, bending and friction.',
+            'Swimming and sport|With normal healing, swimming and a gradual return to most ordinary activity can be discussed at 4–6 weeks. Contact sports and activities with a risk of impact or falls may resume around eight weeks after the surgeon’s clearance. Use any recommended soft protective band; helmets must not press on the ears. These dates are guidance, not automatic clearance. Stop and contact the surgeon if throbbing, pain, bleeding or swelling rises.'],
           ['Follow-up',
             'First appointment|The initial visit and dressing removal are arranged at discharge, usually after 5–10 days. Non-absorbable sutures are usually removed at 7–10 days.',
-            'Further checks|We check wound healing, shape, symmetry, skin condition and any night-band regimen. Do not wait for a scheduled visit if a new problem develops.'],
+            'Further checks|We check wound healing, shape, symmetry, skin, cartilage, internal stitches and any night-band regimen. A later review is often planned around three months. Do not wait for a scheduled visit if a new problem develops.'],
           ['When to judge the result',
             'After dressing removal|The ears may look closer to the head than planned, swollen and uneven. This appearance changes as the swelling settles.',
-            'Later appearance|Bruising and most swelling improve over weeks; firmness, altered sensation and scars can take months to settle. Final assessment is usually made after several months. If significant asymmetry or recurrence remains, we discuss correction after healing stabilises.'],
+            'Later appearance|Bruising usually improves over about two weeks; tenderness, numbness and firmness may last several weeks, and cartilage can remain stiff for months. A more stable result is assessed around 3–6 months. Some natural asymmetry remains normal. If significant asymmetry, recurrence or a bothersome internal stitch contour remains, we discuss correction after healing stabilises.'],
           ['Possible complications',
-            'Surgical risks|Bleeding or a haematoma, infection including cartilage infection, poor wound healing, visible or raised scars, altered sensation and skin problems are possible.',
+            'Surgical risks|Bleeding or a haematoma, infection including cartilage infection, wound separation, slow healing, visible or keloid scars, altered sensation, persistent pain, a reaction to stitches and skin problems are possible.',
             'Shape and symmetry|Overcorrection, undercorrection, unequal ears, recurrent prominence or a need for revision can occur. We discuss individual and anaesthetic risks before surgery.'],
           ['When to contact the team',
             'Contact your surgeon the same day|Increasing or severe pain, a tight rapidly swelling ear, bleeding through the dressing, fever of 38 °C or higher, discharge or bad smell, marked redness, skin colour change or a displaced dressing need prompt advice.',
@@ -254,13 +255,14 @@
           ['When to judge the result',
             'Early appearance|The change is visible but swelling can make the lip look larger, firmer and asymmetric. Do not judge the final smile immediately.',
             'Settling|Most bruising and swelling decrease over the first weeks. Tightness, firmness and numbness may last longer; a Bullhorn scar often remains pink and firm for months before fading.',
-            'Longer term|Contour and scar maturation take months. A further correction is considered only after tissues settle, except where a medical problem requires earlier treatment.'],
+            'Longer term|After a lip lift, the surgical site may take 6–8 weeks to heal, while the contour becomes more stable over several months. This is not the final scar-maturation date. After V–Y or combined surgery, timing is assessed separately from mucosal healing, swelling and lip function. A further correction is considered only after tissues settle, except where a medical problem requires earlier treatment.'],
           ['Possible complications',
             'General risks|Bleeding, infection, wound separation, poor healing, anaesthetic complications and need for further surgery are possible.',
-            'Shape, scars and function|Visible, widened or raised scars, pigmentation, asymmetry, contour irregularity, excess tooth show, altered lip closure or movement, lasting numbness and dissatisfaction may occur. V–Y advancement can form internal tightness or unwanted mucosal contour. Cold sores may recur; individual risks are discussed before surgery.'],
+            'Shape, scars and function|Visible, widened, depressed or raised scars, pigmentation, asymmetry, under- or overcorrection, contour irregularity, changes to the nasal base or nostrils, too much or too little tooth show, altered lip closure, speech, eating or smiling, lasting numbness and partial loss of effect may occur. Rarely, blood supply to the wound edge is impaired.',
+            'V–Y and cold sores|Internal scarring, granulation, irritating stitches, local firmness, insufficient mucosal advancement, excessive fullness or impaired blood supply to the advanced tissue are possible. Cold sores may recur: report characteristic burning, blisters or a rash promptly. Individual and anaesthetic risks are discussed before surgery.'],
           ['When to contact the team',
-            'Contact your surgeon the same day|Report persistent bleeding, a rapidly growing or one-sided swelling, increasing pain, fever of 38 °C or higher, pus, bad smell, separated stitches, a colour change or difficulty drinking.',
-            'Get emergency help|Heavy uncontrolled bleeding, difficulty breathing, fainting or a severe allergic reaction need emergency care. Do not use the website form for urgent postoperative symptoms.',
+            'Contact your surgeon the same day|Report persistent bleeding or rapidly soaked gauze, rapidly growing or one-sided swelling, increasing pain, fever of 38 °C or higher, chills, worsening redness or skin warmth, pus, bad smell, wound separation, or a pale, blue, dark or cold area of the lip or skin. Difficulty drinking, repeated vomiting or dehydration, a sudden change in lip, nasal-base or nostril shape, and painful blisters or a cold-sore-like rash also need same-day advice.',
+            'Get emergency help|Heavy uncontrolled bleeding, difficulty breathing, rapidly increasing tongue or throat swelling, chest pain, fainting or a severe allergic reaction need emergency care. Do not use the website form for urgent postoperative symptoms.',
             'Before discharge|Confirm the individual wound and mouth-care plan, medicines, date for review and suture removal, and direct clinical contact.']
         ]
       }
@@ -284,19 +286,22 @@
         sections: [
           ['Consultation and planning',
             'Examination|We discuss the brow position, forehead movement, hairline, asymmetry, eyelids, eye surface and visual symptoms. The aim is a natural brow shape, not an identical or permanently fixed position.',
-            'Techniques|Endoscopic lifting uses short cuts in the scalp. Temporal, direct, hairline and coronal approaches have different incision sites and effects. Choice depends on brow and hairline anatomy, degree of descent, scars and the agreed aim.',
+            'Brow, skin or eyelid ptosis|A heavy upper lid can result from a low brow, excess eyelid skin or true eyelid ptosis, where the lid edge is low. These may coexist but need different corrections. Habitually raising the forehead to compensate for heavy lids can hide the brow’s resting position.',
+            'Endoscopic and temporal approaches|Endoscopic lifting releases and fixes forehead tissues through short cuts in the scalp. A temporal lift primarily raises the outer brow and does not provide a substantial lift of its inner or central parts.',
+            'Direct and hairline approaches|A direct lift removes tissue just above the brow, giving local control but leaving a scar at its upper edge. A hairline lift can raise the brow without increasing forehead height, but leaves a scar along the skin–hair boundary.',
+            'Coronal approach and choice|A longer incision in the scalp allows wider forehead work but involves a longer scar, sensation changes and possible hairline elevation. Choice depends on brow and hairline anatomy, degree of descent, hair density, previous surgery, scars and the agreed aim; no technique is best for everyone.',
             'Shared decision|We discuss limits, scars, possible hair changes, alternatives, risks and any separate need for eyelid surgery before choosing a plan.'],
           ['Before surgery',
             'Medical and eye history|List illnesses, allergies, medicines, supplements, prior forehead or eye operations, dry eyes, visual changes, glaucoma and thyroid disease. Tell us about previous botulinum toxin or filler injections and their dates. An eye examination may be needed.',
             'Regular medicines and infection|Do not stop blood thinners or other medicines yourself. Report fever, respiratory or eye infection, skin inflammation near the planned incisions and any worsening of health.',
             'Preparation|Avoid nicotine during healing. Follow your own food and fluid instructions for anaesthesia. Wash hair and avoid makeup or styling products as instructed; do not shave the scalp unless asked. Arrange transport and an adult helper for the first day.'],
           ['The operation',
-            'Anaesthesia and access|Local anaesthesia with sedation or general anaesthesia may be used. The surgeon releases and moves forehead and brow tissues through incisions chosen for the plan.',
+            'Anaesthesia and access|Local anaesthesia, local anaesthesia with sedation or general anaesthesia may be used. The surgeon releases and moves forehead and brow tissues through incisions chosen for the plan.',
             'Fixation and other procedures|Internal stitches or fixation devices may hold the new position while tissues heal. Eyelid surgery, if planned, has its own incisions and risks. A dressing, and sometimes a drain, may be placed.',
             'Going home|After local anaesthesia patients are usually discharged the same day. After sedation or general anaesthesia discharge may be the same or next day, once effects wear off and the team confirms safety.'],
           ['Dressings, sutures and incisions',
-            'First dressing|Keep it clean and dry; do not remove, tighten or adjust it unless instructed. Report sudden tightness or a displaced dressing.',
-            'Stitches, clips and drain|Removal depends on the incision and technique; your discharge plan gives the dates. Do not pull threads or clips or remove a drain yourself.',
+            'First dressing|Keep it clean and dry; do not remove, tighten or adjust it unless instructed. It is often removed after 1–3 days, depending on technique. Report sudden tightness or a displaced dressing.',
+            'Stitches, clips and drain|External stitches or clips are usually removed after 7–10 days; some skin stitches after a direct lift may be removed earlier. Absorbable stitches do not need removal. The discharge plan gives your dates. Do not pull threads or clips, pull or clamp a drain, or remove it yourself; keep its tube and reservoir as instructed.',
             'Internal fixation|You may feel a firm spot or minor irregularity while healing. Do not massage it without the surgeon’s instruction.'],
           ['The first days',
             'Expected changes|Forehead and eyelid swelling, bruising, tightness, temporary numbness, itching and a headache are common. Brows can appear higher or uneven initially.',
@@ -306,16 +311,16 @@
           ['Incision, hair and eye care',
             'Clean hands and incisions|Wash hands before care. Use prescribed cleansing and ointments only; do not pick scabs or pull stitches.',
             'Washing hair|The team will tell you when and how to wash it. Use gentle water and shampoo, avoid rubbing the cuts, and pat dry. Delay hot hairdryers, dyeing and chemical treatments until cleared.',
-            'Eyes and makeup|Use prescribed eye lubrication if needed. Do not apply makeup to unhealed incisions; report increasing irritation or poor lid closure.'],
+            'Eyes and makeup|Use prescribed eye lubrication if needed. Do not wear contact lenses until cleared. Do not apply makeup to unhealed incisions; report increasing irritation or poor lid closure.'],
           ['Daily life',
             'Pressure and sun|Avoid headwear or eyewear that presses on incisions. Once closed, protect exposed scars with a hat and SPF 50 or higher; do not apply sunscreen to open wounds.',
             'Nicotine, alcohol and sleep|Avoid nicotine and smoke. Avoid alcohol for at least 72 hours or while taking incompatible medicines. Sleep without pressure on the incisions, and handle hair gently.'],
           ['Work and activity',
-            'Work|Plan a break of about one to two weeks for quiet work; visible bruising, extent of surgery and work conditions may change this.',
+            'Work|Quiet work is usually resumed after 10–14 days, once early wounds have healed and marked bruising has eased. Combined surgery, public-facing work and working conditions may require longer.',
             'Activity|Take short walks first. Avoid bending, straining and heavy lifting during early healing. Gradually increase exercise after the surgeon’s review. Contact sport or a risk of impact to the forehead requires separate clearance; there is no single time limit for every technique. Stop if swelling, bleeding or pain increases.'],
           ['Follow-up',
             'First review|The appointment is arranged at discharge; dressing or drain care and wound healing are checked.',
-            'Suture removal and further checks|Stitches or clips are removed on the surgeon’s individual schedule. Later visits assess brow shape, scars, hair, sensation and eye symptoms. Report new complaints without waiting.'],
+            'Suture removal and further checks|Stitches or clips are usually removed after 7–10 days, adjusted to healing at each site. Keep the review even if the incisions look calm. Later visits assess brow shape, scars, hair, sensation and eye symptoms. Report new complaints without waiting.'],
           ['When to judge the result',
             'Early appearance|Swelling can hold brows unusually high or make them asymmetric. The position softens during the first weeks.',
             'Scars and hair|Scalp tightness or numbness and changes around incisions can last months; hair loss or scar visibility may be temporary or persistent.',
@@ -325,7 +330,7 @@
             'Scars, hair and sensation|A wide or raised scar, hairline change, hair loss, itching or numbness of the forehead or scalp may occur. Rare facial nerve injury can cause temporary or lasting weakness of forehead or brow movement.',
             'Brow and eye effects|Asymmetry, under- or overcorrection, an unnatural high brow, recurrent descent, dry or watery eyes, irritation and incomplete lid closure are possible. Combined blepharoplasty has its own risks.'],
           ['When to contact the team',
-            'Contact your surgeon the same day|Report increasing pain or swelling, persistent bleeding, fever of 38 °C or higher, discharge, bad smell, wound separation, marked one-sided change or worsening eye irritation.',
+            'Contact your surgeon the same day|Report increasing or one-sided pain or firm swelling, persistent bleeding or a rapidly soaked dressing, fever of 38 °C or higher, chills, increasing redness, skin warmth, pus or bad smell. A pale, blue, dark or cold skin patch, wound separation, a drain falling out, a displaced fixation element, sudden brow descent or new marked forehead weakness also require same-day contact. Report worsening eye irritation as well.',
             'Emergency care immediately|Sudden worsening of vision, new severe eye pain, new double vision or rapidly increasing tense swelling around the eye need emergency assessment. So do difficulty breathing, chest pain, fainting or a severe allergic reaction. Do not wait for a message reply.',
             'Before discharge|Confirm medicines and wound care, dates for dressing, drain, stitches or clips, hair washing instructions and a direct contact for urgent concerns.']
         ]
@@ -361,5 +366,22 @@
       };
     });
     window.PATIENT_GUIDES[key] = output;
+  });
+  var faqGuideLinks = {
+    en: {
+      'How to care after rhinoplasty?': 'rhinoplasty',
+      'Recovery after eyelid surgery (blepharoplasty)': 'blepharoplasty'
+    },
+    hy: {
+      'Ինչպե՞ս խնամել քթի պլաստիկ վիրահատությունից հետո։': 'rhinoplasty',
+      'Ապաքինումը կոպերի պլաստիկ վիրահատությունից հետո։': 'blepharoplasty'
+    }
+  };
+  window.FAQ_GUIDE_LINKS = window.FAQ_GUIDE_LINKS || { en: {}, hy: {} };
+  ['en', 'hy'].forEach(function (lang) {
+    window.FAQ_GUIDE_LINKS[lang] = window.FAQ_GUIDE_LINKS[lang] || {};
+    Object.keys(faqGuideLinks[lang]).forEach(function (question) {
+      window.FAQ_GUIDE_LINKS[lang][question] = faqGuideLinks[lang][question];
+    });
   });
 }());
