@@ -4,6 +4,8 @@
   var COUNTER_ID = 98511055;
   var HOST = 'www.levongalstyan.com';
   var KEY = 'galstyan.analytics-consent.v1';
+  // Temporary: restore automatic notice only when the site owner requests it.
+  var SHOW_AUTOMATIC_NOTICE = false;
   var allowed = location.hostname === HOST && !/^\/preview(?:\/|$)/i.test(location.pathname);
   var choice = null, active = false, loading = false, loaded = false, lastPage = null;
   var panel;
@@ -90,7 +92,7 @@
     panel.querySelector('p').textContent = c.message;
     panel.querySelector('[data-choice="accept"]').textContent = c.accept;
     panel.querySelector('[data-choice="reject"]').textContent = c.reject;
-    panel.hidden = choice === 'accept' || choice === 'reject';
+    panel.hidden = !SHOW_AUTOMATIC_NOTICE || choice === 'accept' || choice === 'reject';
   }
   function openSettings() { if (panel) { panel.hidden = false; paint(); panel.hidden = false; panel.querySelector('button').focus(); } }
   function initUi() {
