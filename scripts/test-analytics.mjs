@@ -36,14 +36,18 @@ function run(host, path, decision = null, id = 12345678) {
 }
 
 const pre = run('www.levongalstyan.com', '/hy/');
-assert.equal(pre.scripts.length, 0, 'no script before consent');
-assert.equal(pre.calls.length, 0, 'no calls before consent');
+assert.equal(pre.scripts.length, 1, 'new visitors load analytics automatically');
+assert.equal(pre.calls.length, 0, 'initialization waits for the script');
+assert.equal(pre.document.body.children[0].hidden, true, 'automatic notice remains hidden');
+assert.equal(pre.storage.size, 0, 'automatic loading does not fabricate consent');
 pre.document.body.children[0].querySelector('[data-choice="reject"]').click();
-assert.equal(pre.scripts.length, 0, 'decline never loads script');
-pre.window.SiteAnalytics.openSettings();
-pre.document.body.children[0].querySelector('[data-choice="accept"]').click();
-assert.equal(pre.scripts.length, 1, 'consent loads one script');
 pre.scripts[0].onload();
+assert.equal(pre.calls.length, 0, 'opting out during loading prevents initialization');
+assert.equal(run('www.levongalstyan.com', '/hy/', 'reject').scripts.length, 0, 'saved opt-out prevents loading');
+pre.window.SiteAnalytics.openSettings();
+assert.equal(pre.document.body.children[0].hidden, false, 'manual settings remain available');
+pre.document.body.children[0].querySelector('[data-choice="accept"]').click();
+assert.equal(pre.scripts.length, 1, 'enabling reuses the loaded script');
 assert.deepEqual(pre.calls.map(c => c[1]), ['init', 'hit']);
 assert.equal(pre.calls[1][2], 'https://www.levongalstyan.com/hy/');
 assert.equal(pre.calls[1][3].referer, 'https://example.org/');
@@ -80,4 +84,7 @@ for (const host of ['localhost', 'preview.example.org', 'levongalstyan.com']) {
   assert.equal(run(host, '/hy/', 'accept').scripts.length, 0);
 }
 assert.equal(run('www.levongalstyan.com', '/en/', 'accept', null).scripts.length, 0, 'missing ID cannot activate');
-console.log('PASS consent, isolated host and preview, sanitized SPA hits, deduplication, goals, withdrawal');
+const automatic = run('www.levongalstyan.com', '/en/');
+automatic.scripts[0].onload();
+assert.deepEqual(automatic.calls.map(c => c[1]), ['init', 'hit'], 'new visitor generates an automatic page view');
+console.log('PASS automatic analytics, opt-out, isolated host and preview, sanitized SPA hits, deduplication, goals');
