@@ -213,17 +213,18 @@ try {
         septoplasty: ['service/4/', 'service/5/', 'procedure/rhinoplasty/'],
         fess: ['service/5/', 'service/4/'],
         orthognathic: ['service/3/', 'service/4/', 'service/6/'],
-        rhinoplasty: ['procedure/rhinoplasty/', 'service/4/'],
-        blepharoplasty: ['procedure/blepharoplasty/', 'procedure/browlift/'],
-        otoplasty: ['procedure/ottoplasty/'],
-        cheiloplasty: ['procedure/cheiloplasty/'],
-        browlift: ['procedure/browlift/', 'procedure/blepharoplasty/']
+        rhinoplasty: ['service/2/', 'procedure/blepharoplasty/', 'service/6/', 'service/3/'],
+        blepharoplasty: ['service/4/', 'service/2/', 'procedure/browlift/', 'service/7/'],
+        otoplasty: ['service/4/', 'service/2/', 'procedure/rhinoplasty/', 'service/6/'],
+        cheiloplasty: ['service/2/', 'service/4/', 'service/3/', 'procedure/blepharoplasty/'],
+        browlift: ['procedure/blepharoplasty/', 'service/4/', 'service/2/', 'procedure/cheiloplasty/']
       };
       for (const [key, routes] of Object.entries(relatedRoutes)) {
         const guideUrl = base + lang + '/guide/' + key + '/';
         await page.goto(guideUrl);
         const related = page.locator('.patient-guide + .section');
-        assert.equal(await related.locator('h2').textContent(), source.window.CONTENT[lang].relatedProcedures);
+        const aesthetic = ['rhinoplasty', 'blepharoplasty', 'otoplasty', 'cheiloplasty', 'browlift'].includes(key);
+        assert.equal(await related.locator('h2').textContent(), aesthetic ? (lang === 'hy' ? 'Իմ գործունեության այլ ուղղությունները' : 'Other areas of my practice') : source.window.CONTENT[lang].relatedProcedures);
         assert.equal(await related.locator('.tile').count(), routes.length);
         assert.equal(await page.locator('.patient-guide + .section + .section-peach .contact-form').count(), 1);
         assert.equal(await page.locator('.contact-form').count(), 1);
