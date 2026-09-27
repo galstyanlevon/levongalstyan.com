@@ -24,7 +24,12 @@ and empty destinations are neither linked nor generated as public share pages.
   sources whose content and locators were checked against the patient guide.
 - The guide is presented as a white paper sheet with a thin mid-grey perimeter,
   square corners and a restrained shadow on a neutral grey field. It ends with the
-  patient's reference points after discharge as a compact bullet list and has no additional contact form.
+  patient's reference points after discharge as a compact bullet list. After the
+  guide and References, the eight published guides show a curated Related
+  procedures tile grid, followed by the existing consultation form. Both
+  languages use the same approved card order and localised destinations. The
+  sinus lift guide includes FESS as its fourth card. Tiles reuse existing
+  procedure images or the site mark where no service illustration exists.
   The guide follows a linear reading flow without a separate contents block.
 - Direct static URLs, locale switching, responsive recovery table and a gallery
   renderer. The published guide is indexed; draft resources have no public route.

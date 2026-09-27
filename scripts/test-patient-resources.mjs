@@ -190,6 +190,34 @@ try {
       assert.equal(await page.locator('.contact-form').count(), 1);
       await page.goto(base + lang + '/service/2/');
       assert.equal(await page.locator('.patient-resource-link').count(), 1);
+      const relatedRoutes = {
+        'tooth-extraction': ['procedure/digitalimplant/', 'procedure/immediateimplants/', 'service/2/', 'procedure/gbr/'],
+        'dental-implantation': ['procedure/digitalimplant/', 'procedure/immediateimplants/', 'procedure/gbr/', 'procedure/sinuslifting/'],
+        gbr: ['procedure/digitalimplant/', 'service/2/', 'procedure/mucogingival/'],
+        'sinus-lift': ['procedure/digitalimplant/', 'service/2/', 'procedure/gbr/', 'service/5/'],
+        'impacted-tooth': ['service/11/', 'service/12/'],
+        septoplasty: ['service/4/', 'service/5/', 'procedure/rhinoplasty/'],
+        fess: ['service/5/', 'service/4/'],
+        orthognathic: ['service/3/', 'service/4/', 'service/6/']
+      };
+      for (const [key, routes] of Object.entries(relatedRoutes)) {
+        const guideUrl = base + lang + '/guide/' + key + '/';
+        await page.goto(guideUrl);
+        const related = page.locator('.patient-guide + .section');
+        assert.equal(await related.locator('h2').textContent(), source.window.CONTENT[lang].relatedProcedures);
+        assert.equal(await related.locator('.tile').count(), routes.length);
+        assert.equal(await page.locator('.patient-guide + .section + .section-peach .contact-form').count(), 1);
+        assert.equal(await page.locator('.contact-form').count(), 1);
+        assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+        await related.scrollIntoViewIfNeeded();
+        await page.screenshot({ path: `${artifacts}/related-${key}-${lang}-${width}.png` });
+        for (let i = 0; i < routes.length; i++) {
+          await page.locator('.patient-guide + .section .tile').nth(i).click();
+          await page.waitForURL(base + lang + '/' + routes[i]);
+          assert.equal(await page.locator('html').getAttribute('lang'), lang);
+          await page.goto(guideUrl);
+        }
+      }
       assert.deepEqual(errors, []);
       console.log(`PASS ${lang}, ${width}px: source content, layout, keyboard, locale routes, guide contents, recovery, galleries and form presence`);
       await context.close();

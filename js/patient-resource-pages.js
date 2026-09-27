@@ -60,6 +60,57 @@ window.createPatientResourcePages = function (ui) {
       el('h2', { class: 'uppercase-title' }, [ui.t().scheduleTitle]), ui.buildContactForm()
     ]);
   }
+  function guideRelatedProcedures(key) {
+    var T = ui.t(), armenian = state.lang === 'hy';
+    var groups = {
+      'tooth-extraction': ['digitalimplant', 'immediateimplants', 'implants', 'gbr'],
+      'dental-implantation': ['digitalimplant', 'immediateimplants', 'gbr', 'sinuslifting'],
+      gbr: ['digitalimplant', 'implants', 'mucogingival'],
+      'sinus-lift': ['digitalimplant', 'implants', 'gbr', 'fess'],
+      'impacted-tooth': ['inflammation', 'jawcysts'],
+      septoplasty: ['breathing', 'fess', 'rhinoplasty'],
+      fess: ['fess', 'breathing'],
+      orthognathic: ['orthognathic', 'breathing', 'snoring']
+    };
+    var services = { implants: 2, orthognathic: 3, breathing: 4, fess: 5, snoring: 6, inflammation: 11, jawcysts: 12 };
+    var images = {
+      digitalimplant: 'images/subs/digitalimplant.jpeg',
+      immediateimplants: 'images/subs/immediateimplants.jpg',
+      implants: 'images/subs/fixeddentures.jpg',
+      gbr: 'images/subs/gbr.jpg',
+      sinuslifting: 'images/subs/sinuslifting.jpg',
+      mucogingival: 'images/subs/mucogingival.jpg',
+      rhinoplasty: 'images/subs/rhinoplasty.png'
+    };
+    var keys = groups[key];
+    if (!keys) return null;
+    var procedures = keys.map(function (name) {
+      var service = services[name], isService = typeof service === 'number';
+      var title = isService ? T.services[service].title.replace(/\n/g, ' ') : T.subServices[name].title;
+      if (armenian && name === 'immediateimplants') title = 'Անմիջական իմպլանտացիա';
+      if (armenian && name === 'gbr') title = 'Ուղղորդված ոսկրային վերականգնում (GBR)';
+      return { route: isService ? '#/service/' + service : '#/sub/' + name, title: title, image: images[name] };
+    });
+    var section = el('section', { class: 'section center-col' }, [
+      el('h2', { class: 'uppercase-title' }, [T.relatedProcedures])
+    ]);
+    var grid = el('div', { class: 'grid grid-narrow' });
+    procedures.forEach(function (procedure) {
+      grid.appendChild(el('button', {
+        type: 'button', class: 'tile',
+        onclick: function () { window.location.href = routeHref(procedure.route); }
+      }, [
+        el('div', { class: 'tile-thumb', style: {
+          backgroundImage: "url('" + (procedure.image || 'favicon.svg') + "')",
+          backgroundSize: procedure.image ? 'cover' : '48px auto',
+          backgroundRepeat: 'no-repeat', backgroundPosition: 'center'
+        } }),
+        el('span', { class: 'tile-label' }, [procedure.title])
+      ]));
+    });
+    section.appendChild(grid);
+    return section;
+  }
   function unavailable() {
     return el('section', { class: 'section center-col' }, [
       el('h1', { class: 'service-title' }, [labels().missing]),
@@ -177,6 +228,11 @@ window.createPatientResourcePages = function (ui) {
       inner.appendChild(bibliography);
     }
     wrap.appendChild(inner); frag.appendChild(wrap);
+    var related = guideRelatedProcedures(key);
+    if (related) {
+      frag.appendChild(related);
+      frag.appendChild(contact());
+    }
     return frag;
   }
   function buildGallery(key) {
