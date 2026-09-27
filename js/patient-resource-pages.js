@@ -71,13 +71,13 @@ window.createPatientResourcePages = function (ui) {
       septoplasty: ['breathing', 'fess', 'rhinoplasty'],
       fess: ['fess', 'breathing'],
       orthognathic: ['orthognathic', 'breathing', 'snoring'],
-      rhinoplasty: ['rhinoplasty', 'breathing'],
-      blepharoplasty: ['blepharoplasty', 'browlift'],
-      otoplasty: ['ottoplasty'],
-      cheiloplasty: ['cheiloplasty'],
-      browlift: ['browlift', 'blepharoplasty']
+      rhinoplasty: ['implants', 'blepharoplasty', 'snoring', 'orthognathic'],
+      blepharoplasty: ['breathing', 'implants', 'browlift', 'tearduct'],
+      otoplasty: ['breathing', 'implants', 'rhinoplasty', 'snoring'],
+      cheiloplasty: ['implants', 'breathing', 'orthognathic', 'blepharoplasty'],
+      browlift: ['blepharoplasty', 'breathing', 'implants', 'cheiloplasty']
     };
-    var services = { implants: 2, orthognathic: 3, breathing: 4, fess: 5, snoring: 6, inflammation: 11, jawcysts: 12 };
+    var services = { implants: 2, orthognathic: 3, breathing: 4, fess: 5, snoring: 6, tearduct: 7, inflammation: 11, jawcysts: 12 };
     var images = {
       digitalimplant: 'images/subs/digitalimplant.jpeg',
       immediateimplants: 'images/subs/immediateimplants.jpg',
@@ -91,17 +91,19 @@ window.createPatientResourcePages = function (ui) {
       ottoplasty: 'images/subs/ottoplasty.png',
       cheiloplasty: 'images/subs/cheiloplasty.png'
     };
+    var otherPractice = ['rhinoplasty', 'blepharoplasty', 'otoplasty', 'cheiloplasty', 'browlift'].indexOf(key) !== -1;
     var keys = groups[key];
     if (!keys) return null;
     var procedures = keys.map(function (name) {
       var service = services[name], isService = typeof service === 'number';
       var title = isService ? T.services[service].title.replace(/\n/g, ' ') : T.subServices[name].title;
+      if (otherPractice && name === 'breathing') title = armenian ? 'Սեպտոպլաստիկա և քթային խեցիների վիրահատություն' : 'Septoplasty & Turbinate Surgery';
       if (armenian && name === 'immediateimplants') title = 'Անմիջական իմպլանտացիա';
       if (armenian && name === 'gbr') title = 'Ուղղորդված ոսկրային վերականգնում (GBR)';
       return { route: isService ? '#/service/' + service : '#/sub/' + name, title: title, image: images[name] };
     });
     var section = el('section', { class: 'section center-col' }, [
-      el('h2', { class: 'uppercase-title' }, [T.relatedProcedures])
+      el('h2', { class: 'uppercase-title' }, [otherPractice ? (armenian ? 'Իմ գործունեության այլ ուղղությունները' : 'Other areas of my practice') : T.relatedProcedures])
     ]);
     var grid = el('div', { class: 'grid grid-narrow' });
     procedures.forEach(function (procedure) {
