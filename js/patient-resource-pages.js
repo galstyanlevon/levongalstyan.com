@@ -60,14 +60,37 @@ window.createPatientResourcePages = function (ui) {
       el('h2', { class: 'uppercase-title' }, [ui.t().scheduleTitle]), ui.buildContactForm()
     ]);
   }
-  function extractionRelatedProcedures() {
+  function guideRelatedProcedures(key) {
     var T = ui.t(), armenian = state.lang === 'hy';
-    var procedures = [
-      { route: '#/sub/digitalimplant', title: T.subServices.digitalimplant.title, image: 'images/subs/digitalimplant.jpeg' },
-      { route: '#/sub/immediateimplants', title: armenian ? 'Անմիջական իմպլանտացիա' : T.subServices.immediateimplants.title, image: 'images/subs/immediateimplants.jpg' },
-      { route: '#/service/2', title: T.services[2].title.replace(/\n/g, ' '), image: 'images/subs/fixeddentures.jpg' },
-      { route: '#/sub/gbr', title: armenian ? 'Ուղղորդված ոսկրային վերականգնում (GBR)' : T.subServices.gbr.title, image: 'images/subs/gbr.jpg' }
-    ];
+    var groups = {
+      'tooth-extraction': ['digitalimplant', 'immediateimplants', 'implants', 'gbr'],
+      'dental-implantation': ['digitalimplant', 'immediateimplants', 'gbr', 'sinuslifting'],
+      gbr: ['digitalimplant', 'implants', 'mucogingival'],
+      'sinus-lift': ['digitalimplant', 'implants', 'gbr', 'fess'],
+      'impacted-tooth': ['inflammation', 'jawcysts'],
+      septoplasty: ['breathing', 'fess', 'rhinoplasty'],
+      fess: ['fess', 'breathing'],
+      orthognathic: ['orthognathic', 'breathing', 'snoring']
+    };
+    var services = { implants: 2, orthognathic: 3, breathing: 4, fess: 5, snoring: 6, inflammation: 11, jawcysts: 12 };
+    var images = {
+      digitalimplant: 'images/subs/digitalimplant.jpeg',
+      immediateimplants: 'images/subs/immediateimplants.jpg',
+      implants: 'images/subs/fixeddentures.jpg',
+      gbr: 'images/subs/gbr.jpg',
+      sinuslifting: 'images/subs/sinuslifting.jpg',
+      mucogingival: 'images/subs/mucogingival.jpg',
+      rhinoplasty: 'images/subs/rhinoplasty.png'
+    };
+    var keys = groups[key];
+    if (!keys) return null;
+    var procedures = keys.map(function (name) {
+      var service = services[name], isService = typeof service === 'number';
+      var title = isService ? T.services[service].title.replace(/\n/g, ' ') : T.subServices[name].title;
+      if (armenian && name === 'immediateimplants') title = 'Անմիջական իմպլանտացիա';
+      if (armenian && name === 'gbr') title = 'Ուղղորդված ոսկրային վերականգնում (GBR)';
+      return { route: isService ? '#/service/' + service : '#/sub/' + name, title: title, image: images[name] };
+    });
     var section = el('section', { class: 'section center-col' }, [
       el('h2', { class: 'uppercase-title' }, [T.relatedProcedures])
     ]);
@@ -78,7 +101,9 @@ window.createPatientResourcePages = function (ui) {
         onclick: function () { window.location.href = routeHref(procedure.route); }
       }, [
         el('div', { class: 'tile-thumb', style: {
-          backgroundImage: "url('" + procedure.image + "')", backgroundSize: 'cover', backgroundPosition: 'center'
+          backgroundImage: "url('" + (procedure.image || 'favicon.svg') + "')",
+          backgroundSize: procedure.image ? 'cover' : '48px auto',
+          backgroundRepeat: 'no-repeat', backgroundPosition: 'center'
         } }),
         el('span', { class: 'tile-label' }, [procedure.title])
       ]));
@@ -203,8 +228,9 @@ window.createPatientResourcePages = function (ui) {
       inner.appendChild(bibliography);
     }
     wrap.appendChild(inner); frag.appendChild(wrap);
-    if (key === 'tooth-extraction') {
-      frag.appendChild(extractionRelatedProcedures());
+    var related = guideRelatedProcedures(key);
+    if (related) {
+      frag.appendChild(related);
       frag.appendChild(contact());
     }
     return frag;
