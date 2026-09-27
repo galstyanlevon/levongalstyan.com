@@ -79,6 +79,11 @@ window.createPatientResourcePages = function (ui) {
     };
     var services = { implants: 2, orthognathic: 3, breathing: 4, fess: 5, snoring: 6, tearduct: 7, inflammation: 11, jawcysts: 12 };
     var images = {
+      breathing: 'images/services/breathing.jpg',
+      snoring: 'images/services/snoring.jpg',
+      tearduct: 'images/services/tearduct.png',
+      inflammation: 'images/services/inflammation.jpg',
+      // FESS, jaw cysts and orthognathic surgery retain the logo placeholder pending image selection.
       digitalimplant: 'images/subs/digitalimplant.jpeg',
       immediateimplants: 'images/subs/immediateimplants.jpg',
       implants: 'images/subs/fixeddentures.jpg',
