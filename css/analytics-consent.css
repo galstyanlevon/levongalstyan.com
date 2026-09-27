@@ -1,0 +1,6 @@
+.analytics-consent { position: fixed; z-index: 100; bottom: 16px; left: 16px; width: min(490px, calc(100vw - 32px)); padding: 20px; background: var(--paper); color: var(--ink); border: 1px solid rgba(39,42,60,.17); border-radius: 8px; box-shadow: 0 8px 30px rgba(39,42,60,.18); font-size: 13px; line-height: 1.5; }
+.analytics-consent[hidden] { display: none; }
+.analytics-consent p { margin: 0 0 15px; }
+.analytics-consent button { margin-right: 10px; padding: 7px 13px; border: 1px solid var(--ink); border-radius: 4px; background: transparent; color: var(--ink); cursor: pointer; }
+.analytics-consent button[data-choice="accept"] { background: var(--dark); border-color: var(--dark); color: var(--cream); }
+.analytics-settings { display: block; margin: 10px auto 22px; padding: 0; background: none; border: 0; color: inherit; font-size: 12px; text-decoration: underline; cursor: pointer; }

@@ -588,6 +588,7 @@
         return r.json();
       }).then(function (result) {
         if (result.success !== true && result.success !== "true") throw new Error("Submission rejected");
+        if (window.SiteAnalytics) window.SiteAnalytics.goal("contact_success");
         formDraft = { name: "", phone: "", email: "", message: "" };
         setState({ sent: true });
       }).catch(function () {
@@ -1160,6 +1161,9 @@
     footer.appendChild(logoIcon("#EEF9F7"));
     footer.querySelector("svg").setAttribute("class", "footer-logo");
     footer.appendChild(el("p", { class: "footer-year" }, ["2026"]));
+    footer.appendChild(el("button", { type: "button", class: "analytics-settings", onclick: function () {
+      if (window.SiteAnalytics) window.SiteAnalytics.openSettings();
+    } }, [state.lang === "hy" ? "Վերլուծության կարգավորումներ" : "Analytics settings"]));
     return footer;
   }
 

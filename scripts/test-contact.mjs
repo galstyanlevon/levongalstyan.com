@@ -10,8 +10,8 @@ for(const [label,response,success] of [
  ['rejected',{ok:true,json:async()=>({success:false})},false],
  ['malformed',{ok:true,json:async()=>{throw Error('Invalid JSON')}},false],
  ['network',null,false]]){
- let sent=false,alerts=0,calls=0;
- const c={el,state:{lang:'hy'},formDraft:{name:'TEST',phone:'000',email:'',message:'TEST'},formSending:false,t:()=>({}),serviceOptionsList:()=>['one','two'],setState:p=>{if(p.sent)sent=true},FormData:class{append(){}},AbortController,setTimeout,clearTimeout,alert:()=>alerts++,fetch:async()=>{calls++;if(!response)throw Error('Network');return response}};
+ let sent=false,alerts=0,calls=0,goals=[];
+ const c={el,window:{SiteAnalytics:{goal:id=>goals.push(id)}},state:{lang:'hy'},formDraft:{name:'TEST',phone:'000',email:'',message:'TEST'},formSending:false,t:()=>({}),serviceOptionsList:()=>['one','two'],setState:p=>{if(p.sent)sent=true},FormData:class{append(){}},AbortController,setTimeout,clearTimeout,alert:()=>alerts++,fetch:async()=>{calls++;if(!response)throw Error('Network');return response}};
  vm.createContext(c);vm.runInContext(fn+'\nthis.build=buildContactForm;',c);
  const wrap=c.build(),form=wrap.children[1];
  assert.equal(form.querySelector('[name="name"]').value,'TEST');
@@ -22,5 +22,6 @@ for(const [label,response,success] of [
  await new Promise(r=>setTimeout(r,5));
  assert.equal(calls,1);assert.equal(sent,success,label);assert.equal(alerts,success?0:1,label);assert.equal(c.formSending,false);
  assert.equal(c.formDraft.name,success?'':'TEST');
+ assert.deepEqual(goals, success ? ['contact_success'] : [], label);
  console.log('PASS',label);
 }

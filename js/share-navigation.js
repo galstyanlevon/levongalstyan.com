@@ -22,6 +22,7 @@
       var node = document.querySelector('meta[property="'+item[0]+'"],meta[name="'+item[0]+'"]');
       if (node) node.content = item[1];
     });
+    if (window.SiteAnalytics) window.SiteAnalytics.pageView();
   };
   // A base URL fixes assets on deep pages; intercept hash links so navigation stays local.
   document.addEventListener('click', function (event) {
