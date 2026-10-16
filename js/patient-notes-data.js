@@ -1,6 +1,7 @@
 /* Approved public notes. Never turn a submitted draft into a published entry here.
  * Add assets to this registry only after publication consent and a privacy review.
- * language is the language of the approved public text/image, never auto-translated.
+ * language is the page locale. Publish each approved original in both locales,
+ * without translating its text/image unless separately approved.
  */
 window.PATIENT_NOTES_CONFIG = Object.freeze({ preview: false, showPreviewNotice: false });
 window.PATIENT_NOTES = ['hy', 'en'].map(function (language) {
@@ -20,17 +21,20 @@ window.PATIENT_NOTES = ['hy', 'en'].map(function (language) {
   };
 });
 
+['hy', 'en'].forEach(function (language) {
 window.PATIENT_NOTES.push({
-  id: 'elizabeth-2026-en',
-  language: 'en',
+  id: 'elizabeth-2026-' + language,
+  language: language,
   type: 'handwriting',
   image: 'images/patient-notes/elizabeth-2026.jpg',
-  text: 'Original handwritten patient note in English.',
+  text: language === 'hy' ? 'Բուժառուի բնօրինակ անգլերեն ձեռագիր գրառում։' :
+    'Original handwritten patient note in English.',
   year: 2026,
   displayName: 'Elizabeth',
   published: true,
   demo: false,
   sortOrder: 2
+});
 });
 
 window.PATIENT_LINKS.en.push({ key: "notes", label: "Patient Notes" });

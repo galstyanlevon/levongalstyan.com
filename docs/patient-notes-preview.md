@@ -35,5 +35,5 @@ Additional upload-flow check: selecting an unsupported file while an earlier pho
 ## Ongoing moderation
 
 1. Review each received note and image for publication consent, unintended identifiers and medical details.
-2. Add only approved notes to the public registry; receiving a submission never publishes it automatically.
+2. Add only approved notes to the public registry; receiving a submission never publishes it automatically. Publish every approved note in both Armenian and English page states, using the same original text/image and approved display name/year. Localise only interface labels and image descriptions; never translate the patient's original without separate approval. Keep one card per note per locale and display the year once.
 3. Retain consent records outside the public repository.
