@@ -52,6 +52,20 @@ try {
       // No real messages or external embedded media requests during the checks.
       await page.route('**/*', route => route.request().url().startsWith(base) ? route.continue() : route.abort());
       await page.addInitScript(other => { try { localStorage.setItem('galstyan.lang', other); } catch {} }, lang === 'hy' ? 'en' : 'hy');
+      await page.goto(base + lang + '/patients/notes/');
+      const elizabeth = page.locator('[data-note-id="elizabeth-2026-' + lang + '"]');
+      await elizabeth.waitFor();
+      assert.equal(await elizabeth.count(), 1);
+      assert.equal(await elizabeth.locator('..').locator('.pn-meta').textContent(), 'Elizabeth · 2026');
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+      await page.screenshot({path:`${artifacts}/notes-${lang}-${width}.png`});
+      await elizabeth.click();
+      assert.equal(await page.locator('.pn-viewer h2').textContent(), 'Elizabeth · 2026');
+      await page.locator('.pn-view-body img').evaluate(img => img.decode());
+      assert.ok((await page.locator('.pn-view-body img').getAttribute('src')).endsWith('images/patient-notes/elizabeth-2026.jpg'));
+      await page.locator('.pn-viewer .pn-actions button').click();
+      assert.equal(await page.locator('.pn-view-body.is-zoomed').count(), 1);
+      await page.keyboard.press('Escape');
       await page.goto(base + lang + '/service/3/');
       const links = page.locator('.patient-resource-link');
       assert.equal(await links.count(), 1);
