@@ -20,5 +20,18 @@ window.PATIENT_NOTES = ['hy', 'en'].map(function (language) {
   };
 });
 
+window.PATIENT_NOTES.push({
+  id: 'elizabeth-2026-en',
+  language: 'en',
+  type: 'handwriting',
+  image: 'images/patient-notes/elizabeth-2026.jpg',
+  text: 'Original handwritten patient note in English.',
+  year: 2026,
+  displayName: 'Elizabeth',
+  published: true,
+  demo: false,
+  sortOrder: 2
+});
+
 window.PATIENT_LINKS.en.push({ key: "notes", label: "Patient Notes" });
 window.PATIENT_LINKS.hy.push({ key: "notes", label: "Բուժառուների խոսքերը" });
