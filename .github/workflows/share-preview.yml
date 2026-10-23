@@ -1,7 +1,7 @@
 name: Preview share pages
 on:
   push:
-    branches: [feature/share-pages, preview/septoplasty-fess-guides, preview/all-patient-guidelines, draft/five-aesthetic-patient-guides]
+    branches: [preview/contact-form-2026-10-23]
   workflow_dispatch:
 permissions:
   contents: read
