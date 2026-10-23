@@ -5,6 +5,7 @@
 
   var formDraft = { name: "", phone: "", email: "", message: "" };
   var formSending = false;
+  var formError = false;
   var state = {
     lang: (function () { var explicit = document.documentElement.dataset.pageLang; if (explicit === "hy" || explicit === "en") return explicit; try { var s = localStorage.getItem("galstyan.lang"); return (s === "hy" || s === "en") ? s : "hy"; } catch (e) { return "hy"; } })(),
     mobile: document.documentElement.clientWidth < 1180,
@@ -558,24 +559,28 @@
     return section;
   }
 
-  function serviceOptionsList(T) { return [T.fService].concat(T.services.map(function (s) { return s.title.replace(/\n/g, " "); })); }
+  function serviceOptionsList(T) { return T.services.map(function (s) { return s.title.replace(/\n/g, " "); }); }
 
   function buildContactForm() {
     var T = t();
     var wrap = el("div", { class: "form-wrap" });
-    wrap.appendChild(el("div", { class: "sent-panel" + (state.sent ? " show" : "") }, [
+    wrap.appendChild(el("div", { class: "sent-panel" + (state.sent ? " show" : ""), role: "status", tabindex: "-1" }, [
       el("p", null, [T.sentTitle]), el("p", null, [T.sentBody]),
       el("button", { type: "button", onclick: function () { setState({ sent: false, service: "" }); } }, [T.again])
     ]));
-    var form = el("form", { class: "contact-form" + (state.sent ? " hide" : ""), onsubmit: function (e) {
+    var form = el("form", { class: "contact-form" + (state.sent ? " hide" : ""), "aria-busy": String(formSending), onsubmit: function (e) {
       e.preventDefault();
       if (formSending || !e.target.reportValidity()) return;
       formSending = true;
+      formError = false;
+      form.setAttribute("aria-busy", "true");
+      form.querySelector(".form-error").hidden = true;
+      var delivered = false;
       var fd = new FormData(e.target);
       fd.append("_subject", "New inquiry from levongalstyan.com");
       fd.append("_captcha", "false");
       var submitBtn = e.target.querySelector(".form-submit");
-      if (submitBtn) submitBtn.disabled = true;
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = T.sending; }
       var controller = new AbortController();
       var timeout = setTimeout(function () { controller.abort(); }, 20000);
       fetch("https://formsubmit.co/ajax/galstyan.levon@gmail.com", {
@@ -588,34 +593,46 @@
         return r.json();
       }).then(function (result) {
         if (result.success !== true && result.success !== "true") throw new Error("Submission rejected");
-        if (window.SiteAnalytics) window.SiteAnalytics.goal("contact_success");
+        delivered = true;
+        try { if (window.SiteAnalytics) window.SiteAnalytics.goal("contact_success"); } catch (error) { /* Delivery must not depend on analytics. */ }
         formDraft = { name: "", phone: "", email: "", message: "" };
-        setState({ sent: true });
       }).catch(function () {
-        if (submitBtn) submitBtn.disabled = false;
-        alert(state.lang === "hy" ? "Հաղորդագրությունը չուղարկվեց։ Փորձեք կրկին կամ գրեք galstyan.levon@gmail.com հասցեին։" : "Your message could not be sent. Please try again or email galstyan.levon@gmail.com.");
-      }).finally(function () { clearTimeout(timeout); formSending = false; if (submitBtn) submitBtn.disabled = false; });
+        formError = true;
+      }).finally(function () {
+        clearTimeout(timeout);
+        formSending = false;
+        setState(delivered ? { sent: true } : {});
+        var feedback = document.querySelector(delivered ? ".sent-panel.show" : ".form-error");
+        if (feedback) feedback.focus();
+      });
     } });
-    form.appendChild(el("label", null, [T.fName, el("input", { name: "name", required: "true", placeholder: T.phName })]));
+    form.appendChild(el("p", { class: "form-intro" }, [T.contactIntro]));
+    form.appendChild(el("label", null, [T.fName + " *", el("input", { name: "name", required: "true", autocomplete: "name" })]));
     form.appendChild(el("div", { class: "form-row" }, [
-      el("label", null, [T.fPhone, el("input", { name: "phone", required: "true", placeholder: "+374 " })]),
-      el("label", null, [T.fEmail, el("input", { name: "email", type: "email", placeholder: "name@mail.com" })])
+      el("label", null, [T.fPhone + " *", el("input", { name: "phone", type: "tel", inputmode: "tel", autocomplete: "tel", required: "true", placeholder: "+374 …" })]),
+      el("label", null, [T.fEmail, el("input", { name: "email", type: "email", inputmode: "email", autocomplete: "email", autocapitalize: "none", spellcheck: "false", placeholder: "name@example.com" })])
     ]));
     var select = el("select", { name: "service", onchange: function (e) { state.service = e.target.value; } });
-    var current = state.service || T.fService;
-    serviceOptionsList(T).forEach(function (o) {
+    var current = state.service || "";
+    select.appendChild(el("option", { value: "", selected: current ? null : "true" }, [T.phService]));
+    var options = serviceOptionsList(T);
+    if (current && options.indexOf(current) === -1) options.unshift(current);
+    options.forEach(function (o) {
       select.appendChild(el("option", { value: o, selected: o === current ? "true" : null }, [o]));
     });
     form.appendChild(el("label", null, [T.fService, select]));
     form.appendChild(el("label", null, [T.fMessage, el("textarea", { name: "message", rows: "4", placeholder: T.phMessage, "aria-describedby": "message-help" })]));
     form.appendChild(el("p", { id: "message-help", class: "form-help" }, [T.messageHelp]));
-    form.appendChild(el("button", { type: "submit", class: "form-submit" }, [T.send]));
+    form.appendChild(el("p", { class: "form-required" }, [T.requiredFields]));
+    form.appendChild(el("p", { class: "form-error", role: "alert", tabindex: "-1", hidden: formError ? null : "true" }, [
+      T.sendError + " ", el("a", { href: "mailto:galstyan.levon@gmail.com" }, ["galstyan.levon@gmail.com"])
+    ]));
+    form.appendChild(el("button", { type: "submit", class: "form-submit", "aria-live": "polite" }, [formSending ? T.sending : T.send]));
     Object.keys(formDraft).forEach(function (key) {
       var input = form.querySelector('[name="' + key + '"]');
       input.value = formDraft[key];
       input.addEventListener("input", function () { formDraft[key] = input.value; });
     });
-    form.querySelector('[name="phone"]').type = "tel";
     form.querySelector(".form-submit").disabled = formSending;
     wrap.appendChild(form);
     return wrap;
