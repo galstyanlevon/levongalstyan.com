@@ -3,8 +3,9 @@
   "use strict";
   var CONTENT = window.CONTENT, SUB_PARENT = window.SUB_PARENT, CRED = window.CRED, HREFS = window.HREFS;
 
-  var formDraft = { name: "", phone: "", email: "", message: "" };
+  var formDraft = { name: "", phone: "", email: "", message: "", contact_method: "" };
   var formSending = false;
+  var formError = false;
   var state = {
     lang: (function () { var explicit = document.documentElement.dataset.pageLang; if (explicit === "hy" || explicit === "en") return explicit; try { var s = localStorage.getItem("galstyan.lang"); return (s === "hy" || s === "en") ? s : "hy"; } catch (e) { return "hy"; } })(),
     mobile: document.documentElement.clientWidth < 1180,
@@ -109,7 +110,7 @@
   function toggleLang() {
     var next = state.lang === "en" ? "hy" : "en";
     try { localStorage.setItem("galstyan.lang", next); } catch (e) {}
-    setState({ lang: next, service: "" });
+    setState({ lang: next });
     if (window.syncSharePage) window.syncSharePage(next);
   }
 
@@ -558,24 +559,29 @@
     return section;
   }
 
-  function serviceOptionsList(T) { return [T.fService].concat(T.services.map(function (s) { return s.title.replace(/\n/g, " "); })); }
-
   function buildContactForm() {
     var T = t();
     var wrap = el("div", { class: "form-wrap" });
-    wrap.appendChild(el("div", { class: "sent-panel" + (state.sent ? " show" : "") }, [
-      el("p", null, [T.sentTitle]), el("p", null, [T.sentBody]),
+    wrap.appendChild(el("div", { class: "sent-panel" + (state.sent ? " show" : ""), role: "status", tabindex: "-1" }, [
+      el("p", null, [T.sentTitle]),
       el("button", { type: "button", onclick: function () { setState({ sent: false, service: "" }); } }, [T.again])
     ]));
-    var form = el("form", { class: "contact-form" + (state.sent ? " hide" : ""), onsubmit: function (e) {
+    var form = el("form", { class: "contact-form" + (state.sent ? " hide" : ""), "aria-busy": String(formSending), onsubmit: function (e) {
       e.preventDefault();
-      if (formSending || !e.target.reportValidity()) return;
+      if (formSending) return;
+      updateContactRequirements();
+      if (!e.target.reportValidity()) return;
       formSending = true;
+      formError = false;
+      form.setAttribute("aria-busy", "true");
+      form.querySelector(".form-error").hidden = true;
+      var delivered = false;
       var fd = new FormData(e.target);
+      fd.set("service", T.contactSubjects[subject.value] || subject.value);
       fd.append("_subject", "New inquiry from levongalstyan.com");
       fd.append("_captcha", "false");
       var submitBtn = e.target.querySelector(".form-submit");
-      if (submitBtn) submitBtn.disabled = true;
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = T.sending; }
       var controller = new AbortController();
       var timeout = setTimeout(function () { controller.abort(); }, 20000);
       fetch("https://formsubmit.co/ajax/galstyan.levon@gmail.com", {
@@ -588,34 +594,69 @@
         return r.json();
       }).then(function (result) {
         if (result.success !== true && result.success !== "true") throw new Error("Submission rejected");
-        if (window.SiteAnalytics) window.SiteAnalytics.goal("contact_success");
-        formDraft = { name: "", phone: "", email: "", message: "" };
-        setState({ sent: true });
+        delivered = true;
+        try { if (window.SiteAnalytics) window.SiteAnalytics.goal("contact_success"); } catch (error) { /* Delivery must not depend on analytics. */ }
+        formDraft = { name: "", phone: "", email: "", message: "", contact_method: "" };
       }).catch(function () {
-        if (submitBtn) submitBtn.disabled = false;
-        alert(state.lang === "hy" ? "Հաղորդագրությունը չուղարկվեց։ Փորձեք կրկին կամ գրեք galstyan.levon@gmail.com հասցեին։" : "Your message could not be sent. Please try again or email galstyan.levon@gmail.com.");
-      }).finally(function () { clearTimeout(timeout); formSending = false; if (submitBtn) submitBtn.disabled = false; });
+        formError = true;
+      }).finally(function () {
+        clearTimeout(timeout);
+        formSending = false;
+        setState(delivered ? { sent: true, service: "" } : {});
+        var feedback = document.querySelector(delivered ? ".sent-panel.show" : ".form-error");
+        if (feedback) feedback.focus();
+      });
     } });
-    form.appendChild(el("label", null, [T.fName, el("input", { name: "name", required: "true", placeholder: T.phName })]));
-    form.appendChild(el("div", { class: "form-row" }, [
-      el("label", null, [T.fPhone, el("input", { name: "phone", required: "true", placeholder: "+374 " })]),
-      el("label", null, [T.fEmail, el("input", { name: "email", type: "email", placeholder: "name@mail.com" })])
-    ]));
-    var select = el("select", { name: "service", onchange: function (e) { state.service = e.target.value; } });
-    var current = state.service || T.fService;
-    serviceOptionsList(T).forEach(function (o) {
-      select.appendChild(el("option", { value: o, selected: o === current ? "true" : null }, [o]));
+    var subject = el("select", { name: "service", onchange: function (e) { state.service = e.target.value; } });
+    var currentSubject = state.service || "";
+    subject.appendChild(el("option", { value: "" }, [T.phService]));
+    Object.keys(T.contactSubjects).forEach(function (key) {
+      subject.appendChild(el("option", { value: key }, [T.contactSubjects[key]]));
     });
-    form.appendChild(el("label", null, [T.fService, select]));
+    if (currentSubject && !Object.prototype.hasOwnProperty.call(T.contactSubjects, currentSubject)) {
+      subject.appendChild(el("option", { value: currentSubject }, [currentSubject]));
+    }
+    subject.value = currentSubject;
+    form.appendChild(el("div", { class: "form-row" }, [
+      el("label", null, [T.fName + " *", el("input", { name: "name", required: "true", autocomplete: "name" })]),
+      el("label", null, [T.fService, subject])
+    ]));
     form.appendChild(el("label", null, [T.fMessage, el("textarea", { name: "message", rows: "4", placeholder: T.phMessage, "aria-describedby": "message-help" })]));
     form.appendChild(el("p", { id: "message-help", class: "form-help" }, [T.messageHelp]));
-    form.appendChild(el("button", { type: "submit", class: "form-submit" }, [T.send]));
+    var method = el("select", { name: "contact_method", "aria-describedby": "contact-details-help", onchange: function () {
+      formDraft.contact_method = method.value;
+      updateContactRequirements();
+    } });
+    Object.keys(T.contactMethods).forEach(function (key) {
+      method.appendChild(el("option", { value: key }, [T.contactMethods[key]]));
+    });
+    form.appendChild(el("label", null, [T.fContactMethod, method]));
+    form.appendChild(el("div", { class: "form-row" }, [
+      el("label", null, [T.fPhone, el("input", { name: "phone", type: "tel", inputmode: "tel", autocomplete: "tel", placeholder: "+374 …", "aria-describedby": "contact-details-help" })]),
+      el("label", null, [T.fEmail, el("input", { name: "email", type: "email", inputmode: "email", autocomplete: "email", autocapitalize: "none", spellcheck: "false", placeholder: "name@example.com", "aria-describedby": "contact-details-help" })])
+    ]));
+    var detailsHelp = el("p", { id: "contact-details-help", class: "form-help", "aria-live": "polite" });
+    form.appendChild(detailsHelp);
+    function updateContactRequirements() {
+      var phone = form.querySelector('[name="phone"]');
+      var email = form.querySelector('[name="email"]');
+      var needsEmail = method.value === "email";
+      var needsPhone = method.value === "whatsapp" || method.value === "telegram" || method.value === "phone";
+      phone.required = needsPhone || (!needsEmail && !email.value.trim());
+      email.required = needsEmail || (!needsPhone && !phone.value.trim());
+      detailsHelp.textContent = T.contactMethodHelp[method.value] || T.contactDetailsHelp;
+    }
+    form.appendChild(el("p", { class: "form-required" }, [T.requiredFields]));
+    form.appendChild(el("p", { class: "form-error", role: "alert", tabindex: "-1", hidden: formError ? null : "true" }, [
+      T.sendError + " ", el("a", { href: "mailto:galstyan.levon@gmail.com" }, ["galstyan.levon@gmail.com"])
+    ]));
+    form.appendChild(el("button", { type: "submit", class: "form-submit", "aria-live": "polite" }, [formSending ? T.sending : T.send]));
     Object.keys(formDraft).forEach(function (key) {
       var input = form.querySelector('[name="' + key + '"]');
       input.value = formDraft[key];
-      input.addEventListener("input", function () { formDraft[key] = input.value; });
+      input.addEventListener("input", function () { formDraft[key] = input.value; updateContactRequirements(); });
     });
-    form.querySelector('[name="phone"]').type = "tel";
+    updateContactRequirements();
     form.querySelector(".form-submit").disabled = formSending;
     wrap.appendChild(form);
     return wrap;
