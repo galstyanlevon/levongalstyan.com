@@ -58,7 +58,7 @@ h1, h2, h3, p { margin: 0; }
 .navigation-drawer.is-open { transform: translateX(0); visibility: visible; pointer-events: auto; transition: transform .24s ease, visibility 0s; }
 .navigation-drawer-head { flex: none; padding: 18px 32px 14px; }
 .navigation-drawer-controls { display: flex; align-items: center; gap: 16px; min-height: 44px; margin-bottom: 12px; }
-.navigation-drawer h2 { margin: 0; font-size: 24px; line-height: 1.4; font-weight: 700; color: var(--dark); overflow-wrap: anywhere; }
+.navigation-drawer h2 { margin: 0; font-size: 17px; line-height: 26px; font-weight: 700; color: var(--dark); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; overflow-wrap: anywhere; }
 .navigation-drawer h3 { margin: 20px 0 0; padding-top: 18px; border-top: 1px solid rgba(39,42,60,.12); font-size: 17px; line-height: 1.5; font-weight: 700; color: var(--ink); overflow-wrap: anywhere; }
 .navigation-back, .navigation-close { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 0; border: 0; background: none; color: var(--ink); cursor: pointer; }
 .navigation-back { gap: 12px; font-size: 14px; }
@@ -91,7 +91,8 @@ h1, h2, h3, p { margin: 0; }
 .mobile-top-link, .mobile-section-heading { border-top: 1px solid rgba(39,42,60,.12); }
 .mobile-top-link { padding: 20px 26px 20px 0; text-align: right; }
 .mobile-top-link:first-child { border-top: 0; }
-.mobile-top-link, .services-toggle-m { font-size: 18px; font-weight: 700; line-height: 1.45; color: var(--dark); }
+.mobile-top-link, .services-toggle-m { font-size: 15px; font-weight: 700; line-height: 24px; color: var(--dark); }
+.mobile-top-link, .services-toggle-m > span { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 .services-toggle-m { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 20px 0; background: none; border: 0; cursor: pointer; width: 100%; text-align: right; }
 .services-toggle-m > span, .mobile-service-heading > span { min-width: 0; }
 .services-toggle-m svg, .mobile-service-heading svg { flex: none; }
