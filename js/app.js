@@ -677,7 +677,6 @@
       email.required = needsEmail || (!needsPhone && !phone.value.trim());
       detailsHelp.textContent = T.contactMethodHelp[method.value] || T.contactDetailsHelp;
     }
-    form.appendChild(el("p", { class: "form-required" }, [T.requiredFields]));
     form.appendChild(el("p", { class: "form-error", role: "alert", tabindex: "-1", hidden: formError ? null : "true" }, [
       T.sendError + " ", el("a", { href: "mailto:galstyan.levon@gmail.com" }, ["galstyan.levon@gmail.com"])
     ]));
