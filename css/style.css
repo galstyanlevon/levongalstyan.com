@@ -249,7 +249,6 @@ a.mobile-service-heading { padding-right: 26px; }
 .form-submit { margin-top: 6px; height: 70px; border: 0; border-radius: 4px; background: var(--ink); color: var(--paper); font-size: 15px; cursor: pointer; }
 .form-submit:hover { background: var(--dark); }
 .form-submit:disabled { opacity: .65; cursor: wait; }
-.form-required { margin-top: -8px; font-size: 13px; line-height: 1.5; color: #4b4e5c; }
 .form-error { padding: 16px; border-left: 3px solid #9c422e; background: var(--paper); color: #7b3425; line-height: 1.6; overflow-wrap: anywhere; }
 .form-error[hidden] { display: none; }
 .form-error a { text-decoration: underline; text-underline-offset: 3px; }
