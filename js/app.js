@@ -12,6 +12,7 @@
     phone: window.innerWidth < 768,
     menuOpen: false,
     servicesOpen: false,
+    mobileServices: {},
     drawerSection: null,
     drawerService: null,
     route: null,
@@ -102,6 +103,12 @@
 
   function closeAllMenus() {
     state.servicesOpen = false; state.activityOpen = false; state.patientsOpen = false; state.menuOpen = false;
+    state.mobileServices = {};
+    var mobileMenu = document.getElementById("mobile-menu");
+    if (mobileMenu) {
+      mobileMenu.classList.remove("open");
+      document.getElementById("nav-menu").setAttribute("aria-expanded", "false");
+    }
     closeNavigation(false);
   }
   function goService(i) { closeAllMenus(); window.location.hash = "#/service/" + i; }
@@ -196,7 +203,8 @@
   var INSIGHT_KEYS = ["publications", "conferences", "lectures", "videos"];
   var navigationOpener = null;
   function focusNavigationTitle() {
-    var title = document.getElementById("navigation-title");
+    var title = document.getElementById("navigation-subtitle");
+    if (!title || title.hidden) title = document.getElementById("navigation-title");
     if (title) title.focus({ preventScroll: true });
   }
   function closeNavigation(restoreFocus) {
@@ -245,7 +253,8 @@
           ]),
           el("button", { type: "button", class: "navigation-close", "aria-label": T.menuLabels.close, onclick: function () { closeNavigation(true); } }, [el("span", { "aria-hidden": "true" }, ["×"])])
         ]),
-        el("h2", { id: "navigation-title", tabindex: "-1" }, [T.menuLabels.menu])
+        el("h2", { id: "navigation-title", tabindex: "-1" }, [T.menuLabels.menu]),
+        el("h3", { id: "navigation-subtitle", tabindex: "-1", hidden: "" })
       ]),
       el("nav", { class: "navigation-drawer-list", "aria-labelledby": "navigation-title" })
     ]);
@@ -268,7 +277,12 @@
     var title = drawer.querySelector("#navigation-title");
     var service = state.drawerService;
     var labels = { menu: T.menuLabels.menu, services: T.nav[1], activity: T.nav[2], patients: T.nav[3] };
-    title.textContent = service != null ? T.services[service].title.replace(/\n/g, " ") : labels[section];
+    title.textContent = labels[section];
+    var subtitle = drawer.querySelector("#navigation-subtitle");
+    subtitle.hidden = service == null;
+    subtitle.textContent = service != null ? T.services[service].title.replace(/\n/g, " ") : "";
+    list.setAttribute("aria-labelledby", service != null ? "navigation-subtitle" : "navigation-title");
+    list.classList.toggle("navigation-categories", service == null && (section === "services" || section === "menu"));
     drawer.querySelector(".navigation-back").hidden = service == null && (!state.mobile || section === "menu");
     list.replaceChildren();
     list.scrollTop = 0;
@@ -305,40 +319,54 @@
   function buildMobileMenu() {
     if (!state.phone) return null;
     var T = t();
-    var wrap = el("div", { id: "mobile-menu", class: "mobile-menu" + (state.menuOpen ? " open" : "") });
+    var wrap = el("nav", { id: "mobile-menu", class: "mobile-menu" + (state.menuOpen ? " open" : ""), "aria-label": T.menuLabels.menu });
+    function section(label, key, id) {
+      var subWrap = el("div", { id: id, class: "mobile-subs", hidden: state[key] ? null : "" });
+      var btn = el("button", {
+        type: "button", class: "services-toggle-m", "aria-expanded": String(!!state[key]), "aria-controls": id,
+        onclick: function () {
+          state[key] = !state[key];
+          btn.setAttribute("aria-expanded", String(state[key]));
+          subWrap.hidden = !state[key];
+        }
+      }, [el("span", null, [label]), chevron(false)]);
+      wrap.appendChild(el("h2", { class: "mobile-section-heading" }, [btn]));
+      wrap.appendChild(subWrap);
+      return subWrap;
+    }
+    function mobileLink(label, href, className) {
+      return el("a", { href: href, class: className || "mobile-menu-link", onclick: closeAllMenus }, [label]);
+    }
     T.nav.forEach(function (label, i) {
       if (i === 1) {
-        var btn = el("button", { type: "button", class: "services-toggle-m", onclick: function () { setState({ servicesOpen: !state.servicesOpen }); } }, [
-          el("span", null, [label])
-        ]);
-        wrap.appendChild(btn);
-        var subWrap = el("div", { class: "mobile-subs" + (state.servicesOpen ? " open" : "") });
+        var subWrap = section(label, "servicesOpen", "mobile-services");
         T.services.forEach(function (s, j) {
-          subWrap.appendChild(el("button", { type: "button", onclick: function () { goService(j); } }, [s.title.replace(/\n/g, " ")]));
+          var name = s.title.replace(/\n/g, " "), subs = subsFor(j, T);
+          if (subs) {
+            var group = el("details", {
+              class: "mobile-service-group", open: state.mobileServices[j] ? "" : null,
+              ontoggle: function () { state.mobileServices[j] = group.open; }
+            }, [el("summary", { class: "mobile-service-heading" }, [el("span", null, [name]), chevron(false)])]);
+            var procedures = el("div", { class: "mobile-procedures" }, [mobileLink(T.menuLabels.overview, "#/service/" + j)]);
+            subs.forEach(function (sub) { procedures.appendChild(mobileLink(sub.title, "#/sub/" + sub.key)); });
+            group.appendChild(procedures);
+            subWrap.appendChild(group);
+          } else {
+            subWrap.appendChild(mobileLink(name, "#/service/" + j, "mobile-service-heading"));
+          }
         });
-        wrap.appendChild(subWrap);
       } else if (i === 2) {
-        var abtn = el("button", { type: "button", class: "services-toggle-m", onclick: function () { setState({ activityOpen: !state.activityOpen }); } }, [
-          el("span", null, [label])
-        ]);
-        wrap.appendChild(abtn);
-        var asubWrap = el("div", { class: "mobile-subs" + (state.activityOpen ? " open" : "") });
+        var asubWrap = section(label, "activityOpen", "mobile-activity");
         INSIGHT_KEYS.forEach(function (k, idx) {
-          asubWrap.appendChild(el("button", { type: "button", onclick: function () { goRoute("insight/" + k); } }, [T.insights[idx].title]));
+          asubWrap.appendChild(mobileLink(T.insights[idx].title, "#/insight/" + k));
         });
-        wrap.appendChild(asubWrap);
       } else if (i === 3) {
-        var pbtn = el("button", { type: "button", class: "services-toggle-m", onclick: function () { setState({ patientsOpen: !state.patientsOpen }); } }, [
-          el("span", null, [label])
-        ]);
-        wrap.appendChild(pbtn);
-        var psubWrap = el("div", { class: "mobile-subs" + (state.patientsOpen ? " open" : "") });
+        var psubWrap = section(label, "patientsOpen", "mobile-patients");
         window.PATIENT_LINKS[state.lang].forEach(function (p) {
-          psubWrap.appendChild(el("button", { type: "button", onclick: function () { goRoute("patients/" + p.key); setState({ menuOpen: false }); } }, [p.label]));
+          psubWrap.appendChild(mobileLink(p.label, "#/patients/" + p.key));
         });
-        wrap.appendChild(psubWrap);
       } else {
-        wrap.appendChild(el("a", { href: HREFS[i], onclick: function () { setState({ menuOpen: false }); } }, [label]));
+        wrap.appendChild(mobileLink(label, HREFS[i], "mobile-top-link"));
       }
     });
     return wrap;
