@@ -3,6 +3,7 @@ window.CONTENT = {
   en: {
     contacts: "Contact", langLabel: "ARM",
     nav: ["Home", "Clinical Practice", "Academic Activity", "For Patients"],
+    menuLabels: { menu: "Menu", close: "Close menu", back: "Back", overview: "Overview" },
     heroName: "LEVON R. GALSTYAN",
     heroDegrees: "DMD, MD, DDS",
     heroRole: "Oral and Maxillofacial Surgeon",
@@ -368,6 +369,7 @@ window.CONTENT = {
   hy: {
     contacts: "ԿԱՊ", langLabel: "ENG",
     nav: ["Գլխավոր", "Կլինիկական գործունեություն", "Ակադեմիական գործունեություն", "Պացիենտներին"],
+    menuLabels: { menu: "Մենյու", close: "Փակել մենյուն", back: "Վերադառնալ", overview: "Ընդհանուր տեղեկություն" },
     heroPrefix: "դր.",
     heroName: "ԼԵՎՈՆ Ռ. ԳԱԼՍՏՅԱՆ",
     heroRole: "Դիմածնոտային վիրաբույժ",
