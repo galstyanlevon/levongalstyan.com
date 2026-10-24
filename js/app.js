@@ -577,6 +577,7 @@
       form.querySelector(".form-error").hidden = true;
       var delivered = false;
       var fd = new FormData(e.target);
+      fd.set("service", T.contactSubjects[subject.value] || subject.value);
       fd.append("_subject", "New inquiry from levongalstyan.com");
       fd.append("_captcha", "false");
       var submitBtn = e.target.querySelector(".form-submit");
@@ -606,9 +607,19 @@
         if (feedback) feedback.focus();
       });
     } });
+    var subject = el("select", { name: "service", onchange: function (e) { state.service = e.target.value; } });
+    var currentSubject = state.service || "";
+    subject.appendChild(el("option", { value: "" }, [T.phService]));
+    Object.keys(T.contactSubjects).forEach(function (key) {
+      subject.appendChild(el("option", { value: key }, [T.contactSubjects[key]]));
+    });
+    if (currentSubject && !Object.prototype.hasOwnProperty.call(T.contactSubjects, currentSubject)) {
+      subject.appendChild(el("option", { value: currentSubject }, [currentSubject]));
+    }
+    subject.value = currentSubject;
     form.appendChild(el("div", { class: "form-row" }, [
       el("label", null, [T.fName + " *", el("input", { name: "name", required: "true", autocomplete: "name" })]),
-      el("label", null, [T.fService, el("input", { name: "service", value: state.service || "", placeholder: T.phService, oninput: function (e) { state.service = e.target.value; } })])
+      el("label", null, [T.fService, subject])
     ]));
     form.appendChild(el("label", null, [T.fMessage, el("textarea", { name: "message", rows: "4", placeholder: T.phMessage, "aria-describedby": "message-help" })]));
     form.appendChild(el("p", { id: "message-help", class: "form-help" }, [T.messageHelp]));

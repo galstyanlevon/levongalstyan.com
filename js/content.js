@@ -324,7 +324,15 @@ window.CONTENT = {
     scheduleTitle: "Get in touch",
     fName: "Full name",
     fPhone: "Phone number", fEmail: "Email",
-    fService: "Subject (optional)", phService: "Subject of your message", fMessage: "Message",
+    fService: "Subject (optional)", phService: "Select a subject", fMessage: "Message",
+    contactSubjects: {
+      health: "Health or treatment",
+      appointment: "Appointment",
+      collaboration: "Professional collaboration",
+      academic: "Research & education",
+      personal: "Personal enquiry",
+      other: "Other"
+    },
     phMessage: "Your question or message",
     messageHelp: "Reason for getting in touch: a question, proposal or another topic, with any details you consider relevant.",
     fContactMethod: "Preferred contact method",
@@ -683,7 +691,15 @@ dentalImplantsIntro: "Ատամնաբուժական իմպլանտները, ըս�
     scheduleTitle: "Կապ հաստատել",
     fName: "Անուն, ազգանուն",
     fPhone: "Հեռախոսահամար", fEmail: "Էլ․ հասցե",
-    fService: "Թեմա (ըստ ցանկության)", phService: "Հաղորդագրության թեման", fMessage: "Հաղորդագրություն",
+    fService: "Թեմա (ըստ ցանկության)", phService: "Ընտրեք թեման", fMessage: "Հաղորդագրություն",
+    contactSubjects: {
+      health: "Առողջություն կամ բուժում",
+      appointment: "Այցի գրանցում",
+      collaboration: "Համագործակցություն",
+      academic: "Գիտություն և կրթություն",
+      personal: "Անձնական հարց",
+      other: "Այլ"
+    },
     phMessage: "Ձեր հարցը կամ հաղորդագրությունը",
     messageHelp: "Դիմելու առիթը՝ հարց, առաջարկ կամ այլ թեմա՝ Ձեզ համար կարևոր մանրամասներով։",
     fContactMethod: "Ձեզ հարմար կապի եղանակը",

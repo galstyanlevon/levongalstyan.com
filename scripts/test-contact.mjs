@@ -42,6 +42,7 @@ function setup(lang, fetchImpl, analyticsThrows = false) {
         collect(form); submitted = this;
       }
       append(...pair) { this.extra.push(pair); }
+      set(key, value) { this.fields[key] = value; }
     },
     AbortController, setTimeout, clearTimeout,
     fetch: (...args) => { calls++; return fetchImpl(...args); }
@@ -67,8 +68,8 @@ for (const lang of ['hy', 'en']) {
     assert.equal(form.querySelector('[name="phone"]').props.type, 'tel');
     assert.equal(form.querySelector('[name="email"]').required, false);
     const subject = form.querySelector('[name="service"]');
-    subject.change('Professional collaboration');
-    assert.equal(run.c.state.service, 'Professional collaboration');
+    subject.change('collaboration', 'change');
+    assert.equal(run.c.state.service, 'collaboration');
     form.querySelector('[name="contact_method"]').change('whatsapp', 'change');
     const event = { preventDefault() {}, target: form };
     form.props.onsubmit(event); form.props.onsubmit(event);
@@ -77,20 +78,20 @@ for (const lang of ['hy', 'en']) {
     assert.equal(form.querySelector('.form-submit').textContent, content.window.CONTENT[lang].sending);
     assert.equal(form.props['aria-busy'], 'true');
     assert.deepEqual(run.submitted.extra, [['_subject', 'New inquiry from levongalstyan.com'], ['_captcha', 'false']]);
-    assert.equal(run.submitted.fields.service, 'Professional collaboration');
+    assert.equal(run.submitted.fields.service, content.window.CONTENT[lang].contactSubjects.collaboration);
     assert.equal(run.submitted.fields.contact_method, 'whatsapp');
     // A viewport or language change can rebuild the form while the request is pending.
     run.c.setState({}); form = run.current.children[1];
     assert.equal(form.querySelector('.form-submit').disabled, true);
     assert.equal(form.querySelector('[name="name"]').value, 'TEST ONLY');
-    assert.equal(form.querySelector('[name="service"]').value, 'Professional collaboration');
+    assert.equal(form.querySelector('[name="service"]').value, 'collaboration');
     assert.equal(form.querySelector('[name="contact_method"]').value, 'whatsapp');
     finish(); await new Promise(resolve => setTimeout(resolve, 0)); form = run.current.children[1];
     assert.equal(Boolean(run.c.state.sent), success, label); assert.equal(run.c.formSending, false);
     assert.equal(form.querySelector('.form-submit').disabled, false); assert.equal(form.props['aria-busy'], 'false');
     assert.equal(run.c.formDraft.name, success ? '' : 'TEST ONLY');
     assert.equal(run.c.formDraft.contact_method, success ? '' : 'whatsapp');
-    assert.equal(run.c.state.service, success ? '' : 'Professional collaboration');
+    assert.equal(run.c.state.service, success ? '' : 'collaboration');
     assert.equal(form.querySelector('.form-error').hidden, success);
     assert.equal(run.current.querySelector(success ? '.sent-panel.show' : '.form-error').focused, true);
     assert.deepEqual(run.goals, success ? ['contact_success'] : []);
@@ -100,12 +101,14 @@ for (const lang of ['hy', 'en']) {
   run.c.state.service = 'Specific procedure'; run.c.setState({});
   const form = run.current.children[1];
   assert.equal(form.querySelector('[name="service"]').value, 'Specific procedure');
+  assert.ok(form.querySelector('[name="service"]').children.some(option => option.props.value === 'Specific procedure'));
   form.valid = false; form.props.onsubmit({ preventDefault() {}, target: form });
   assert.equal(run.calls, 0); assert.equal(run.c.formSending, false);
   console.log('PASS', lang, 'validation and procedure preselection');
   for (const method of ['', 'email', 'whatsapp', 'telegram', 'phone']) {
     const accepted = setup(lang, async () => ({ ok: true, json: async () => ({ success: true }) }));
     const form = accepted.current.children[1];
+    form.querySelector('[name="service"]').change('other', 'change');
     form.querySelector('[name="phone"]').change('');
     form.querySelector('[name="contact_method"]').change(method, 'change');
     form.props.onsubmit({ preventDefault() {}, target: form });
@@ -117,9 +120,11 @@ for (const lang of ['hy', 'en']) {
     accepted.c.setState({ lang: lang === 'hy' ? 'en' : 'hy' });
     const rebuilt = accepted.current.children[1];
     assert.equal(rebuilt.querySelector('[name="contact_method"]').value, method);
+    assert.equal(rebuilt.querySelector('[name="service"]').value, 'other');
     rebuilt.props.onsubmit({ preventDefault() {}, target: rebuilt });
     assert.equal(accepted.calls, 1);
     assert.equal(accepted.submitted.fields.contact_method, method);
+    assert.equal(accepted.submitted.fields.service, content.window.CONTENT[accepted.c.state.lang].contactSubjects.other);
     await new Promise(resolve => setTimeout(resolve, 0));
     console.log('PASS', lang, method || 'email-only with no preference');
   }
