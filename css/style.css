@@ -203,7 +203,6 @@ h1, h2, h3, p { margin: 0; }
 .sent-panel { min-height: 388px; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 24px; text-align: center; }
 .sent-panel.show { display: flex; }
 .sent-panel p:first-child { font-size: 18px; font-weight: 500; }
-.sent-panel p:nth-child(2) { color: rgba(39,42,60,0.8); }
 .sent-panel button { background: none; border: 0; padding: 0; cursor: pointer; font-size: 15px; color: rgba(39,42,60,0.8); border-bottom: 1px solid rgba(39,42,60,0.25); }
 .sent-panel button:hover { color: var(--ink); }
 .contact-form { display: flex; flex-direction: column; gap: 20px; }
@@ -217,7 +216,6 @@ h1, h2, h3, p { margin: 0; }
 .form-submit { margin-top: 6px; height: 70px; border: 0; border-radius: 4px; background: var(--ink); color: var(--paper); font-size: 15px; cursor: pointer; }
 .form-submit:hover { background: var(--dark); }
 .form-submit:disabled { opacity: .65; cursor: wait; }
-.form-intro { color: var(--ink); line-height: 1.7; }
 .form-required { margin-top: -8px; font-size: 13px; line-height: 1.5; color: #4b4e5c; }
 .form-error { padding: 16px; border-left: 3px solid #9c422e; background: var(--paper); color: #7b3425; line-height: 1.6; overflow-wrap: anywhere; }
 .form-error[hidden] { display: none; }

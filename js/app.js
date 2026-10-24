@@ -3,7 +3,7 @@
   "use strict";
   var CONTENT = window.CONTENT, SUB_PARENT = window.SUB_PARENT, CRED = window.CRED, HREFS = window.HREFS;
 
-  var formDraft = { name: "", phone: "", email: "", message: "" };
+  var formDraft = { name: "", phone: "", email: "", message: "", contact_method: "" };
   var formSending = false;
   var formError = false;
   var state = {
@@ -110,7 +110,7 @@
   function toggleLang() {
     var next = state.lang === "en" ? "hy" : "en";
     try { localStorage.setItem("galstyan.lang", next); } catch (e) {}
-    setState({ lang: next, service: "" });
+    setState({ lang: next });
     if (window.syncSharePage) window.syncSharePage(next);
   }
 
@@ -559,18 +559,18 @@
     return section;
   }
 
-  function serviceOptionsList(T) { return T.services.map(function (s) { return s.title.replace(/\n/g, " "); }); }
-
   function buildContactForm() {
     var T = t();
     var wrap = el("div", { class: "form-wrap" });
     wrap.appendChild(el("div", { class: "sent-panel" + (state.sent ? " show" : ""), role: "status", tabindex: "-1" }, [
-      el("p", null, [T.sentTitle]), el("p", null, [T.sentBody]),
+      el("p", null, [T.sentTitle]),
       el("button", { type: "button", onclick: function () { setState({ sent: false, service: "" }); } }, [T.again])
     ]));
     var form = el("form", { class: "contact-form" + (state.sent ? " hide" : ""), "aria-busy": String(formSending), onsubmit: function (e) {
       e.preventDefault();
-      if (formSending || !e.target.reportValidity()) return;
+      if (formSending) return;
+      updateContactRequirements();
+      if (!e.target.reportValidity()) return;
       formSending = true;
       formError = false;
       form.setAttribute("aria-busy", "true");
@@ -595,34 +595,46 @@
         if (result.success !== true && result.success !== "true") throw new Error("Submission rejected");
         delivered = true;
         try { if (window.SiteAnalytics) window.SiteAnalytics.goal("contact_success"); } catch (error) { /* Delivery must not depend on analytics. */ }
-        formDraft = { name: "", phone: "", email: "", message: "" };
+        formDraft = { name: "", phone: "", email: "", message: "", contact_method: "" };
       }).catch(function () {
         formError = true;
       }).finally(function () {
         clearTimeout(timeout);
         formSending = false;
-        setState(delivered ? { sent: true } : {});
+        setState(delivered ? { sent: true, service: "" } : {});
         var feedback = document.querySelector(delivered ? ".sent-panel.show" : ".form-error");
         if (feedback) feedback.focus();
       });
     } });
-    form.appendChild(el("p", { class: "form-intro" }, [T.contactIntro]));
-    form.appendChild(el("label", null, [T.fName + " *", el("input", { name: "name", required: "true", autocomplete: "name" })]));
     form.appendChild(el("div", { class: "form-row" }, [
-      el("label", null, [T.fPhone + " *", el("input", { name: "phone", type: "tel", inputmode: "tel", autocomplete: "tel", required: "true", placeholder: "+374 …" })]),
-      el("label", null, [T.fEmail, el("input", { name: "email", type: "email", inputmode: "email", autocomplete: "email", autocapitalize: "none", spellcheck: "false", placeholder: "name@example.com" })])
+      el("label", null, [T.fName + " *", el("input", { name: "name", required: "true", autocomplete: "name" })]),
+      el("label", null, [T.fService, el("input", { name: "service", value: state.service || "", placeholder: T.phService, oninput: function (e) { state.service = e.target.value; } })])
     ]));
-    var select = el("select", { name: "service", onchange: function (e) { state.service = e.target.value; } });
-    var current = state.service || "";
-    select.appendChild(el("option", { value: "", selected: current ? null : "true" }, [T.phService]));
-    var options = serviceOptionsList(T);
-    if (current && options.indexOf(current) === -1) options.unshift(current);
-    options.forEach(function (o) {
-      select.appendChild(el("option", { value: o, selected: o === current ? "true" : null }, [o]));
-    });
-    form.appendChild(el("label", null, [T.fService, select]));
     form.appendChild(el("label", null, [T.fMessage, el("textarea", { name: "message", rows: "4", placeholder: T.phMessage, "aria-describedby": "message-help" })]));
     form.appendChild(el("p", { id: "message-help", class: "form-help" }, [T.messageHelp]));
+    var method = el("select", { name: "contact_method", "aria-describedby": "contact-details-help", onchange: function () {
+      formDraft.contact_method = method.value;
+      updateContactRequirements();
+    } });
+    Object.keys(T.contactMethods).forEach(function (key) {
+      method.appendChild(el("option", { value: key }, [T.contactMethods[key]]));
+    });
+    form.appendChild(el("label", null, [T.fContactMethod, method]));
+    form.appendChild(el("div", { class: "form-row" }, [
+      el("label", null, [T.fPhone, el("input", { name: "phone", type: "tel", inputmode: "tel", autocomplete: "tel", placeholder: "+374 …", "aria-describedby": "contact-details-help" })]),
+      el("label", null, [T.fEmail, el("input", { name: "email", type: "email", inputmode: "email", autocomplete: "email", autocapitalize: "none", spellcheck: "false", placeholder: "name@example.com", "aria-describedby": "contact-details-help" })])
+    ]));
+    var detailsHelp = el("p", { id: "contact-details-help", class: "form-help", "aria-live": "polite" });
+    form.appendChild(detailsHelp);
+    function updateContactRequirements() {
+      var phone = form.querySelector('[name="phone"]');
+      var email = form.querySelector('[name="email"]');
+      var needsEmail = method.value === "email";
+      var needsPhone = method.value === "whatsapp" || method.value === "telegram" || method.value === "phone";
+      phone.required = needsPhone || (!needsEmail && !email.value.trim());
+      email.required = needsEmail || (!needsPhone && !phone.value.trim());
+      detailsHelp.textContent = T.contactMethodHelp[method.value] || T.contactDetailsHelp;
+    }
     form.appendChild(el("p", { class: "form-required" }, [T.requiredFields]));
     form.appendChild(el("p", { class: "form-error", role: "alert", tabindex: "-1", hidden: formError ? null : "true" }, [
       T.sendError + " ", el("a", { href: "mailto:galstyan.levon@gmail.com" }, ["galstyan.levon@gmail.com"])
@@ -631,8 +643,9 @@
     Object.keys(formDraft).forEach(function (key) {
       var input = form.querySelector('[name="' + key + '"]');
       input.value = formDraft[key];
-      input.addEventListener("input", function () { formDraft[key] = input.value; });
+      input.addEventListener("input", function () { formDraft[key] = input.value; updateContactRequirements(); });
     });
+    updateContactRequirements();
     form.querySelector(".form-submit").disabled = formSending;
     wrap.appendChild(form);
     return wrap;
