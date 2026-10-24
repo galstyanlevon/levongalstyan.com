@@ -8,11 +8,12 @@
   var formError = false;
   var state = {
     lang: (function () { var explicit = document.documentElement.dataset.pageLang; if (explicit === "hy" || explicit === "en") return explicit; try { var s = localStorage.getItem("galstyan.lang"); return (s === "hy" || s === "en") ? s : "hy"; } catch (e) { return "hy"; } })(),
-    mobile: document.documentElement.clientWidth < 1180,
+    mobile: window.innerWidth < 1180,
+    phone: window.innerWidth < 768,
     menuOpen: false,
     servicesOpen: false,
-    dropdownRight: 0,
-    hoverSubIndex: null,
+    drawerSection: null,
+    drawerService: null,
     route: null,
     open: -1,
     openQ: null,
@@ -99,53 +100,56 @@
     ]);
   }
 
-  function closeAllMenus() { state.servicesOpen = false; state.activityOpen = false; state.patientsOpen = false; state.menuOpen = false; state.hoverSubIndex = null; }
+  function closeAllMenus() {
+    state.servicesOpen = false; state.activityOpen = false; state.patientsOpen = false; state.menuOpen = false;
+    closeNavigation(false);
+  }
   function goService(i) { closeAllMenus(); window.location.hash = "#/service/" + i; }
   function goRoute(name) { closeAllMenus(); window.location.hash = "#/" + name; }
   function goSub(key) { closeAllMenus(); window.location.hash = "#/sub/" + key; }
   function bookService(title) {
+    closeAllMenus();
     setState({ service: title, sent: false, route: null, menuOpen: false, servicesOpen: false });
     window.location.hash = "#contact";
   }
   function toggleLang() {
+    var keepNavigationFocus = !!state.drawerSection;
     var next = state.lang === "en" ? "hy" : "en";
     try { localStorage.setItem("galstyan.lang", next); } catch (e) {}
     setState({ lang: next });
     if (window.syncSharePage) window.syncSharePage(next);
+    if (keepNavigationFocus) document.querySelector(".lang-btn").focus({ preventScroll: true });
   }
 
   /* ---------- Header ---------- */
   function buildHeader() {
     var mobile = state.mobile, T = t();
     var nav = T.nav.map(function (label, i) { return { label: label, href: HREFS[i], isServices: i === 1, isInsights: i === 2, isPatients: i === 3 }; });
-    var header = el("header", { class: "site-header" + ((state.servicesOpen || state.activityOpen || state.patientsOpen) ? " dropdown-open" : "") });
+    var header = el("header", { class: "site-header" });
     header.appendChild(el("a", { href: "#home", class: "logo-link", "aria-label": "Dr. Levon Galstyan" }, [logoIcon()]));
     if (!mobile) {
       var navEl = el("nav", { class: "main-nav" });
       nav.forEach(function (item) {
         if (item.isServices) {
           navEl.appendChild(el("button", {
-            type: "button", class: "services-toggle",
-            onclick: function () { setState({ servicesOpen: !state.servicesOpen }); },
-            onmouseenter: openServicesMenu,
-            onmouseleave: closeServicesMenu
+            type: "button", class: "services-toggle", id: "nav-services",
+            "aria-controls": "navigation-drawer", "aria-expanded": "false", "data-nav-section": "services",
+            onclick: function (event) { toggleNavigation("services", event.currentTarget.id); }
           }, [el("span", null, [item.label])]));
         } else if (item.isInsights) {
           navEl.appendChild(el("button", {
-            type: "button", class: "services-toggle",
-            onclick: function () { goRoute("activity"); setState({ menuOpen: false }); },
-            onmouseenter: openActivityMenu,
-            onmouseleave: closeActivityMenu
+            type: "button", class: "services-toggle", id: "nav-activity",
+            "aria-controls": "navigation-drawer", "aria-expanded": "false", "data-nav-section": "activity",
+            onclick: function (event) { toggleNavigation("activity", event.currentTarget.id); }
           }, [el("span", null, [item.label])]));
         } else if (item.isPatients) {
           navEl.appendChild(el("button", {
-            type: "button", class: "services-toggle",
-            onclick: function () { setState({ menuOpen: false }); window.location.hash = "#patients"; },
-            onmouseenter: openPatientsMenu,
-            onmouseleave: closePatientsMenu
+            type: "button", class: "services-toggle", id: "nav-patients",
+            "aria-controls": "navigation-drawer", "aria-expanded": "false", "data-nav-section": "patients",
+            onclick: function (event) { toggleNavigation("patients", event.currentTarget.id); }
           }, [el("span", null, [item.label])]));
         } else {
-          navEl.appendChild(el("a", { href: item.href }, [item.label]));
+          navEl.appendChild(el("a", { href: item.href, onclick: closeAllMenus }, [item.label]));
         }
       });
       header.appendChild(navEl);
@@ -153,58 +157,15 @@
     header.appendChild(el("div", { class: "spacer" }));
     if (mobile) {
       header.appendChild(el("button", {
-        type: "button", class: "hamburger", "aria-label": "Menu",
-        onclick: function () { setState({ menuOpen: !state.menuOpen }); }
+        type: "button", class: "hamburger", id: "nav-menu", "aria-label": T.menuLabels.menu,
+        "aria-expanded": String(state.phone ? state.menuOpen : !!state.drawerSection),
+        "aria-controls": state.phone ? "mobile-menu" : "navigation-drawer",
+        onclick: function () { if (state.phone) setState({ menuOpen: !state.menuOpen }); else toggleNavigation("menu", "nav-menu"); }
       }, [el("span"), el("span"), el("span")]));
     }
     header.appendChild(el("button", { type: "button", class: "lang-btn", onclick: toggleLang }, [T.langLabel]));
-    header.appendChild(el("a", { href: "/" + state.lang + "/contact/", class: "contacts-btn" }, [T.contacts]));
+    header.appendChild(el("a", { href: "/" + state.lang + "/contact/", class: "contacts-btn", onclick: closeAllMenus }, [T.contacts]));
     return header;
-  }
-
-  var closeTimer = null;
-  function openServicesMenu() {
-    if (state.mobile) return;
-    if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
-    if (!state.servicesOpen) setState({ servicesOpen: true });
-  }
-  function closeServicesMenu() {
-    if (state.mobile) return;
-    if (closeTimer) clearTimeout(closeTimer);
-    closeTimer = setTimeout(function () {
-      closeTimer = null;
-      if (state.servicesOpen) setState({ servicesOpen: false, hoverSubIndex: null });
-    }, 250);
-  }
-
-  var closeActivityTimer = null;
-  function openActivityMenu() {
-    if (state.mobile) return;
-    if (closeActivityTimer) { clearTimeout(closeActivityTimer); closeActivityTimer = null; }
-    if (!state.activityOpen) setState({ activityOpen: true });
-  }
-  function closeActivityMenu() {
-    if (state.mobile) return;
-    if (closeActivityTimer) clearTimeout(closeActivityTimer);
-    closeActivityTimer = setTimeout(function () {
-      closeActivityTimer = null;
-      if (state.activityOpen) setState({ activityOpen: false });
-    }, 250);
-  }
-
-  var closePatientsTimer = null;
-  function openPatientsMenu() {
-    if (state.mobile) return;
-    if (closePatientsTimer) { clearTimeout(closePatientsTimer); closePatientsTimer = null; }
-    if (!state.patientsOpen) setState({ patientsOpen: true });
-  }
-  function closePatientsMenu() {
-    if (state.mobile) return;
-    if (closePatientsTimer) clearTimeout(closePatientsTimer);
-    closePatientsTimer = setTimeout(function () {
-      closePatientsTimer = null;
-      if (state.patientsOpen) setState({ patientsOpen: false });
-    }, 250);
   }
 
   var SUB_IMAGES = {
@@ -232,77 +193,119 @@
     return keys.map(function (k) { return { title: T.subServices[k].title, key: k }; });
   }
 
-  function buildServicesDropdown() {
-    if (state.mobile) return null;
+  var INSIGHT_KEYS = ["publications", "conferences", "lectures", "videos"];
+  var navigationOpener = null;
+  function focusNavigationTitle() {
+    var title = document.getElementById("navigation-title");
+    if (title) title.focus({ preventScroll: true });
+  }
+  function closeNavigation(restoreFocus) {
+    state.drawerSection = null; state.drawerService = null;
+    syncNavigation();
+    var opener = navigationOpener && document.getElementById(navigationOpener);
+    if (restoreFocus && opener) opener.focus({ preventScroll: true });
+    navigationOpener = null;
+  }
+  function toggleNavigation(section, openerId) {
+    if (state.phone) return;
+    if (state.drawerSection === section || (section === "menu" && state.drawerSection)) {
+      closeNavigation(true); return;
+    }
+    navigationOpener = openerId;
+    showNavigationSection(section);
+  }
+  function showNavigationSection(section) {
+    state.drawerSection = section; state.drawerService = null;
+    syncNavigation(); focusNavigationTitle();
+  }
+  function showNavigationService(index) {
+    state.drawerService = index;
+    syncNavigation(); focusNavigationTitle();
+  }
+  function backNavigation() {
+    var service = state.drawerService, section = state.drawerSection;
+    if (service != null) state.drawerService = null;
+    else state.drawerSection = "menu";
+    syncNavigation();
+    var selector = service != null ? '[data-drawer-service="' + service + '"]' : '[data-drawer-section="' + section + '"]';
+    var previous = document.querySelector("#navigation-drawer " + selector);
+    if (previous) previous.focus({ preventScroll: true });
+    else focusNavigationTitle();
+  }
+  function buildNavigationDrawer() {
+    if (state.phone) return null;
     var T = t();
-    var wrap = el("div", {
-      class: "services-dropdown" + (state.servicesOpen ? " open" : ""),
-      onmouseenter: openServicesMenu,
-      onmouseleave: closeServicesMenu
+    return el("aside", {
+      id: "navigation-drawer", class: "navigation-drawer", "aria-labelledby": "navigation-title", "aria-hidden": "true", inert: ""
+    }, [
+      el("div", { class: "navigation-drawer-head" }, [
+        el("div", { class: "navigation-drawer-controls" }, [
+          el("button", { type: "button", class: "navigation-back", hidden: "", onclick: backNavigation }, [
+            el("span", { "aria-hidden": "true" }, ["←"]), el("span", null, [T.menuLabels.back])
+          ]),
+          el("button", { type: "button", class: "navigation-close", "aria-label": T.menuLabels.close, onclick: function () { closeNavigation(true); } }, [el("span", { "aria-hidden": "true" }, ["×"])])
+        ]),
+        el("h2", { id: "navigation-title", tabindex: "-1" }, [T.menuLabels.menu])
+      ]),
+      el("nav", { class: "navigation-drawer-list", "aria-labelledby": "navigation-title" })
+    ]);
+  }
+  function syncNavigation() {
+    var drawer = document.getElementById("navigation-drawer");
+    if (!drawer) return;
+    var section = state.drawerSection, open = !!section, T = t();
+    drawer.classList.toggle("is-open", open);
+    drawer.setAttribute("aria-hidden", String(!open));
+    if (open) drawer.removeAttribute("inert"); else drawer.setAttribute("inert", "");
+    document.querySelectorAll("[data-nav-section]").forEach(function (button) {
+      button.setAttribute("aria-expanded", String(button.getAttribute("data-nav-section") === section));
     });
-    var col1 = el("div", { class: "services-col" });
-    var col2 = el("div", { class: "services-col" });
-    function fillCol2(index) {
-      col2.innerHTML = "";
-      var subs = index != null ? subsFor(index, T) : null;
-      if (subs) subs.forEach(function (sub) {
-        col2.appendChild(el("button", { type: "button", class: "sub-row", onclick: function () { goSub(sub.key); } }, [sub.title]));
+    var hamburger = document.getElementById("nav-menu");
+    if (hamburger) hamburger.setAttribute("aria-expanded", String(open));
+    if (!open) return;
+
+    var list = drawer.querySelector(".navigation-drawer-list");
+    var title = drawer.querySelector("#navigation-title");
+    var service = state.drawerService;
+    var labels = { menu: T.menuLabels.menu, services: T.nav[1], activity: T.nav[2], patients: T.nav[3] };
+    title.textContent = service != null ? T.services[service].title.replace(/\n/g, " ") : labels[section];
+    drawer.querySelector(".navigation-back").hidden = service == null && (!state.mobile || section === "menu");
+    list.replaceChildren();
+    list.scrollTop = 0;
+    function link(label, href, overview) {
+      list.appendChild(el("a", { href: href, class: "navigation-row" + (overview ? " navigation-overview" : ""), onclick: closeAllMenus }, [
+        el("span", null, [label]), el("span", { class: "navigation-link-arrow", "aria-hidden": "true" }, ["↗"])
+      ]));
+    }
+    function branch(label, action, attributes) {
+      list.appendChild(el("button", Object.assign({ type: "button", class: "navigation-row", onclick: action }, attributes), [el("span", null, [label]), arrowIcon()]));
+    }
+    if (service != null) {
+      link(T.menuLabels.overview, "#/service/" + service, true);
+      subsFor(service, T).forEach(function (sub) { link(sub.title, "#/sub/" + sub.key); });
+    } else if (section === "services") {
+      T.services.forEach(function (s, index) {
+        var label = s.title.replace(/\n/g, " ");
+        if (subsFor(index, T)) branch(label, function () { showNavigationService(index); }, { "data-drawer-service": index });
+        else link(label, "#/service/" + index);
+      });
+    } else if (section === "activity") {
+      link(T.menuLabels.overview, "#/activity", true);
+      INSIGHT_KEYS.forEach(function (key, index) { link(T.insights[index].title, "#/insight/" + key); });
+    } else if (section === "patients") {
+      window.PATIENT_LINKS[state.lang].forEach(function (p) { link(p.label, "#/patients/" + p.key); });
+    } else {
+      link(T.nav[0], HREFS[0]);
+      ["services", "activity", "patients"].forEach(function (key) {
+        branch(labels[key], function () { showNavigationSection(key); }, { "data-drawer-section": key });
       });
     }
-    T.services.forEach(function (s, i) {
-      var hasSubs = i === 0 || i === 1 || i === 2;
-      var btn = el("button", {
-        type: "button", class: "service-row",
-        onclick: function () { goService(i); },
-        onmouseenter: function () { state.hoverSubIndex = hasSubs ? i : null; fillCol2(state.hoverSubIndex); }
-      }, [el("span", null, [s.title.replace(/\n/g, " ")])]);
-      if (hasSubs) btn.appendChild(arrowIcon());
-      col1.appendChild(btn);
-    });
-    fillCol2(state.hoverSubIndex);
-    wrap.appendChild(col1);
-    wrap.appendChild(el("div", { class: "services-divider" }));
-    wrap.appendChild(col2);
-    return wrap;
-  }
-
-  var INSIGHT_KEYS = ["publications", "conferences", "lectures", "videos"];
-  function buildActivityDropdown() {
-    if (state.mobile) return null;
-    var T = t();
-    var wrap = el("div", {
-      class: "services-dropdown" + (state.activityOpen ? " open" : ""),
-      onmouseenter: openActivityMenu,
-      onmouseleave: closeActivityMenu
-    });
-    var col1 = el("div", { class: "services-col" });
-    INSIGHT_KEYS.forEach(function (k, idx) {
-      col1.appendChild(el("button", { type: "button", class: "service-row", onclick: function () { goRoute("insight/" + k); } }, [T.insights[idx].title]));
-    });
-    wrap.appendChild(col1);
-    return wrap;
-  }
-
-  function buildPatientsDropdown() {
-    if (state.mobile) return null;
-    var T = t();
-    var wrap = el("div", {
-      class: "services-dropdown" + (state.patientsOpen ? " open" : ""),
-      onmouseenter: openPatientsMenu,
-      onmouseleave: closePatientsMenu
-    });
-    var col1 = el("div", { class: "services-col" });
-    window.PATIENT_LINKS[state.lang].forEach(function (p) {
-      col1.appendChild(el("button", { type: "button", class: "service-row", onclick: function () { goRoute("patients/" + p.key); } }, [p.label]));
-    });
-    wrap.appendChild(col1);
-    return wrap;
   }
 
   function buildMobileMenu() {
-    if (!state.mobile) return null;
+    if (!state.phone) return null;
     var T = t();
-    var wrap = el("div", { class: "mobile-menu" + (state.menuOpen ? " open" : "") });
+    var wrap = el("div", { id: "mobile-menu", class: "mobile-menu" + (state.menuOpen ? " open" : "") });
     T.nav.forEach(function (label, i) {
       if (i === 1) {
         var btn = el("button", { type: "button", class: "services-toggle-m", onclick: function () { setState({ servicesOpen: !state.servicesOpen }); } }, [
@@ -1221,7 +1224,7 @@
     var route = m ? Math.max(0, Math.min(parseInt(m[1], 10), 12)) : (isEdu ? "education" : (isExp ? "experience" : (isBio ? "bio" : (subM ? "sub:" + subM[1] : (insightM ? "insight:" + insightM[1] : (isActivity ? "activity" : (lecM ? "lecture:" + lecM[1] : (patM ? "patients:" + patM[1] : null))))))));
     if (resourceM) route = resourceM[1] + ":" + resourceM[2];
     var anchor = (!resourceM && !m && !isEdu && !isExp && !isBio && !subM && !insightM && !isActivity && !lecM && !patM && hash.length > 1) ? hash.slice(1) : null;
-    state.route = route; state.menuOpen = false; state.servicesOpen = false;
+    state.route = route; closeAllMenus();
     render();
     if (window.syncSharePage) window.syncSharePage(state.lang, hash);
     if (route != null) { window.scrollTo(0, 0); return; }
@@ -1236,12 +1239,8 @@
     var app = document.getElementById("app");
     app.innerHTML = "";
     app.appendChild(buildHeader());
-    var dropdown = buildServicesDropdown();
-    if (dropdown) app.appendChild(dropdown);
-    var activityDropdown = buildActivityDropdown();
-    if (activityDropdown) app.appendChild(activityDropdown);
-    var patientsDropdown = buildPatientsDropdown();
-    if (patientsDropdown) app.appendChild(patientsDropdown);
+    var navigation = buildNavigationDrawer();
+    if (navigation) app.appendChild(navigation);
     var mobileMenu = buildMobileMenu();
     if (mobileMenu) app.appendChild(mobileMenu);
 
@@ -1259,12 +1258,30 @@
     else if (typeof state.route === "string" && state.route.indexOf("patients:") === 0) app.appendChild(buildPatientsSubPage(state.route.slice(9)));
 
     app.appendChild(buildFooter());
+    syncNavigation();
   }
 
   function syncMobile() {
-    var m = document.documentElement.clientWidth < 1180;
-    if (m !== state.mobile) { state.mobile = m; state.menuOpen = false; render(); }
+    var m = window.innerWidth < 1180;
+    var phone = window.innerWidth < 768;
+    if (m !== state.mobile || phone !== state.phone) {
+      closeAllMenus(); state.mobile = m; state.phone = phone; render();
+    }
   }
+  function dismissOutsideNavigation(event) {
+    // A branch click replaces its own row. The original event path still identifies the drawer.
+    var insideNavigation = event.composedPath().some(function (node) {
+      return node.nodeType === 1 && node.matches(".site-header, .navigation-drawer");
+    });
+    if (state.drawerSection && !insideNavigation) closeNavigation(false);
+  }
+  document.addEventListener("click", dismissOutsideNavigation);
+  document.addEventListener("focusin", dismissOutsideNavigation);
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && state.drawerSection) {
+      event.preventDefault(); closeNavigation(true);
+    }
+  });
   window.addEventListener("resize", syncMobile);
   window.addEventListener("hashchange", readHash);
   window.addEventListener("popstate", function () {
