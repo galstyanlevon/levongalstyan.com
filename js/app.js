@@ -200,7 +200,7 @@
     return keys.map(function (k) { return { title: T.subServices[k].title, key: k }; });
   }
 
-  var INSIGHT_KEYS = ["publications", "conferences", "lectures", "videos"];
+  var INSIGHT_KEYS = ["publications", "conferences", "lectures"];
   var navigationOpener = null;
   function focusNavigationTitle() {
     var title = document.getElementById("navigation-subtitle");
@@ -514,6 +514,7 @@
       ]));
     });
     section.appendChild(grid);
+    section.appendChild(el("div", { class: "pn-contribute" }, [el("a", { href: "#/patients/videos", class: "card-link" }, [T.videosPage.title])]));
     section.appendChild(el("div", { class: "pn-contribute" }, [el("a", { href: "#/patients/notes", class: "card-link" }, [state.lang === "hy" ? "Բուժառուների խոսքերը" : "Patient Notes"])]));
     return section;
   }
@@ -707,10 +708,9 @@
     section.appendChild(el("p", { class: "max-670" }, [T.insightsBody]));
     var grid = el("div", { class: "grid" });
     T.insights.forEach(function (i, idx) {
-      var keys = ["publications", "conferences", "lectures", "videos"];
       grid.appendChild(el("article", { class: "card card-cream" }, [
         el("h3", null, [i.title]), bookIcon(), el("p", null, [i.body]),
-        el("button", { type: "button", class: "card-btn", onclick: function () { goRoute("insight/" + keys[idx]); } }, [T.readMore])
+        el("button", { type: "button", class: "card-btn", onclick: function () { goRoute("insight/" + INSIGHT_KEYS[idx]); } }, [T.readMore])
       ]));
     });
     section.appendChild(grid);
@@ -1089,6 +1089,7 @@
   function buildPatientsSubPage(key) {
     var T = t();
     if (key === "notes") return window.PatientNotes.build(state.lang, el);
+    if (key === "videos") return buildVideosPage();
     if (key === "faq") { window.location.replace("#faq"); return document.createDocumentFragment(); }
     var frag = document.createDocumentFragment();
     if (key === "addresses") {
@@ -1124,6 +1125,30 @@
       el("h2", { class: "uppercase-title" }, [T.scheduleTitle]),
       buildContactForm()
     ]));
+    return frag;
+  }
+
+  /* ---------- Patient videos ---------- */
+  function buildVideosPage() {
+    var T = t(), page = T.videosPage;
+    var frag = document.createDocumentFragment();
+    frag.appendChild(el("section", { class: "section section-dark service-hero" }, [
+      el("a", { href: "#patients", class: "back-link" }, [T.nav[3]]),
+      el("h1", { class: "service-title" }, [page.title]),
+      el("p", { class: "service-body" }, [page.intro])
+    ]));
+    var section = el("section", { class: "section center-col" });
+    var vidList = el("div", { class: "vid-list" });
+    window.VIDEOS[state.lang].forEach(function (v) {
+      vidList.appendChild(el("div", { class: "vid-card" }, [
+        el("div", { class: "vid-frame-wrap" }, [
+          el("iframe", { src: v.url, title: v.title, loading: "lazy", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture", allowfullscreen: "true" })
+        ]),
+        el("span", { class: "vid-title" }, [v.title])
+      ]));
+    });
+    section.appendChild(vidList);
+    frag.appendChild(section);
     return frag;
   }
 
@@ -1171,21 +1196,6 @@
       frag.appendChild(buildOtherInsights(key));
       return frag;
     }
-    if (key === "videos") {
-      var vidList = el("div", { class: "vid-list" });
-      window.VIDEOS[state.lang].forEach(function (v) {
-        vidList.appendChild(el("div", { class: "vid-card" }, [
-          el("div", { class: "vid-frame-wrap" }, [
-            el("iframe", { src: v.url, title: v.title, loading: "lazy", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture", allowfullscreen: "true" })
-          ]),
-          el("span", { class: "vid-title" }, [v.title])
-        ]));
-      });
-      section.appendChild(vidList);
-      frag.appendChild(section);
-      frag.appendChild(buildOtherInsights(key));
-      return frag;
-    }
     if (key === "lectures") {
       var lecList = el("div", { class: "lec-list" });
       window.LECTURES[state.lang].forEach(function (lec) {
@@ -1210,8 +1220,8 @@
     var footer = el("footer", { class: "site-footer" });
     var cols = el("div", { class: "footer-cols" });
     var footerLinks = [
-      ["#/insight/publications", "#/insight/lectures", "#/insight/conferences", "#/insight/videos"],
-      ["#/patients/useful-info", "#faq", "#services"],
+      ["#/insight/publications", "#/insight/lectures", "#/insight/conferences"],
+      ["#/patients/useful-info", "#faq", "#services", "#/patients/videos"],
       ["https://www.facebook.com/share/19KYS2Pe6P/?mibextid=wwXIfr", "https://www.instagram.com/levon.r.galstyan?stkn=MWQwaDc3ZW1ldDI3cw%3D%3D&utm_source=qr", "https://youtube.com/@levongalstyanomfs?si=rwM7Igbz_p-BoLFM", "https://www.linkedin.com/in/drlevongalstyan/"]
     ];
     T.footerCols.forEach(function (col, colIndex) {
@@ -1239,6 +1249,7 @@
   /* ---------- Routing ---------- */
   function readHash() {
     var hash = window.location.hash || (window.currentSharePage && (window.currentSharePage() || {}).route) || "";
+    if (hash === "#/insight/videos") hash = "#/patients/videos";
     var m = /^#\/service\/(\d+)$/.exec(hash);
     var isEdu = hash === "#/education", isExp = hash === "#/experience", isBio = hash === "#/bio";
     var subM = /^#\/sub\/([a-z]+)$/.exec(hash);
@@ -1322,3 +1333,4 @@
   setTimeout(syncMobile, 0);
   window.addEventListener("load", syncMobile);
 })();
+

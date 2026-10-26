@@ -349,19 +349,18 @@ window.CONTENT = {
     insights: [
       { title: "Publications", body: "Collection of publications from\n1999 to 2024 by Dr. Galstyan." },
       { title: "Conferences", body: "Archive of attendance to various\nScientific events" },
-      { title: "Lectures", body: "Lectures and mentoring experience\nof Dr Galstyan from 2003 till now" },
-      { title: "Videos", body: "Video interviews, podcasts\nand public presentations" }
+      { title: "Lectures", body: "Lectures and mentoring experience\nof Dr Galstyan from 2003 till now" }
     ],
     insightPages: {
       publications: { title: "Publications", intro: "A collection of Dr. Galstyan's scientific publications from 1999 to 2024, spanning oral and maxillofacial surgery, maxillofacial reconstruction, and dental implantology." },
       conferences: { title: "Conferences", intro: "As a dedicated oral and maxillofacial surgeon, I am committed to remaining at the forefront of my field through continuous education and participation in international scientific conferences. Here are some important events I have attended." },
-      lectures: { title: "Scientific Presentations & Lectures", intro: "Explore a curated collection of my presentations delivered at leading scientific conferences, symposiums, and professional forums. These talks reflect my commitment to advancing clinical knowledge, sharing surgical experience, and contributing to the academic dialogue in oral and maxillofacial surgery. Whether focused on complex implantology, guided bone regeneration, or interdisciplinary case planning, each presentation offers a window into evidence-based practice and innovation in the field." },
-      videos: { title: "Videos", intro: "In this section, you'll find my video interviews, podcast appearances, and public presentations — all featured on open-access channels. These recordings offer insights into my work, expertise, and professional perspective." }
+      lectures: { title: "Scientific Presentations & Lectures", intro: "Explore a curated collection of my presentations delivered at leading scientific conferences, symposiums, and professional forums. These talks reflect my commitment to advancing clinical knowledge, sharing surgical experience, and contributing to the academic dialogue in oral and maxillofacial surgery. Whether focused on complex implantology, guided bone regeneration, or interdisciplinary case planning, each presentation offers a window into evidence-based practice and innovation in the field." }
     },
+    videosPage: { title: "Videos", intro: "In this section, you'll find my video interviews, podcast appearances, and public presentations — all featured on open-access channels. These recordings offer insights into my work, expertise, and professional perspective." },
     readMore: "Read more",
     footerCols: [
-      { title: "General", links: ["Publications", "Lectures", "Conferences", "Videos"] },
-      { title: "For Patients", links: ["Useful Information", "FAQ", "Services"] },
+      { title: "General", links: ["Publications", "Lectures", "Conferences"] },
+      { title: "For Patients", links: ["Useful Information", "FAQ", "Services", "Videos"] },
       { title: "Connect", links: ["Facebook", "Instagram", "YouTube", "LinkedIn"] }
     ]
   },
@@ -716,19 +715,18 @@ dentalImplantsIntro: "Ատամնաբուժական իմպլանտները, ըս�
     insights: [
       { title: "Հրապարակումներ", body: "Հրապարակումների հավաքածու 1999-2024թթ." },
       { title: "Համաժողովներ", body: "Տարբեր այցելությունների արխիվ\nԳիտական միջոցառումներ" },
-      { title: "Դասախոսություններ", body: "Դասախոսություններ և մենթորության փորձ" },
-      { title: "Տեսանյութեր", body: "Տեսահարցազրույցներ, փոդքասթներ\nև հանրային ելույթներ" }
+      { title: "Դասախոսություններ", body: "Դասախոսություններ և մենթորության փորձ" }
     ],
     insightPages: {
       publications: { title: "Հրապարակումներ", intro: "Բժիշկ Գալստյանի գիտական հրապարակումների հավաքածու 1999-2024 թթ., ընդգրկելով բերանի և դիմածնոտային վիրաբուժություն, դիմածնոտային վերականգնում և ատամնային իմպլանտոլոգիա։" },
       conferences: { title: "Համաժողովներ", intro: "Որպես նվիրված բերանի և դիմածնոտային վիրաբույժ, ես պարտավորված եմ մնալ իմ ոլորտի առաջատար մասնագետներից՝ շարունակական կրթության և միջազգային գիտաժողովներին մասնակցության միջոցով։ Ահա որոշ կարևոր միջոցառումներ, որոնց ես մասնակցել եմ։" },
-      lectures: { title: "Գիտական ներկայացումներ և դասախոսություններ", intro: "Բացահայտեք իմ ներկայացումների ընտրանին, որոնք մատուցվել են առաջատար գիտական կոնֆերանսներում, սիմպոզիումներում և մասնագիտական ֆորումներում: Այս զեկույցներն արտացոլում են իմ նվիրվածությունը կլինիկական գիտելիքների զարգացմանը, վիրաբուժական փորձի փոխանակմանը և բերանի և դիմածնոտային վիրաբուժության ոլորտում ակադեմիական երկխոսությանը նպաստելուն: Անկախ նրանից, թե դրանք կենտրոնացած են բարդ իմպլանտոլոգիայի, ուղղորդված ոսկրային վերականգնման, թե միջդիսցիպլինար դեպքերի պլանավորման վրա, յուրաքանչյուր ներկայացում պատուհան է բացում դեպի ապացույցների վրա հիմնված պրակտիկա և նորարարություն այս ոլորտում:" },
-      videos: { title: "Տեսանյութեր", intro: "Այս բաժնում դուք կգտնեք իմ տեսահարցազրույցները, մասնակցությունները փոդքասթներում և հանրային ելույթները — բոլորը հասանելի բաց հասանելիության ալիքներում։ Այս ձայնագրությունները պատկերացում են տալիս իմ աշխատանքի, փորձառության և մասնագիտական տեսակետի մասին։" }
+      lectures: { title: "Գիտական ներկայացումներ և դասախոսություններ", intro: "Բացահայտեք իմ ներկայացումների ընտրանին, որոնք մատուցվել են առաջատար գիտական կոնֆերանսներում, սիմպոզիումներում և մասնագիտական ֆորումներում: Այս զեկույցներն արտացոլում են իմ նվիրվածությունը կլինիկական գիտելիքների զարգացմանը, վիրաբուժական փորձի փոխանակմանը և բերանի և դիմածնոտային վիրաբուժության ոլորտում ակադեմիական երկխոսությանը նպաստելուն: Անկախ նրանից, թե դրանք կենտրոնացած են բարդ իմպլանտոլոգիայի, ուղղորդված ոսկրային վերականգնման, թե միջդիսցիպլինար դեպքերի պլանավորման վրա, յուրաքանչյուր ներկայացում պատուհան է բացում դեպի ապացույցների վրա հիմնված պրակտիկա և նորարարություն այս ոլորտում:" }
     },
+    videosPage: { title: "Տեսանյութեր", intro: "Այս բաժնում դուք կգտնեք իմ տեսահարցազրույցները, մասնակցությունները փոդքասթներում և հանրային ելույթները — բոլորը հասանելի բաց հասանելիության ալիքներում։ Այս ձայնագրությունները պատկերացում են տալիս իմ աշխատանքի, փորձառության և մասնագիտական տեսակետի մասին։" },
     readMore: "Մանրամասն",
     footerCols: [
-      { title: "Գլխավոր", links: ["Publications", "Lectures", "Conferences", "Videos"] },
-      { title: "Պացիենտներին", links: ["Useful Information", "FAQ", "Services"] },
+      { title: "Գլխավոր", links: ["Publications", "Lectures", "Conferences"] },
+      { title: "Պացիենտներին", links: ["Useful Information", "FAQ", "Services", "Տեսանյութեր"] },
       { title: "Կապ", links: ["Facebook", "Instagram", "YouTube", "LinkedIn"] }
     ]
   }
@@ -883,8 +881,8 @@ window.CRED = [
 ];
 window.HREFS = ["#home", "#services", "#insights", "#patients"];
 window.PATIENT_LINKS = {
-  en: [{ key: "faq", label: "FAQ" }, { key: "addresses", label: "Addresses" }, { key: "useful-info", label: "Useful Information" }],
-  hy: [{ key: "faq", label: "ՀՏՀ" }, { key: "addresses", label: "Հասցեներ" }, { key: "useful-info", label: "Օգտակար տեղեկատվություն" }]
+  en: [{ key: "faq", label: "FAQ" }, { key: "addresses", label: "Addresses" }, { key: "useful-info", label: "Useful Information" }, { key: "videos", label: "Videos" }],
+  hy: [{ key: "faq", label: "ՀՏՀ" }, { key: "addresses", label: "Հասցեներ" }, { key: "useful-info", label: "Օգտակար տեղեկատվություն" }, { key: "videos", label: "Տեսանյութեր" }]
 };
 
 window.PUBLICATIONS = [
@@ -1359,3 +1357,4 @@ window.VIDEOS = { en: [
     "url": "https://www.youtube.com/embed/rKOOjOsil0M"
   }
 ] };
+

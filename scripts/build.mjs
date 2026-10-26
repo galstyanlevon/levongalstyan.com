@@ -50,7 +50,7 @@ for (const lang of ['en', 'hy']) {
   }
   for (const [key,s] of Object.entries(t.subServices)) add('#/sub/'+key,'procedure/'+key,s.title,s.intro);
   for (const [key,s] of Object.entries(t.insightPages)) add('#/insight/'+key,'insight/'+key,s.title,s.intro);
-  PATIENT_LINKS[lang].filter(p=>p.key!=='faq').forEach(p=>add('#/patients/'+p.key,'patients/'+p.key,p.label));
+  PATIENT_LINKS[lang].filter(p=>p.key!=='faq').forEach(p=>add('#/patients/'+p.key,'patients/'+p.key,p.label,p.key==='videos'?t.videosPage.intro:undefined));
   LECTURES[lang].forEach(l=>add('#/lecture/'+l.id,'lecture/'+l.id,l.title,l.body));
 }
 fs.mkdirSync(out,{recursive:true});
@@ -70,7 +70,15 @@ function html(p, root=false) {
 fs.writeFileSync(path.join(out,'js/share-pages.js'),'window.SHARE_PAGES = '+JSON.stringify(pages)+';\n');
 fs.writeFileSync(path.join(out,'index.html'),html(pages.find(p=>p.lang==='hy' && p.route==='#home'),true));
 for(const p of pages){const dir=path.join(out,p.path);fs.mkdirSync(dir,{recursive:true});fs.writeFileSync(path.join(dir,'index.html'),html(p));}
+// Preserve existing video URLs with the new canonical metadata and client-side route.
+for (const lang of ['en', 'hy']) {
+  const videoPage = pages.find(p=>p.lang===lang && p.route==='#/patients/videos');
+  const legacyDir = path.join(out, lang, 'insight/videos');
+  fs.mkdirSync(legacyDir,{recursive:true});
+  fs.writeFileSync(path.join(legacyDir,'index.html'),html(videoPage));
+}
 // Metadata must be readable by crawlers without executing JavaScript.
 for(const p of pages){const text=fs.readFileSync(path.join(out,p.path,'index.html'),'utf8');if(!text.includes('content="'+esc(p.title)+'"')||!text.includes(canonical+p.path))throw Error('Invalid metadata: '+p.path);}
 if(new Set(pages.map(p=>p.path)).size!==pages.length)throw Error('Duplicate paths');
 console.log(`Built and validated ${pages.length + 1} static HTML pages in ${out}`);
+

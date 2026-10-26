@@ -4,11 +4,13 @@
   var pages = window.SHARE_PAGES || [];
   var root = new URL('.', document.baseURI);
   window.currentSharePage = function () {
-    return pages.find(function (p) { return new URL(p.path, root).pathname === location.pathname; });
+    var pathname = location.pathname.replace(/\/insight\/videos\/$/, "/patients/videos/");
+    return pages.find(function (p) { return new URL(p.path, root).pathname === pathname; });
   };
   window.syncSharePage = function (lang, route) {
     route = route || location.hash || (window.currentSharePage() || {}).route || '#home';
     if (route === '#/patients/faq') route = '#faq';
+    if (route === '#/insight/videos') route = '#/patients/videos';
     var page = pages.find(function (p) { return p.lang === lang && p.route === route; });
     if (!page) return;
     var url = new URL(page.path, root);
@@ -32,3 +34,4 @@
     location.hash = a.getAttribute('href');
   });
 })();
+
