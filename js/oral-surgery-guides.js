@@ -6849,7 +6849,7 @@
     },
     "map": {
       "How to care after dental implants installation?": "dental-implantation",
-      "How to care after wisdom tooth removal?": "impacted-tooth",
+      "Care after impacted tooth removal": "impacted-tooth",
       "Recovery after sinus lift surgery (sinus augmentation)": "sinus-lift",
       "How to care after paranasal sinus surgery (FESS)?": "fess",
       "How to care after septoplasty?": "septoplasty"
@@ -6862,7 +6862,7 @@
     },
     "map": {
       "Ինչպե՞ս խնամել բերանի խոռոչը ատամնային իմպլանտների տեղադրումից հետո։": "dental-implantation",
-      "Ինչպե՞ս խնամել բերանի խոռոչը իմաստության ատամի հեռացումից հետո։": "impacted-tooth",
+      "Խնամք ռետենցված ատամի հեռացումից հետո": "impacted-tooth",
       "Ապաքինումը սինուս-լիֆտինգից հետո։": "sinus-lift",
       "Ինչպե՞ս խնամել քթի հարակից խոռոչների էնդոսկոպիկ վիրահատությունից հետո։": "fess",
       "Ինչպե՞ս խնամել քթի միջնապատի վիրահատությունից հետո։": "septoplasty"

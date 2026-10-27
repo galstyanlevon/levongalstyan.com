@@ -526,15 +526,49 @@
     section.appendChild(el("p", { class: "max-670" }, [T.faqBody]));
     var list = el("div", { class: "faq-list" });
     var faqControls = [];
+    var stopFaqPosition = null;
+    // Keep the clicked heading in place while a preceding panel collapses.
+    // Stop immediately when the visitor scrolls, uses the keyboard or clicks again.
+    function changeFaq(button, change) {
+      if (stopFaqPosition) stopFaqPosition();
+      var top = button.getBoundingClientRect().top;
+      var frame, stopped = false;
+      var events = ["wheel", "touchmove", "pointerdown", "keydown"];
+      function stop() {
+        stopped = true;
+        cancelAnimationFrame(frame);
+        events.forEach(function (type) { window.removeEventListener(type, stop); });
+        if (stopFaqPosition === stop) stopFaqPosition = null;
+      }
+      stopFaqPosition = stop;
+      events.forEach(function (type) { window.addEventListener(type, stop, { passive: true }); });
+      change();
+      updateFaq();
+      var until = performance.now() + (parseFloat(getComputedStyle(section).getPropertyValue("--faq-motion-ms")) || 0) + 50;
+      function follow() {
+        if (stopped || !button.isConnected) { stop(); return; }
+        var delta = button.getBoundingClientRect().top - top;
+        if (Math.abs(delta) > 0.5) window.scrollBy({ top: delta, behavior: "instant" });
+        if (performance.now() < until) frame = requestAnimationFrame(follow);
+        else stop();
+      }
+      follow();
+    }
+    function setFaqPanel(panel, button, open) {
+      panel.classList.toggle("open", open);
+      panel.toggleAttribute("inert", !open);
+      panel.setAttribute("aria-hidden", String(!open));
+      button.setAttribute("aria-expanded", String(open));
+    }
     function updateFaq() {
       faqControls.forEach(function (entry, i) {
         var categoryOpen = state.open === i;
         entry.categoryChevron.style.transform = categoryOpen ? "rotate(180deg)" : "rotate(0deg)";
-        entry.list.classList.toggle("open", categoryOpen);
+        setFaqPanel(entry.panel, entry.button, categoryOpen);
         entry.questions.forEach(function (question) {
-          var questionOpen = state.openQ === question.key;
+          var questionOpen = categoryOpen && state.openQ === question.key;
           question.chevron.style.transform = questionOpen ? "rotate(180deg)" : "rotate(0deg)";
-          question.answer.classList.toggle("open", questionOpen);
+          setFaqPanel(question.answer, question.button, questionOpen);
         });
       });
     }
@@ -542,50 +576,50 @@
       var isOpen = state.open === i;
       var item = el("div", { class: "faq-item" });
       var categoryChevron = chevron(isOpen);
-      item.appendChild(el("button", { type: "button", class: "faq-head", onclick: function () {
-        state.open = state.open === i ? -1 : i;
-        updateFaq();
-      } }, [
-        el("span", null, [f.title]), categoryChevron
-      ]));
+      var panelId = "faq-category-" + i;
+      var categoryButton = el("button", { type: "button", class: "faq-head", "aria-expanded": String(isOpen), "aria-controls": panelId, onclick: function () {
+        changeFaq(categoryButton, function () { state.open = state.open === i ? -1 : i; });
+      } }, [el("span", null, [f.title]), categoryChevron]);
+      item.appendChild(categoryButton);
       item.appendChild(el("div", { class: "faq-badge-row" }, [el("span", { class: "faq-badge" }, [f.count])]));
-      var ul = el("ul", { class: "faq-sub-list" + (isOpen ? " open" : "") });
+      var ul = el("ul", { class: "faq-sub-list" });
+      var panel = el("div", { id: panelId, class: "faq-panel" + (isOpen ? " open" : ""), "aria-hidden": String(!isOpen), inert: isOpen ? null : "" }, [el("div", { class: "faq-panel-inner" }, [ul])]);
       var questions = [];
       f.items.forEach(function (it, j) {
         var faqGuide = window.FAQ_GUIDE_LINKS && window.FAQ_GUIDE_LINKS[state.lang] && window.FAQ_GUIDE_LINKS[state.lang][it.q];
         var faqVideo = window.FAQ_VIDEOS && window.FAQ_VIDEOS[state.lang] && window.FAQ_VIDEOS[state.lang][it.q];
         var hasVideo = !faqGuide && !!faqVideo;
         var key = i + ":" + j;
-        var qOpen = state.openQ === key;
+        var qOpen = isOpen && state.openQ === key;
         var li = el("li", { class: "faq-sub-item" });
         var iconsRow = el("span", { class: "faq-q-icons" });
         if (hasVideo) iconsRow.appendChild(videoIcon());
         var questionChevron = chevron(qOpen, "rgba(39,42,60,0.6)");
         iconsRow.appendChild(questionChevron);
-        li.appendChild(el("button", { type: "button", class: "faq-q", onclick: function () {
-          state.openQ = state.openQ === key ? null : key;
-          updateFaq();
-        } }, [
-          el("span", null, [it.q]), iconsRow
-        ]));
+        var answerId = "faq-answer-" + i + "-" + j;
+        var questionButton = el("button", { type: "button", class: "faq-q", "aria-expanded": String(qOpen), "aria-controls": answerId, onclick: function () {
+          changeFaq(questionButton, function () { state.openQ = state.openQ === key ? null : key; });
+        } }, [el("span", null, [it.q]), iconsRow]);
+        li.appendChild(questionButton);
         var answerContent = faqGuide ? el("a", {
           href: resourcePages.guideHref(faqGuide), class: "faq-guide-link"
         }, [window.RESOURCE_LABELS[state.lang].guideBody]) : (it.a || "");
-        var ans = el("div", { class: "faq-answer" + (qOpen ? " open" : "") }, [el("p", null, [answerContent])]);
+        var answerBody = el("div", { class: "faq-answer-content" }, [el("p", null, [answerContent])]);
+        var ans = el("div", { id: answerId, class: "faq-answer faq-panel" + (qOpen ? " open" : ""), "aria-hidden": String(!qOpen), inert: qOpen ? null : "" }, [el("div", { class: "faq-panel-inner" }, [answerBody])]);
         if (hasVideo) {
           var mediaRow = el("div", { class: "faq-media-row" });
           mediaRow.appendChild(el("div", { class: "faq-media video" }, [
             el("iframe", { src: faqVideo.url, title: faqVideo.title, loading: "lazy", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowfullscreen: "true", referrerpolicy: "strict-origin-when-cross-origin" })
           ]));
-          ans.appendChild(mediaRow);
+          answerBody.appendChild(mediaRow);
         }
         li.appendChild(ans);
         ul.appendChild(li);
-        questions.push({ key: key, chevron: questionChevron, answer: ans });
+        questions.push({ key: key, button: questionButton, chevron: questionChevron, answer: ans });
       });
-      item.appendChild(ul);
+      item.appendChild(panel);
       list.appendChild(item);
-      faqControls.push({ categoryChevron: categoryChevron, list: ul, questions: questions });
+      faqControls.push({ categoryChevron: categoryChevron, button: categoryButton, panel: panel, questions: questions });
     });
     section.appendChild(list);
     return section;
