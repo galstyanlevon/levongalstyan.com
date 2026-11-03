@@ -40,12 +40,12 @@ jobs:
         run: |
           npm install --no-save --package-lock=false playwright@1.58.2
           npx playwright install --with-deps chromium
-      - name: Check patient links and mobile layouts
-        run: node scripts/test-patient-resources.mjs
       - name: Check Patient Notes submission and outage recovery
         run: |
           node scripts/test-patient-notes-submit.mjs
           node scripts/test-patient-notes-recovery.mjs
+      - name: Check patient links and mobile layouts
+        run: node scripts/test-patient-resources.mjs
       - name: Save review screenshots
         if: always()
         uses: actions/upload-artifact@v4

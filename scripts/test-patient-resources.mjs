@@ -198,7 +198,9 @@ try {
         await faqQuestions.nth(i + 1).scrollIntoViewIfNeeded();
         const before = await page.evaluate(() => scrollY);
         await faqQuestions.nth(i + 1).click();
-        assert.equal(await page.evaluate(() => scrollY), before);
+        // Browser scroll anchoring rounds fractional layout coordinates to pixels.
+        // Allow only that rounding; a jump towards the page top must still fail.
+        assert.ok(Math.abs(await page.evaluate(() => scrollY) - before) <= 1);
         assert.equal(await page.locator('.faq-answer.open .faq-guide-link').getAttribute('href'), base + lang + '/guide/' + expectedFaqGuides[i] + '/');
       }
       for (const [key, sub, references] of [
