@@ -13,7 +13,7 @@ for (const type of ['text', 'handwriting']) {
   const context = {
     form:{addEventListener:(_, fn)=>handler=fn}, draft, sending:false,
     preview:()=>false, finish:()=>{finished=true;},
-    submit:{}, error:{}, c:{sending:'Sending',send:'Send',sendError:'Error', emailLanguage:'Armenian',emailText:'Typed note',emailHandwriting:'Handwritten photograph',emailConsent:'Confirmed',emailStatus:'Awaiting moderation',consent:'Exact consent wording'},
+    submit:{}, backButton:{}, fallback:{}, showFallback:()=>{}, error:{}, c:{sending:'Sending',send:'Send',sendError:'Error', emailLanguage:'Armenian',emailText:'Typed note',emailHandwriting:'Handwritten photograph',emailConsent:'Confirmed',emailStatus:'Awaiting moderation',consent:'Exact consent wording'},
     publicationName:()=> 'Anonymous', FormData, File, AbortController, setTimeout, clearTimeout,
     location:{origin:'https://www.levongalstyan.com',pathname:'/hy/patients/notes/'},
     DataTransfer:class { constructor(){this.files=[];this.items={add:f=>this.files.push(f)};} },

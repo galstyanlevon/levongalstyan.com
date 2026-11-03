@@ -50,6 +50,10 @@
 .pn-actions .form-submit { height: auto; min-height: 48px; padding: 10px 24px; }
 .pn-error { color: var(--ink); border-left: 2px solid var(--orange); padding-left: 12px; font-size: 14px; line-height: 22px; }
 .pn-error:empty { display: none; }
+.pn-fallback[hidden] { display: none; }
+.pn-fallback .pn-actions { flex-wrap: wrap; }
+.pn-fallback .pn-caption { overflow-wrap: anywhere; }
+.pn-fallback a:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
 .pn-upload-preview { width: 100%; max-height: 220px; object-fit: contain; }
 .pn-review { background: var(--gray-card); padding: 20px; border-radius: 8px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .pn-viewer { width: min(1100px, calc(100% - 24px)); }
