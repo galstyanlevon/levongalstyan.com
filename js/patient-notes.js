@@ -21,7 +21,13 @@
       previewHint: 'Preview only. Your note and photo will not be sent or published.',
       done: 'Preview complete', doneBody: 'Nothing has been sent or published. Your demonstration draft has been cleared.',
       received: 'Sent for review', receivedBody: 'Thank you. Your note will be reviewed before any publication.',
-      sendError: 'The note could not be sent. Your draft is still here. Please try again.', empty: 'No notes have been published yet.'
+      sendError: 'Delivery could not be confirmed. Please try again later.', empty: 'No notes have been published yet.',
+      sendUnavailable: 'The sending service is temporarily unavailable. Please try again later or send your note by email.',
+      sendUnconfirmed: 'Delivery could not be confirmed. You can try again later or send your note by email.',
+      draftSaved: 'Your text is saved in this tab, including if you reload. Clear it when using a shared device.',
+      draftUnsaved: 'Your browser cannot save this draft. Copy your text before leaving or reloading.',
+      clearDraft: 'Clear text', copyNote: 'Copy message', copied: 'Message copied.', copyManually: 'Select and copy the message below.',
+      emailFallback: 'Open email', emailHelp: 'Send the prepared message from your email app. If it does not open, copy the message and email it to galstyan.levon@gmail.com. Sending by email shares your email address with the recipient.'
     },
     hy: {
       title: 'Բուժառուների խոսքերը', demo: 'Ցուցադրական նմուշ', intro: 'Նախադիտում՝ միայն ցուցադրական բովանդակությամբ։',
@@ -40,14 +46,34 @@
       previewHint: 'Սա նախադիտում է։ Ձեր գրառումը և լուսանկարը չեն ուղարկվի կամ հրապարակվի։',
       done: 'Փորձարկումն ավարտված է', doneBody: 'Ոչինչ չի ուղարկվել կամ հրապարակվել։ Փորձնական սևագիրը ջնջվել է։',
       received: 'Ուղարկվել է ստուգման', receivedBody: 'Շնորհակալություն։ Ձեր գրառումը կստուգվի հրապարակումից առաջ։',
-      sendError: 'Գրառումը չհաջողվեց ուղարկել։ Սևագիրը պահպանված է։ Խնդրում ենք կրկին փորձել։', empty: 'Դեռ հրապարակված գրառումներ չկան։'
+      sendError: 'Ուղարկումը չի հաստատվել։ Խնդրում ենք ավելի ուշ կրկին փորձել։', empty: 'Դեռ հրապարակված գրառումներ չկան։',
+      sendUnavailable: 'Ուղարկման ծառայությունը ժամանակավորապես հասանելի չէ։ Փորձեք ավելի ուշ կամ ուղարկեք գրառումն էլեկտրոնային փոստով։',
+      sendUnconfirmed: 'Ուղարկումը չի հաստատվել։ Կարող եք ավելի ուշ կրկին փորձել կամ ուղարկել գրառումն էլեկտրոնային փոստով։',
+      draftSaved: 'Տեքստը պահպանվում է այս ներդիրում նաև էջը թարմացնելիս։ Ընդհանուր սարքից օգտվելիս մաքրեք այն։',
+      draftUnsaved: 'Բրաուզերը չի կարող պահպանել սևագիրը։ Էջից դուրս գալուց կամ այն թարմացնելուց առաջ պատճենեք տեքստը։',
+      clearDraft: 'Մաքրել տեքստը', copyNote: 'Պատճենել հաղորդագրությունը', copied: 'Հաղորդագրությունը պատճենված է։', copyManually: 'Ընտրեք և պատճենեք ստորև բերված հաղորդագրությունը։',
+      emailFallback: 'Բացել էլ. փոստը', emailHelp: 'Պատրաստված հաղորդագրությունն ուղարկեք Ձեր փոստային հավելվածից։ Եթե այն չի բացվում, պատճենեք հաղորդագրությունը և ուղարկեք galstyan.levon@gmail.com հասցեին։ Այս եղանակով ստացողը կտեսնի Ձեր էլ. փոստի հասցեն։'
     }
   };
   function blank() { return { type: '', text: '', image: null, preference: 'anonymous', name: '', initial: '', consent: false }; }
+  function draftKey(lang) { return 'patient-note-text-' + lang; }
+  function restore(lang) {
+    var draft = blank();
+    try { draft.text = (sessionStorage.getItem(draftKey(lang)) || '').slice(0, 3000); } catch (e) {}
+    // Restore text only. A reload must never restore publication consent.
+    return draft;
+  }
+  function saveText(lang, text) {
+    try {
+      if (text) sessionStorage.setItem(draftKey(lang), text);
+      else sessionStorage.removeItem(draftKey(lang));
+      return true;
+    } catch (e) { return false; }
+  }
   function preview() { return window.PATIENT_NOTES_CONFIG.preview === true; }
   function close() { if (activeDialog) activeDialog(); }
   function build(lang, el) {
-    var c = COPY[lang], draft = drafts[lang] || (drafts[lang] = blank());
+    var c = COPY[lang], draft = drafts[lang] || (drafts[lang] = restore(lang));
     function button(text, className, action) { return el('button', { type: 'button', class: className, onclick: action }, [/pn-(cta|choice)/.test(className) ? el('span', { class: 'pn-choice-label' }, [text]) : text]); }
     function caption(text) { return el('p', { class: 'pn-caption' }, [text]); }
     function makeDialog(className, title, opener) {
@@ -126,10 +152,14 @@
         var error = el('p', { class: 'pn-error', role: 'alert' });
         var nextButton;
         if (draft.type === 'text') {
-          var input = el('textarea', { rows: '5', maxlength: '3000', required: '', 'aria-describedby': 'pn-privacy', oninput: function (e) { draft.text = e.target.value; e.target.setCustomValidity(''); } });
+          var storageHint = caption('');
+          function persistText() { storageHint.textContent = saveText(lang, draft.text) ? c.draftSaved : c.draftUnsaved; }
+          var input = el('textarea', { rows: '5', maxlength: '3000', required: '', 'aria-describedby': 'pn-privacy', oninput: function (e) { draft.text = e.target.value; e.target.setCustomValidity(''); persistText(); } });
           input.value = draft.text;
           form.appendChild(el('label', null, [c.text, input]));
           form.appendChild(el('p', { class: 'pn-caption', id: 'pn-privacy' }, [c.privacy]));
+          persistText(); form.appendChild(storageHint);
+          form.appendChild(button(c.clearDraft, 'pn-cta', function () { draft.text = ''; input.value = ''; persistText(); input.focus(); }));
         } else {
           var photo = el('div');
           if (draft.image) showPhoto(photo);
@@ -210,11 +240,37 @@
         form.appendChild(note); form.appendChild(caption(publicationName()));
         form.appendChild(caption(preview() ? c.previewHint : c.moderation));
         var error = el('p', { role: 'alert', class: 'pn-error' }); form.appendChild(error);
+        var fallback = el('div', { class: 'pn-flow pn-fallback', hidden: '' }); form.appendChild(fallback);
+        function showFallback(fields, message) {
+          error.textContent = message;
+          if (draft.type === 'text') {
+            fallback.replaceChildren(); fallback.hidden = false;
+            fallback.appendChild(caption(saveText(lang, draft.text) ? c.draftSaved : c.draftUnsaved));
+            var lines = [];
+            fields.forEach(function (value, key) { if (key.charAt(0) !== '_') lines.push(key + ': ' + value); });
+            var body = lines.join('\n\n');
+            var link = el('a', { class: 'card-btn', href: 'mailto:galstyan.levon@gmail.com?subject=' + encodeURIComponent('New Patient Note — Review Required') + '&body=' + encodeURIComponent(body) }, [c.emailFallback]);
+            var feedback = el('p', { class: 'pn-caption', role: 'status' });
+            var copy = button(c.copyNote, 'card-btn', async function () {
+              try { await navigator.clipboard.writeText(body); feedback.textContent = c.copied; }
+              catch (e) {
+                feedback.textContent = c.copyManually;
+                var text = el('textarea', { readonly: '', rows: '6', 'aria-label': c.copyNote });
+                text.value = body; fallback.appendChild(text); text.focus(); text.select();
+              }
+            });
+            fallback.appendChild(el('div', { class: 'pn-actions' }, [link, copy]));
+            fallback.appendChild(caption(c.emailHelp)); fallback.appendChild(feedback);
+          }
+          // Long notes must not leave the error and recovery controls off screen.
+          error.setAttribute('tabindex', '-1'); error.focus(); error.scrollIntoView({ block: 'nearest' });
+        }
         var submit = actions(form, identity, preview() ? c.previewSend : c.send);
+        var backButton = form.querySelector('.pn-actions button');
         form.addEventListener('submit', async function (e) {
           e.preventDefault(); if (sending || !draft.consent) return;
           if (preview()) { finish(); return; }
-          sending = true; submit.disabled = true; submit.textContent = c.sending; error.textContent = '';
+          sending = true; submit.disabled = true; backButton.disabled = true; submit.textContent = c.sending; error.textContent = ''; fallback.hidden = true;
           function appendModerationFields(fd) {
             fd.append('_subject', 'New Patient Note — Review Required');
             fd.append('_captcha', 'false');
@@ -245,7 +301,7 @@
               document.body.appendChild(nativeForm); nativeForm.submit();
               return;
             } catch (err) {
-              error.textContent = c.sendError; submit.disabled = false; submit.textContent = c.send; sending = false;
+              error.textContent = c.sendError; submit.disabled = false; backButton.disabled = false; submit.textContent = c.send; sending = false;
               return;
             }
           }
@@ -257,15 +313,16 @@
             var fd = new FormData();
             appendModerationFields(fd); fd.append('Note', draft.text.trim());
             var response = await fetch('https://formsubmit.co/ajax/galstyan.levon@gmail.com', { method: 'POST', headers: { Accept: 'application/json' }, body: fd, signal: controller.signal });
-            if (!response.ok) throw Error('Request failed');
+            if (!response.ok) { var failure = Error('Request failed'); failure.unavailable = response.status >= 500 || response.status === 429; throw failure; }
             var result = await response.json(); if (result.success !== true && result.success !== 'true') throw Error('Rejected');
             if (d.node.open) finish();
-          } catch (err) { if (d.node.open) { error.textContent = c.sendError; submit.disabled = false; submit.textContent = c.send; } }
-          finally { clearTimeout(timeout); sending = false; }
+          } catch (err) { if (d.node.open) showFallback(fd, err.unavailable ? c.sendUnavailable : c.sendUnconfirmed); }
+          finally { clearTimeout(timeout); sending = false; submit.disabled = false; backButton.disabled = false; submit.textContent = c.send; }
         });
         stepContent.appendChild(form);
       }
       function finish() {
+        saveText(lang, '');
         draft = drafts[lang] = blank();
         if (fileURL) { URL.revokeObjectURL(fileURL); fileURL = null; }
         screen('done', preview() ? c.done : c.received);

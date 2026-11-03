@@ -6,6 +6,9 @@ on:
     branches: [main]
     paths:
       - 'js/patient-resource*'
+      - 'js/patient-notes*'
+      - 'css/patient-notes.css'
+      - 'scripts/test-patient-notes*'
       - 'js/orthognathic-guide.js'
       - 'js/ent-guides.js'
       - 'js/oral-surgery-guides.js'
@@ -37,6 +40,10 @@ jobs:
         run: |
           npm install --no-save --package-lock=false playwright@1.58.2
           npx playwright install --with-deps chromium
+      - name: Check Patient Notes submission and outage recovery
+        run: |
+          node scripts/test-patient-notes-submit.mjs
+          node scripts/test-patient-notes-recovery.mjs
       - name: Check patient links and mobile layouts
         run: node scripts/test-patient-resources.mjs
       - name: Save review screenshots
