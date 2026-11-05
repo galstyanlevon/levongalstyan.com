@@ -258,7 +258,10 @@ a.mobile-service-heading { padding-right: 26px; }
 .form-submit:disabled { opacity: .65; cursor: wait; }
 .form-error { padding: 16px; border-left: 3px solid #9c422e; background: var(--paper); color: #7b3425; line-height: 1.6; overflow-wrap: anywhere; }
 .form-error[hidden] { display: none; }
-.form-error a { text-decoration: underline; text-underline-offset: 3px; }
+.form-fallback { display: grid; gap: 12px; overflow-wrap: anywhere; }
+.form-fallback[hidden], .form-fallback .form-copy-text[hidden] { display: none; }
+.form-fallback .form-copy-status:empty { position: absolute; }
+.form-fallback-actions { display: flex; flex-wrap: wrap; gap: 8px 20px; }
 @media (max-width: 600px) {
   .section-peach.center-col { padding-left: 20px; padding-right: 20px; }
 }
@@ -379,3 +382,4 @@ a.mobile-service-heading { padding-right: 26px; }
 }
 
 .contact-form .form-help { margin: -8px 0 0; font-size: 14px; line-height: 1.6; color: #4b4e5c; }
+.form-fallback .form-help { margin: 0; }

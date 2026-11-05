@@ -13,7 +13,7 @@ function el(tag, props = {}, children = []) {
     appendChild(child) { this.children.push(child); },
     addEventListener(type, fn) { (this.listeners[type] ||= []).push(fn); },
     change(value, type = 'input') { this.value = value; const event = { target: this }; this.props['on' + type]?.(event); (this.listeners[type] || []).forEach(fn => fn(event)); },
-    setAttribute(key, value) { this.props[key] = value; }, focus() { this.focused = true; },
+    setAttribute(key, value) { this.props[key] = value; }, focus() { this.focused = true; }, select() { this.selected = true; },
     reportValidity() {
       const valid = node => !(node.required && !node.value) && (node.children || []).filter(c => c && typeof c === 'object').every(valid);
       return this.valid !== false && valid(this);
@@ -43,6 +43,7 @@ function setup(lang, fetchImpl, analyticsThrows = false) {
       }
       append(...pair) { this.extra.push(pair); }
       set(key, value) { this.fields[key] = value; }
+      get(key) { return this.fields[key] ?? null; }
     },
     AbortController, setTimeout, clearTimeout,
     fetch: (...args) => { calls++; return fetchImpl(...args); }
@@ -67,6 +68,7 @@ for (const lang of ['hy', 'en']) {
     assert.equal(form.querySelector('[name="name"]').props.autocomplete, 'name');
     assert.equal(form.querySelector('[name="phone"]').props.type, 'tel');
     assert.equal(form.querySelector('[name="email"]').required, false);
+    assert.equal(form.querySelector('.form-fallback').hidden, true);
     const subject = form.querySelector('[name="service"]');
     subject.change('collaboration', 'change');
     assert.equal(run.c.state.service, 'collaboration');
@@ -75,6 +77,7 @@ for (const lang of ['hy', 'en']) {
     form.props.onsubmit(event); form.props.onsubmit(event);
     assert.equal(run.calls, 1, 'Double submission must be ignored');
     assert.equal(form.querySelector('.form-submit').disabled, true);
+    assert.equal(form.querySelector('.form-fallback').hidden, true);
     assert.equal(form.querySelector('.form-submit').textContent, content.window.CONTENT[lang].sending);
     assert.equal(form.props['aria-busy'], 'true');
     assert.deepEqual(run.submitted.extra, [['_subject', 'New inquiry from levongalstyan.com'], ['_captcha', 'false']]);
@@ -93,10 +96,52 @@ for (const lang of ['hy', 'en']) {
     assert.equal(run.c.formDraft.contact_method, success ? '' : 'whatsapp');
     assert.equal(run.c.state.service, success ? '' : 'collaboration');
     assert.equal(form.querySelector('.form-error').hidden, success);
+    assert.equal(form.querySelector('.form-fallback').hidden, success);
     assert.equal(run.current.querySelector(success ? '.sent-panel.show' : '.form-error').focused, true);
     assert.deepEqual(run.goals, success ? ['contact_success'] : []);
     console.log('PASS', lang, label);
   }
+  const emailFallback = setup(lang, async () => ({ ok: false, status: 522 }));
+  let emailForm = emailFallback.current.children[1];
+  const labels = content.window.CONTENT[lang];
+  const message = 'Հայերեն & English?\nSecond line';
+  emailForm.querySelector('[name="service"]').change('collaboration', 'change');
+  emailForm.querySelector('[name="contact_method"]').change('email', 'change');
+  emailForm.querySelector('[name="phone"]').change('');
+  emailForm.querySelector('[name="email"]').change('test@example.invalid');
+  emailForm.querySelector('[name="message"]').change(message);
+  emailForm.props.onsubmit({ preventDefault() {}, target: emailForm });
+  await new Promise(resolve => setTimeout(resolve, 0));
+  emailForm = emailFallback.current.children[1];
+  assert.equal(emailForm.querySelector('.form-fallback').hidden, false);
+  const mail = emailForm.querySelector('.form-open-email');
+  mail.props.onclick();
+  const href = new URL(mail.props.href);
+  assert.equal(href.pathname, 'galstyan.levon@gmail.com');
+  assert.equal(href.searchParams.get('subject'), 'New inquiry from levongalstyan.com');
+  const expectedBody = [
+    `${labels.fName}: TEST ONLY`,
+    `${labels.emailSubjectLabel}: ${labels.contactSubjects.collaboration}`,
+    `${labels.fContactMethod}: ${labels.contactMethods.email}`,
+    `${labels.fEmail}: test@example.invalid`,
+    `${labels.fMessage}: ${message}`
+  ].join('\n\n');
+  assert.equal(href.searchParams.get('body'), expectedBody.replaceAll('\n', '\r\n'));
+  let copied;
+  emailFallback.c.navigator = { clipboard: { writeText: async text => { copied = text; } } };
+  const copy = emailForm.querySelector('.form-copy-email');
+  assert.equal(copy.props.type, 'button');
+  await copy.props.onclick();
+  assert.equal(copied, expectedBody);
+  assert.equal(emailForm.querySelector('.form-copy-status').textContent, labels.emailCopied);
+  emailFallback.c.navigator.clipboard.writeText = async () => { throw Error('Clipboard unavailable'); };
+  await copy.props.onclick();
+  const copyText = emailForm.querySelector('.form-copy-text');
+  assert.equal(copyText.value, expectedBody);
+  assert.equal(copyText.hidden, false);
+  assert.equal(copyText.selected, true);
+  assert.equal(emailFallback.calls, 1, 'Email fallback must not send another request');
+  console.log('PASS', lang, 'prepared email and clipboard fallback');
   const run = setup(lang, async () => { throw Error('Must not send'); });
   run.c.state.service = 'Specific procedure'; run.c.setState({});
   const form = run.current.children[1];
