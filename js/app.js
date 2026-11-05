@@ -123,7 +123,8 @@
     var keepNavigationFocus = !!state.drawerSection;
     var next = state.lang === "en" ? "hy" : "en";
     try { localStorage.setItem("galstyan.lang", next); } catch (e) {}
-    setState({ lang: next });
+    state.lang = next;
+    renderKeepingPosition();
     if (window.syncSharePage) window.syncSharePage(next);
     if (keepNavigationFocus) document.querySelector(".lang-btn").focus({ preventScroll: true });
   }
@@ -630,10 +631,15 @@
     var recipient = "galstyan.levon@gmail.com";
     var inquirySubject = "New inquiry from levongalstyan.com";
     var wrap = el("div", { class: "form-wrap" });
-    wrap.appendChild(el("div", { class: "sent-panel" + (state.sent ? " show" : ""), role: "status", tabindex: "-1" }, [
+    var sentPanel = el("div", { class: "sent-panel" + (state.sent ? " show" : ""), role: "status", tabindex: "-1" }, [
       el("p", null, [T.sentTitle]),
-      el("button", { type: "button", onclick: function () { setState({ sent: false, service: "" }); } }, [T.again])
-    ]));
+      el("button", { type: "button", onclick: function () {
+        state.sent = false; state.service = ""; formError = false;
+        updateSubmissionStatus();
+        form.querySelector('[name="name"]').focus({ preventScroll: true });
+      } }, [T.again])
+    ]);
+    wrap.appendChild(sentPanel);
     var form = el("form", { class: "contact-form" + (state.sent ? " hide" : ""), "aria-busy": String(formSending), onsubmit: function (e) {
       e.preventDefault();
       if (formSending) return;
@@ -673,9 +679,10 @@
       }).finally(function () {
         clearTimeout(timeout);
         formSending = false;
-        setState(delivered ? { sent: true, service: "" } : {});
-        var feedback = document.querySelector(delivered ? ".sent-panel.show" : ".form-error");
-        if (feedback) feedback.focus();
+        if (delivered) { state.sent = true; state.service = ""; }
+        // The current form may have been rebuilt by a language or layout change.
+        var currentForm = document.querySelector(".contact-form");
+        if (currentForm) currentForm.dispatchEvent(new Event("contact-status"));
       });
     } });
     var subject = el("select", { name: "service", onchange: function (e) { state.service = e.target.value; } });
@@ -763,6 +770,28 @@
     fallback.appendChild(feedback);
     fallback.appendChild(copyText);
     form.appendChild(fallback);
+    function updateSubmissionStatus() {
+      form.classList.toggle("hide", !!state.sent);
+      sentPanel.classList.toggle("show", !!state.sent);
+      form.setAttribute("aria-busy", String(formSending));
+      var submit = form.querySelector(".form-submit");
+      submit.disabled = formSending; submit.textContent = formSending ? T.sending : T.send;
+      var error = form.querySelector(".form-error");
+      error.hidden = !formError;
+      fallback.hidden = formSending || !formError;
+      if (state.sent) {
+        Object.keys(formDraft).forEach(function (key) { form.querySelector('[name="' + key + '"]').value = formDraft[key]; });
+        subject.value = state.service;
+        updateContactRequirements();
+      }
+      if (formError) mail.setAttribute("href", emailHref());
+      var status = state.sent ? sentPanel : error;
+      if (state.sent || formError) {
+        status.focus({ preventScroll: true });
+        status.scrollIntoView({ block: "nearest", behavior: "instant" });
+      }
+    }
+    form.addEventListener("contact-status", updateSubmissionStatus);
     Object.keys(formDraft).forEach(function (key) {
       var input = form.querySelector('[name="' + key + '"]');
       input.value = formDraft[key];
@@ -1354,6 +1383,24 @@
   }
 
   /* ---------- Render ---------- */
+  function renderKeepingPosition() {
+    // Match the visible content block across translations with different heights.
+    var selector = "#app > section, #app > footer, .section-block, .faq-item, .card, .form-wrap, .contact-form label, .form-error, .form-submit";
+    var blocks = Array.from(document.querySelectorAll(selector));
+    var anchor = null, top = -Infinity;
+    blocks.forEach(function (block) {
+      var rect = block.getBoundingClientRect();
+      if (rect.height && rect.top <= 100 && rect.top > top) { anchor = block; top = rect.top; }
+    });
+    var index = blocks.indexOf(anchor), id = anchor && anchor.id, y = window.scrollY;
+    var atBottom = y > 0 && document.documentElement.scrollHeight - window.innerHeight - y < 2;
+    render();
+    var replacement = id ? document.getElementById(id) : document.querySelectorAll(selector)[index];
+    var target = y && replacement ? window.scrollY + replacement.getBoundingClientRect().top - top : y;
+    if (atBottom) target = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo({ top: target, behavior: "instant" });
+  }
+
   function render() {
     if (window.PatientNotes) window.PatientNotes.close();
     var app = document.getElementById("app");
@@ -1385,7 +1432,7 @@
     var m = window.innerWidth < 1180;
     var phone = window.innerWidth < 768;
     if (m !== state.mobile || phone !== state.phone) {
-      closeAllMenus(); state.mobile = m; state.phone = phone; render();
+      closeAllMenus(); state.mobile = m; state.phone = phone; renderKeepingPosition();
     }
   }
   function dismissOutsideNavigation(event) {
@@ -1410,7 +1457,6 @@
     readHash();
   });
   readHash();
-  render();
   syncMobile();
   setTimeout(syncMobile, 0);
   window.addEventListener("load", syncMobile);

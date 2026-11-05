@@ -52,6 +52,34 @@ try {
       // No real messages or external embedded media requests during the checks.
       await page.route('**/*', route => route.request().url().startsWith(base) ? route.continue() : route.abort());
       await page.addInitScript(other => { try { localStorage.setItem('galstyan.lang', other); } catch {} }, lang === 'hy' ? 'en' : 'hy');
+      await page.goto(base + lang + '/contact/');
+      await page.evaluate(() => document.fonts.ready);
+      const contact = page.locator('.contact-form');
+      await contact.locator('[name="name"]').fill('Technical test');
+      await contact.locator('[name="email"]').fill('test@example.invalid');
+      await contact.locator('[name="message"]').fill('Test only — Հայերեն\nNo real submission');
+      await contact.evaluate(form => { form.dataset.testIdentity = 'original'; });
+      await contact.locator('.form-submit').click();
+      await contact.locator('.form-error:not([hidden])').waitFor();
+      assert.equal(await contact.getAttribute('data-test-identity'), 'original', 'Sending must keep the existing form DOM');
+      assert.equal(await contact.locator('[name="message"]').inputValue(), 'Test only — Հայերեն\nNo real submission');
+      assert.ok(await contact.locator('.form-fallback').isVisible());
+      // Translation changes section heights. Keep the same visible block, including form fields.
+      for (const selector of ['#about', '#services', '#faq', '.contact-form [name="message"]', '#insights', '.site-footer']) {
+        await page.locator(selector).evaluate(node => window.scrollTo({top:node.getBoundingClientRect().top + scrollY - 90,behavior:'instant'}));
+        const before = await page.locator(selector).evaluate(node => node.getBoundingClientRect().top);
+        await page.locator('.lang-btn').click();
+        await page.evaluate(() => document.fonts.ready);
+        const after = await page.locator(selector).evaluate(node => node.getBoundingClientRect().top);
+        if (selector === '.site-footer') {
+          assert.ok(await page.evaluate(() => document.documentElement.scrollHeight - innerHeight - scrollY < 2), 'Keep the footer in view at the bottom');
+        } else {
+          assert.ok(Math.abs(after - before) < 3, `Language switch moved ${selector} by ${after - before}px at ${width}px`);
+        }
+        assert.equal(await contact.locator('[name="message"]').inputValue(), 'Test only — Հայերեն\nNo real submission');
+      }
+      assert.equal(await page.locator('html').getAttribute('lang'), lang);
+      console.log('PASS contact error keeps DOM and language keeps viewport:', lang, width);
       await page.goto(base + lang + '/patients/notes/');
       const elizabeth = page.locator('[data-note-id="elizabeth-2026-' + lang + '"]');
       await elizabeth.waitFor();

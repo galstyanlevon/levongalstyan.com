@@ -7,13 +7,15 @@ const content = { window: {} };
 vm.runInNewContext(fs.readFileSync('js/content.js', 'utf8'), content);
 function el(tag, props = {}, children = []) {
   props ||= {};
-  return {
+  const node = {
     tag, props, children, value: props.value || '', required: props.required != null, disabled: false, hidden: props.hidden != null,
     listeners: {},
     appendChild(child) { this.children.push(child); },
     addEventListener(type, fn) { (this.listeners[type] ||= []).push(fn); },
     change(value, type = 'input') { this.value = value; const event = { target: this }; this.props['on' + type]?.(event); (this.listeners[type] || []).forEach(fn => fn(event)); },
     setAttribute(key, value) { this.props[key] = value; }, focus() { this.focused = true; }, select() { this.selected = true; },
+    scrollIntoView() {},
+    dispatchEvent(event) { (this.listeners[event.type] || []).forEach(fn => fn(event)); },
     reportValidity() {
       const valid = node => !(node.required && !node.value) && (node.children || []).filter(c => c && typeof c === 'object').every(valid);
       return this.valid !== false && valid(this);
@@ -26,6 +28,12 @@ function el(tag, props = {}, children = []) {
       return walk(this);
     }
   };
+  node.classList = { toggle(name, enabled) {
+    const classes = new Set((node.props.class || '').split(' ').filter(Boolean));
+    if (enabled) classes.add(name); else classes.delete(name);
+    node.props.class = [...classes].join(' ');
+  } };
+  return node;
 }
 function setup(lang, fetchImpl, analyticsThrows = false) {
   let current, submitted, calls = 0;
@@ -45,7 +53,7 @@ function setup(lang, fetchImpl, analyticsThrows = false) {
       set(key, value) { this.fields[key] = value; }
       get(key) { return this.fields[key] ?? null; }
     },
-    AbortController, setTimeout, clearTimeout,
+    AbortController, Event, setTimeout, clearTimeout,
     fetch: (...args) => { calls++; return fetchImpl(...args); }
   };
   vm.createContext(c); vm.runInContext(functions + '\nthis.build = buildContactForm;', c); current = c.build();
@@ -89,7 +97,9 @@ for (const lang of ['hy', 'en']) {
     assert.equal(form.querySelector('[name="name"]').value, 'TEST ONLY');
     assert.equal(form.querySelector('[name="service"]').value, 'collaboration');
     assert.equal(form.querySelector('[name="contact_method"]').value, 'whatsapp');
+    const pendingForm = form;
     finish(); await new Promise(resolve => setTimeout(resolve, 0)); form = run.current.children[1];
+    assert.equal(form, pendingForm, 'A submission result must update the existing form without rebuilding the page');
     assert.equal(Boolean(run.c.state.sent), success, label); assert.equal(run.c.formSending, false);
     assert.equal(form.querySelector('.form-submit').disabled, false); assert.equal(form.props['aria-busy'], 'false');
     assert.equal(run.c.formDraft.name, success ? '' : 'TEST ONLY');
