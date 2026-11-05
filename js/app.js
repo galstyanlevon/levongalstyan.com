@@ -627,6 +627,8 @@
 
   function buildContactForm() {
     var T = t();
+    var recipient = "galstyan.levon@gmail.com";
+    var inquirySubject = "New inquiry from levongalstyan.com";
     var wrap = el("div", { class: "form-wrap" });
     wrap.appendChild(el("div", { class: "sent-panel" + (state.sent ? " show" : ""), role: "status", tabindex: "-1" }, [
       el("p", null, [T.sentTitle]),
@@ -641,16 +643,19 @@
       formError = false;
       form.setAttribute("aria-busy", "true");
       form.querySelector(".form-error").hidden = true;
+      fallback.hidden = true;
       var delivered = false;
       var fd = new FormData(e.target);
+      Object.keys(formDraft).forEach(function (key) { formDraft[key] = fd.get(key); });
+      state.service = subject.value;
       fd.set("service", T.contactSubjects[subject.value] || subject.value);
-      fd.append("_subject", "New inquiry from levongalstyan.com");
+      fd.append("_subject", inquirySubject);
       fd.append("_captcha", "false");
       var submitBtn = e.target.querySelector(".form-submit");
       if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = T.sending; }
       var controller = new AbortController();
       var timeout = setTimeout(function () { controller.abort(); }, 20000);
-      fetch("https://formsubmit.co/ajax/galstyan.levon@gmail.com", {
+      fetch("https://formsubmit.co/ajax/" + recipient, {
         method: "POST",
         signal: controller.signal,
         headers: { Accept: "application/json" },
@@ -713,9 +718,48 @@
       detailsHelp.textContent = T.contactMethodHelp[method.value] || T.contactDetailsHelp;
     }
     form.appendChild(el("p", { class: "form-error", role: "alert", tabindex: "-1", hidden: formError ? null : "true" }, [
-      T.sendError + " ", el("a", { href: "mailto:galstyan.levon@gmail.com" }, ["galstyan.levon@gmail.com"])
+      T.sendError
     ]));
     form.appendChild(el("button", { type: "submit", class: "form-submit", "aria-live": "polite" }, [formSending ? T.sending : T.send]));
+    function emailBody() {
+      var fields = new FormData(form);
+      var entries = [
+        [T.fName, fields.get("name")],
+        [T.emailSubjectLabel, T.contactSubjects[subject.value] || subject.value],
+        [T.fContactMethod, method.value && T.contactMethods[method.value]],
+        [T.fPhone, fields.get("phone")],
+        [T.fEmail, fields.get("email")],
+        [T.fMessage, fields.get("message")]
+      ];
+      return entries.filter(function (entry) { return entry[1] && entry[1].trim(); })
+        .map(function (entry) { return entry[0] + ": " + entry[1]; }).join("\n\n");
+    }
+    var fallback = el("div", { class: "form-fallback", hidden: formSending ? "" : null });
+    var mail = el("a", { class: "card-btn form-open-email", href: "mailto:" + recipient, onclick: function () {
+      var body = emailBody().replace(/\r?\n/g, "\r\n");
+      mail.setAttribute("href", "mailto:" + recipient + "?subject=" + encodeURIComponent(inquirySubject) + "&body=" + encodeURIComponent(body));
+    } }, [T.openEmail]);
+    var feedback = el("p", { class: "form-help form-copy-status", role: "status" });
+    var copyText = el("textarea", { class: "form-copy-text", readonly: "", hidden: "", rows: "6", "aria-label": T.copyEmail });
+    var copy = el("button", { class: "card-btn form-copy-email", type: "button", onclick: async function () {
+      var body = emailBody();
+      try {
+        await navigator.clipboard.writeText(body);
+        copyText.hidden = true;
+        feedback.textContent = T.emailCopied;
+      } catch (error) {
+        copyText.value = body;
+        copyText.hidden = false;
+        copyText.focus();
+        copyText.select();
+        feedback.textContent = T.emailCopyManually;
+      }
+    } }, [T.copyEmail]);
+    fallback.appendChild(el("div", { class: "form-fallback-actions" }, [mail, copy]));
+    fallback.appendChild(el("p", { class: "form-help" }, [T.emailFallbackHelp + " " + recipient + "."]));
+    fallback.appendChild(feedback);
+    fallback.appendChild(copyText);
+    form.appendChild(fallback);
     Object.keys(formDraft).forEach(function (key) {
       var input = form.querySelector('[name="' + key + '"]');
       input.value = formDraft[key];
