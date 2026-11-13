@@ -5,6 +5,10 @@ import http from 'node:http';
 import path from 'node:path';
 import { chromium } from 'playwright';
 
+const languages = process.env.TEST_LANG ? [process.env.TEST_LANG] : ['hy', 'en'];
+const widths = process.env.TEST_WIDTH ? [Number(process.env.TEST_WIDTH)] : [1440, 390];
+assert.ok(languages.every(lang => ['hy', 'en'].includes(lang)), 'Unsupported TEST_LANG');
+assert.ok(widths.every(width => [1440, 390].includes(width)), 'Unsupported TEST_WIDTH');
 const root = path.resolve('dist');
 const source = { window: {} };
 vm.runInNewContext(fs.readFileSync('js/content.js', 'utf8'), source);
@@ -40,11 +44,33 @@ await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const base = `http://127.0.0.1:${server.address().port}/`;
 const artifacts = 'artifacts/patient-resources';
 fs.mkdirSync(artifacts, { recursive:true });
+// Wait for the FAQ transition and its final scroll-position correction.
+async function settleFaq(page) {
+  await page.locator('#faq').evaluate(faq => new Promise(resolve => {
+    const duration = parseFloat(getComputedStyle(faq).getPropertyValue('--faq-motion-ms')) || 0;
+    setTimeout(resolve, duration + 100);
+  }));
+}
+// Native scrolling from a preceding action can finish on later animation frames.
+async function settleScroll(page) {
+  await page.evaluate(() => new Promise((resolve, reject) => {
+    let last = scrollY, stableSince = performance.now();
+    const started = stableSince;
+    function sample(now) {
+      if (scrollY !== last) { last = scrollY; stableSince = now; }
+      if (now - stableSince >= 150) return resolve();
+      if (now - started > 3000) return reject(new Error('Scrolling did not settle'));
+      requestAnimationFrame(sample);
+    }
+    requestAnimationFrame(sample);
+  }));
+}
+
 let browser;
 try {
   browser = await chromium.launch();
-  for (const width of [1440, 390]) {
-    for (const lang of ['hy', 'en']) {
+  for (const width of widths) {
+    for (const lang of languages) {
       const context = await browser.newContext({ viewport:{width, height:1100} });
       const page = await context.newPage();
       const errors = [];
@@ -64,12 +90,15 @@ try {
       assert.equal(await contact.getAttribute('data-test-identity'), 'original', 'Sending must keep the existing form DOM');
       assert.equal(await contact.locator('[name="message"]').inputValue(), 'Test only — Հայերեն\nNo real submission');
       assert.ok(await contact.locator('.form-fallback').isVisible());
+      await settleScroll(page);
       // Translation changes section heights. Keep the same visible block, including form fields.
       for (const selector of ['#about', '#services', '#faq', '.contact-form [name="message"]', '#insights', '.site-footer']) {
         await page.locator(selector).evaluate(node => window.scrollTo({top:node.getBoundingClientRect().top + scrollY - 90,behavior:'instant'}));
+        await settleScroll(page);
         const before = await page.locator(selector).evaluate(node => node.getBoundingClientRect().top);
         await page.locator('.lang-btn').click();
         await page.evaluate(() => document.fonts.ready);
+        await settleScroll(page);
         const after = await page.locator(selector).evaluate(node => node.getBoundingClientRect().top);
         if (selector === '.site-footer') {
           assert.ok(await page.evaluate(() => document.documentElement.scrollHeight - innerHeight - scrollY < 2), 'Keep the footer in view at the bottom');
@@ -220,15 +249,19 @@ try {
       await page.goto(base + lang + '/faq/');
       const faqCategory = page.locator('.faq-head').first();
       await faqCategory.click();
+      await settleFaq(page);
       const faqQuestions = page.locator('.faq-sub-list').first().locator('.faq-q');
       const expectedFaqGuides = ['tooth-extraction','dental-implantation','impacted-tooth','sinus-lift','fess','septoplasty','rhinoplasty','blepharoplasty'];
       for (let i = 0; i < expectedFaqGuides.length; i++) {
-        await faqQuestions.nth(i + 1).scrollIntoViewIfNeeded();
-        const before = await page.evaluate(() => scrollY);
-        await faqQuestions.nth(i + 1).click();
-        // Browser scroll anchoring rounds fractional layout coordinates to pixels.
-        // Allow only that rounding; a jump towards the page top must still fail.
-        assert.ok(Math.abs(await page.evaluate(() => scrollY) - before) <= 1);
+        const question = faqQuestions.nth(i + 1);
+        await question.scrollIntoViewIfNeeded();
+        const before = await question.evaluate(node => node.getBoundingClientRect().top);
+        await question.click();
+        await settleFaq(page);
+        const after = await question.evaluate(node => node.getBoundingClientRect().top);
+        // Collapsing a preceding answer changes scrollY to hold the clicked question in place.
+        // Measure the visible question, retaining the original 1px rounding allowance.
+        assert.ok(Math.abs(after - before) <= 1, `FAQ question ${i + 1} moved by ${after - before}px (${lang}, ${width}px)`);
         assert.equal(await page.locator('.faq-answer.open .faq-guide-link').getAttribute('href'), base + lang + '/guide/' + expectedFaqGuides[i] + '/');
       }
       for (const [key, sub, references] of [
