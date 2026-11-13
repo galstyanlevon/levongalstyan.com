@@ -40,62 +40,59 @@ await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const base = `http://127.0.0.1:${server.address().port}/`;
 const artifacts = '.cache/diagnostics';
 fs.mkdirSync(artifacts, { recursive:true });
+// Wait for the FAQ transition and its final scroll-position correction.
+async function settleFaq(page) {
+  await page.locator('#faq').evaluate(faq => new Promise(resolve => {
+    const duration = parseFloat(getComputedStyle(faq).getPropertyValue('--faq-motion-ms')) || 0;
+    setTimeout(resolve, duration + 100);
+  }));
+}
 
 const browser = await chromium.launch();
-const settle = page => page.evaluate(async () => {
-  await document.fonts.ready;
-  await new Promise(r => setTimeout(r, 400));
-});
 try {
-for (const width of [1440, 390]) for (const lang of ['en', 'hy']) {
-  const context = await browser.newContext({viewport:{width,height:1100}});
-  await context.route('**/*', r => r.request().url().startsWith(base) ? r.continue() : r.abort());
-  const page = await context.newPage();
-  await page.addInitScript(() => {
-    window.trace=[];
-    for (const method of ['scrollTo','scrollBy']) {
-      const original=window[method];
-      window[method]=function(...args) { const result=original.apply(this,args); window.trace.push({method,args,y:scrollY,about:document.querySelector('#about')?.getBoundingClientRect().top}); return result; };
+  for (const mutation of [false, true]) for (const width of [1440,390]) for (const lang of ['hy','en']) {
+    const context = await browser.newContext({viewport:{width,height:1100}});
+    await context.route('**/*', async route => {
+      const url=route.request().url();
+      if (!url.startsWith(base)) return route.abort();
+      if (mutation && new URL(url).pathname.endsWith('/js/app.js')) {
+        const original=fs.readFileSync('dist/js/app.js','utf8');
+        const changed=original.replace('if (Math.abs(delta) > 0.5) window.scrollBy({ top: delta, behavior: "instant" });','/* diagnostic mutation: position correction disabled */');
+        assert.notEqual(original,changed);
+        return route.fulfill({status:200,contentType:'text/javascript',body:changed});
+      }
+      return route.continue();
+    });
+    const page = await context.newPage();
+    let failure;
+    try {
+      await page.goto(base + lang + '/faq/');
+      const faqCategory = page.locator('.faq-head').first();
+      await faqCategory.click();
+      await settleFaq(page);
+      const faqQuestions = page.locator('.faq-sub-list').first().locator('.faq-q');
+      const expectedFaqGuides = ['tooth-extraction','dental-implantation','impacted-tooth','sinus-lift','fess','septoplasty','rhinoplasty','blepharoplasty'];
+      for (let i = 0; i < expectedFaqGuides.length; i++) {
+        const question = faqQuestions.nth(i + 1);
+        await question.scrollIntoViewIfNeeded();
+        const before = await question.evaluate(node => node.getBoundingClientRect().top);
+        await question.click();
+        await settleFaq(page);
+        const after = await question.evaluate(node => node.getBoundingClientRect().top);
+        // Collapsing a preceding answer changes scrollY to hold the clicked question in place.
+        // Measure the visible question, retaining the original 1px rounding allowance.
+        assert.ok(Math.abs(after - before) <= 1, `FAQ question ${i + 1} moved by ${after - before}px (${lang}, ${width}px)`);
+        assert.equal(await page.locator('.faq-answer.open .faq-guide-link').getAttribute('href'), base + lang + '/guide/' + expectedFaqGuides[i] + '/');
+      }
+
+    } catch (error) { failure=error; }
+    if (mutation) {
+      assert.match(failure?.message || '', /FAQ question [0-9]+ moved/, 'The FAQ check must reject a real position regression');
+      console.log('PASS regression detected:', lang, width, failure.message);
+    } else {
+      if(failure) throw failure;
+      console.log('PASS stable FAQ position and all eight links:', lang, width);
     }
-    document.addEventListener('click', e => {if(e.target.closest('.lang-btn')) window.trace.push({click:true,y:scrollY,about:document.querySelector('#about')?.getBoundingClientRect().top,fonts:document.fonts.status});}, true);
-  });
-  for(let iteration=0;iteration<3;iteration++) {
-    await page.goto(base+lang+'/contact/');
-    await page.evaluate(() => document.fonts.ready);
-    const contact=page.locator('.contact-form');
-    await contact.locator('[name=name]').fill('Technical test');
-    await contact.locator('[name=email]').fill('test@example.invalid');
-    await contact.locator('[name=message]').fill('Test only — Հայերեն\nNo real submission');
-    await contact.locator('.form-submit').click();
-    await contact.locator('.form-error:not([hidden])').waitFor();
-    for (const selector of ['#about','#services','#faq','.contact-form [name=message]','#insights','.site-footer']) {
-      await page.locator(selector).evaluate(n=>window.scrollTo({top:n.getBoundingClientRect().top+scrollY-90,behavior:'instant'}));
-      const before=await page.locator(selector).evaluate(n=>n.getBoundingClientRect().top);
-      await page.evaluate(()=>window.trace=[]);
-      await page.locator('.lang-btn').click();
-      await page.evaluate(()=>document.fonts.ready);
-      const immediate=await page.locator(selector).evaluate(n=>n.getBoundingClientRect().top);
-      await settle(page);
-      const after=await page.locator(selector).evaluate(n=>n.getBoundingClientRect().top);
-      console.log(JSON.stringify({kind:'language',lang,width,iteration,selector,before,immediate,after,trace:await page.evaluate(()=>window.trace)}));
-    }
+    await context.close();
   }
-  await page.goto(base+lang+'/faq/');
-  await settle(page);
-  await page.locator('.faq-head').first().click();
-  await settle(page);
-  const questions=page.locator('.faq-sub-list').first().locator('.faq-q');
-  for(let i=1;i<=8;i++) {
-    const q=questions.nth(i);
-    await q.scrollIntoViewIfNeeded();
-    const before=await q.evaluate(n=>({top:n.getBoundingClientRect().top,y:scrollY}));
-    await page.evaluate(()=>window.trace=[]);
-    await q.click();
-    const immediate=await q.evaluate(n=>({top:n.getBoundingClientRect().top,y:scrollY}));
-    await settle(page);
-    const after=await q.evaluate(n=>({top:n.getBoundingClientRect().top,y:scrollY}));
-    console.log(JSON.stringify({kind:'faq',lang,width,i,before,immediate,after}));
-  }
-  await context.close();
-}
-} finally {await browser.close(); await new Promise(r=>server.close(r));}
+} finally { await browser.close(); await new Promise(resolve=>server.close(resolve)); }

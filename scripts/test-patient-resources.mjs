@@ -40,6 +40,13 @@ await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const base = `http://127.0.0.1:${server.address().port}/`;
 const artifacts = 'artifacts/patient-resources';
 fs.mkdirSync(artifacts, { recursive:true });
+// Wait for the FAQ transition and its final scroll-position correction.
+async function settleFaq(page) {
+  await page.locator('#faq').evaluate(faq => new Promise(resolve => {
+    const duration = parseFloat(getComputedStyle(faq).getPropertyValue('--faq-motion-ms')) || 0;
+    setTimeout(resolve, duration + 100);
+  }));
+}
 let browser;
 try {
   browser = await chromium.launch();
@@ -220,15 +227,19 @@ try {
       await page.goto(base + lang + '/faq/');
       const faqCategory = page.locator('.faq-head').first();
       await faqCategory.click();
+      await settleFaq(page);
       const faqQuestions = page.locator('.faq-sub-list').first().locator('.faq-q');
       const expectedFaqGuides = ['tooth-extraction','dental-implantation','impacted-tooth','sinus-lift','fess','septoplasty','rhinoplasty','blepharoplasty'];
       for (let i = 0; i < expectedFaqGuides.length; i++) {
-        await faqQuestions.nth(i + 1).scrollIntoViewIfNeeded();
-        const before = await page.evaluate(() => scrollY);
-        await faqQuestions.nth(i + 1).click();
-        // Browser scroll anchoring rounds fractional layout coordinates to pixels.
-        // Allow only that rounding; a jump towards the page top must still fail.
-        assert.ok(Math.abs(await page.evaluate(() => scrollY) - before) <= 1);
+        const question = faqQuestions.nth(i + 1);
+        await question.scrollIntoViewIfNeeded();
+        const before = await question.evaluate(node => node.getBoundingClientRect().top);
+        await question.click();
+        await settleFaq(page);
+        const after = await question.evaluate(node => node.getBoundingClientRect().top);
+        // Collapsing a preceding answer changes scrollY to hold the clicked question in place.
+        // Measure the visible question, retaining the original 1px rounding allowance.
+        assert.ok(Math.abs(after - before) <= 1, `FAQ question ${i + 1} moved by ${after - before}px (${lang}, ${width}px)`);
         assert.equal(await page.locator('.faq-answer.open .faq-guide-link').getAttribute('href'), base + lang + '/guide/' + expectedFaqGuides[i] + '/');
       }
       for (const [key, sub, references] of [
