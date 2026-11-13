@@ -48,39 +48,61 @@ async function settleFaq(page) {
   }));
 }
 
+async function settleScroll(page) {
+  await page.evaluate(() => new Promise((resolve, reject) => {
+    let last = scrollY, stableSince = performance.now();
+    const started = stableSince;
+    function sample(now) {
+      if (scrollY !== last) { last = scrollY; stableSince = now; }
+      if (now - stableSince >= 150) return resolve();
+      if (now - started > 3000) return reject(new Error('Scrolling did not settle'));
+      requestAnimationFrame(sample);
+    }
+    requestAnimationFrame(sample);
+  }));
+}
+
 const browser=await chromium.launch();
 try {
-for(const method of ['locator','mouse']) for(const width of [1440,390]) for(const lang of ['hy','en']) {
- const context=await browser.newContext({viewport:{width,height:1100}});
- await context.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());
- const page=await context.newPage();
- await page.addInitScript(()=>{
-  window.trace=[];
-  for(const event of ['pointerdown','mousedown','focusin','mouseup','click']) document.addEventListener(event,e=>window.trace.push({event,tag:e.target.tagName,cls:e.target.className,y:scrollY,about:document.querySelector('#about')?.getBoundingClientRect().top}),true);
-  const orig=window.scrollTo;
-  window.scrollTo=function(...args){const result=orig.apply(this,args);window.trace.push({method:'scrollTo',args,y:scrollY,about:document.querySelector('#about')?.getBoundingClientRect().top});return result;};
- });
- for(let i=0;i<3;i++) {
-  await page.goto(base+lang+'/contact/');await page.evaluate(()=>document.fonts.ready);
-  const form=page.locator('.contact-form');
-  await form.locator('[name=name]').fill('Technical test');
-  await form.locator('[name=email]').fill('test@example.invalid');
-  await form.locator('[name=message]').fill('Test only');
-  await form.locator('.form-submit').click();
-  await form.locator('.form-error:not([hidden])').waitFor();
-  await page.locator('#about').evaluate(n=>window.scrollTo({top:n.getBoundingClientRect().top+scrollY-90,behavior:'instant'}));
-  await page.evaluate(()=>window.trace=[]);
-  const before=await page.locator('#about').evaluate(n=>n.getBoundingClientRect().top);
-  if(method==='locator') await page.locator('.lang-btn').click();
-  else {
-    const rect=await page.locator('.lang-btn').boundingBox();
-    await page.mouse.click(rect.x+rect.width/2,rect.y+rect.height/2);
+ for(const width of [1440,390]) for(const lang of ['hy','en']) {
+  const context=await browser.newContext({viewport:{width,height:1100}});
+  await context.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());
+  const page=await context.newPage();
+  for(let iteration=0;iteration<3;iteration++) {
+      await page.goto(base + lang + '/contact/');
+      await page.evaluate(() => document.fonts.ready);
+      const contact = page.locator('.contact-form');
+      await contact.locator('[name="name"]').fill('Technical test');
+      await contact.locator('[name="email"]').fill('test@example.invalid');
+      await contact.locator('[name="message"]').fill('Test only — Հայերեն\nNo real submission');
+      await contact.evaluate(form => { form.dataset.testIdentity = 'original'; });
+      await contact.locator('.form-submit').click();
+      await contact.locator('.form-error:not([hidden])').waitFor();
+      assert.equal(await contact.getAttribute('data-test-identity'), 'original', 'Sending must keep the existing form DOM');
+      assert.equal(await contact.locator('[name="message"]').inputValue(), 'Test only — Հայերեն\nNo real submission');
+      assert.ok(await contact.locator('.form-fallback').isVisible());
+      await settleScroll(page);
+      // Translation changes section heights. Keep the same visible block, including form fields.
+      for (const selector of ['#about', '#services', '#faq', '.contact-form [name="message"]', '#insights', '.site-footer']) {
+        await page.locator(selector).evaluate(node => window.scrollTo({top:node.getBoundingClientRect().top + scrollY - 90,behavior:'instant'}));
+        await settleScroll(page);
+        const before = await page.locator(selector).evaluate(node => node.getBoundingClientRect().top);
+        await page.locator('.lang-btn').click();
+        await page.evaluate(() => document.fonts.ready);
+        await settleScroll(page);
+        const after = await page.locator(selector).evaluate(node => node.getBoundingClientRect().top);
+        console.log(JSON.stringify({lang,width,iteration,selector,before,after}));
+        if (selector === '.site-footer') {
+          assert.ok(await page.evaluate(() => document.documentElement.scrollHeight - innerHeight - scrollY < 2), 'Keep the footer in view at the bottom');
+        } else {
+          assert.ok(Math.abs(after - before) < 3, `Language switch moved ${selector} by ${after - before}px at ${width}px`);
+        }
+        assert.equal(await contact.locator('[name="message"]').inputValue(), 'Test only — Հայերեն\nNo real submission');
+      }
+      assert.equal(await page.locator('html').getAttribute('lang'), lang);
+      console.log('PASS contact error keeps DOM and language keeps viewport:', lang, width);
+
   }
-  await page.evaluate(()=>document.fonts.ready);
-  await page.waitForTimeout(400);
-  const after=await page.locator('#about').evaluate(n=>n.getBoundingClientRect().top);
-  console.log(JSON.stringify({method,lang,width,i,before,after,trace:await page.evaluate(()=>window.trace)}));
+  await context.close();
  }
- await context.close();
-}
 } finally {await browser.close();await new Promise(r=>server.close(r));}
