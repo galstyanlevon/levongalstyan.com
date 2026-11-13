@@ -1,7 +1,7 @@
 name: Check patient resources
 on:
   push:
-    branches: [main, feature/patient-guides, publish/patient-guides, preview/septoplasty-fess-guides, preview/all-patient-guidelines]
+    branches: [main, fix/browser-check-stability, feature/patient-guides, publish/patient-guides, preview/septoplasty-fess-guides, preview/all-patient-guidelines]
   pull_request:
     branches: [main]
     paths:
@@ -40,6 +40,8 @@ jobs:
         run: |
           npm install --no-save --package-lock=false playwright@1.58.2
           npx playwright install --with-deps chromium
+      - name: Measure scroll positions
+        run: node scripts/diagnose-check-position.mjs
       - name: Check Patient Notes submission and outage recovery
         run: |
           node scripts/test-patient-notes-submit.mjs
