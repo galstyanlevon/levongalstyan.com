@@ -51,5 +51,19 @@ window.PATIENT_NOTES.push({
   });
 });
 
+['hy', 'en'].forEach(function (language) {
+  window.PATIENT_NOTES.push({
+    id: 'khachatur-2026-' + language,
+    language: language,
+    type: 'text',
+    text: "A big thank you to Dr. Levon Galstyan for taking such good care of me and performing my septum surgery. He is professional, kind, and attentive throughout the whole process. I felt I was in good hands, and I’m very happy with my experience. I would definitely recommend him!",
+    year: 2026,
+    displayName: 'Khachatur',
+    published: true,
+    demo: false,
+    sortOrder: 4
+  });
+});
+
 window.PATIENT_LINKS.en.push({ key: "notes", label: "Patient Notes" });
 window.PATIENT_LINKS.hy.push({ key: "notes", label: "Բուժառուների խոսքերը" });
