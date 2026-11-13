@@ -5,6 +5,10 @@ import http from 'node:http';
 import path from 'node:path';
 import { chromium } from 'playwright';
 
+const languages = process.env.TEST_LANG ? [process.env.TEST_LANG] : ['hy', 'en'];
+const widths = process.env.TEST_WIDTH ? [Number(process.env.TEST_WIDTH)] : [1440, 390];
+assert.ok(languages.every(lang => ['hy', 'en'].includes(lang)), 'Unsupported TEST_LANG');
+assert.ok(widths.every(width => [1440, 390].includes(width)), 'Unsupported TEST_WIDTH');
 const root = path.resolve('dist');
 const source = { window: {} };
 vm.runInNewContext(fs.readFileSync('js/content.js', 'utf8'), source);
@@ -47,11 +51,26 @@ async function settleFaq(page) {
     setTimeout(resolve, duration + 100);
   }));
 }
+// Native scrolling from a preceding action can finish on later animation frames.
+async function settleScroll(page) {
+  await page.evaluate(() => new Promise((resolve, reject) => {
+    let last = scrollY, stableSince = performance.now();
+    const started = stableSince;
+    function sample(now) {
+      if (scrollY !== last) { last = scrollY; stableSince = now; }
+      if (now - stableSince >= 150) return resolve();
+      if (now - started > 3000) return reject(new Error('Scrolling did not settle'));
+      requestAnimationFrame(sample);
+    }
+    requestAnimationFrame(sample);
+  }));
+}
+
 let browser;
 try {
   browser = await chromium.launch();
-  for (const width of [1440, 390]) {
-    for (const lang of ['hy', 'en']) {
+  for (const width of widths) {
+    for (const lang of languages) {
       const context = await browser.newContext({ viewport:{width, height:1100} });
       const page = await context.newPage();
       const errors = [];
@@ -71,12 +90,15 @@ try {
       assert.equal(await contact.getAttribute('data-test-identity'), 'original', 'Sending must keep the existing form DOM');
       assert.equal(await contact.locator('[name="message"]').inputValue(), 'Test only — Հայերեն\nNo real submission');
       assert.ok(await contact.locator('.form-fallback').isVisible());
+      await settleScroll(page);
       // Translation changes section heights. Keep the same visible block, including form fields.
       for (const selector of ['#about', '#services', '#faq', '.contact-form [name="message"]', '#insights', '.site-footer']) {
         await page.locator(selector).evaluate(node => window.scrollTo({top:node.getBoundingClientRect().top + scrollY - 90,behavior:'instant'}));
+        await settleScroll(page);
         const before = await page.locator(selector).evaluate(node => node.getBoundingClientRect().top);
         await page.locator('.lang-btn').click();
         await page.evaluate(() => document.fonts.ready);
+        await settleScroll(page);
         const after = await page.locator(selector).evaluate(node => node.getBoundingClientRect().top);
         if (selector === '.site-footer') {
           assert.ok(await page.evaluate(() => document.documentElement.scrollHeight - innerHeight - scrollY < 2), 'Keep the footer in view at the bottom');

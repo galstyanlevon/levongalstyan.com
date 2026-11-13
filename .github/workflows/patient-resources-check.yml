@@ -40,13 +40,15 @@ jobs:
         run: |
           npm install --no-save --package-lock=false playwright@1.58.2
           npx playwright install --with-deps chromium
-      - name: Diagnose language click position
-        run: node scripts/diagnose-check-position.mjs
+      - name: Check Patient Notes submission and outage recovery
+        run: |
+          node scripts/test-patient-notes-submit.mjs
+          node scripts/test-patient-notes-recovery.mjs
       - name: Save review screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: patient-resources-screenshots
+          name: patient-notes-screenshots
           path: artifacts/patient-resources
           if-no-files-found: ignore
       - name: Save review site
@@ -54,3 +56,38 @@ jobs:
         with:
           name: patient-resources-site
           path: dist
+  resources:
+    name: Patient resources (${{ matrix.lang }}, ${{ matrix.width }}px)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    needs: check
+    if: ${{ !cancelled() }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        lang: [hy, en]
+        width: [390, 1440]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build site
+        run: node scripts/build.mjs
+      - name: Install browser for review checks
+        run: |
+          npm install --no-save --package-lock=false playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Check patient links and layouts
+        run: node scripts/test-patient-resources.mjs
+        env:
+          TEST_LANG: ${{ matrix.lang }}
+          TEST_WIDTH: ${{ matrix.width }}
+      - name: Save review screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: patient-resources-${{ matrix.lang }}-${{ matrix.width }}
+          path: artifacts/patient-resources
+          if-no-files-found: ignore
