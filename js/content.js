@@ -1061,6 +1061,30 @@ window.PUBLICATIONS_URL = "https://www.linkedin.com/in/drlevongalstyan/details/p
 
 window.LECTURES = { en: [
   {
+    "id": 14,
+    "date": "03.10.2026 · Dental Talks",
+    "title": "The Maxillary Sinus and Osteomeatal Complex",
+    "body": "How maxillary sinus function informs dental treatment planning, from assessing the drainage pathway on imaging to coordinating care before sinus augmentation or implant placement."
+  },
+  {
+    "id": 15,
+    "date": "26.09.2026 · Artificial Intelligence in Medicine",
+    "title": "Artificial Intelligence in Oral and Maxillofacial Practice: From Consultation to Surgery",
+    "body": "Levon Galstyan shows how he uses AI for clinical documentation, 3D planning, and teaching, and how he checks the results before using them in his practice."
+  },
+  {
+    "id": 16,
+    "date": "June 2026 · FACE 2026",
+    "title": "Virtual Surgical Planning in Modern Orthognathic Surgery",
+    "body": "How virtual surgical planning informs decisions in orthognathic surgery, from assessing facial proportions and occlusion to planning jaw movements and transferring them to the operating theatre."
+  },
+  {
+    "id": 17,
+    "date": "",
+    "title": "Sinusitis: A Practical Approach for First-Contact Clinicians",
+    "body": "A practical approach to assessing sinusitis and impaired nasal breathing, recognising complications, using CT appropriately, and referring patients for endoscopic assessment and treatment."
+  },
+  {
     "id": 9,
     "date": "16.09.2023",
     "title": "Jaw Reconstruction & Bone Augmentation: Past, Present, Future",
@@ -1133,6 +1157,30 @@ window.LECTURES = { en: [
     "body": "Case-based presentation focused on pre- and postoperative imaging in functional endoscopic sinus surgery (FESS). Includes anatomical landmarks, surgical variations, sinus pathology, and technique evaluation. Delivered by Dr. Levon Galstyan at AAOMFS."
   }
 ], hy: [
+  {
+    "id": 14,
+    "date": "03.10.2026 · Dental Talks",
+    "title": "Վերին ծնոտային ծոց և օստիոմեատալ համալիր",
+    "body": "Ինչպես է վերին ծնոտային ծոցի ֆունկցիան ազդում ատամնաբուժական բուժման պլանավորման վրա՝ պատկերային հետազոտությամբ արտահոսքի ուղին գնահատելուց մինչև սինուս-լիֆտինգից կամ իմպլանտացիայից առաջ բուժման քայլերը համաձայնեցնելը։"
+  },
+  {
+    "id": 15,
+    "date": "26.09.2026 · Արհեստական բանականությունը բժշկության մեջ",
+    "title": "Արհեստական բանականությունը դիմածնոտային վիրաբույժի աշխատանքում․ խորհրդատվությունից մինչև վիրահատություն",
+    "body": "Լևոն Գալստյանը ներկայացնում է, թե ինչպես է կիրառում արհեստական բանականությունը բժշկական փաստաթղթերի կազմման, եռաչափ պլանավորման և դասավանդման մեջ, և ինչպես է ստուգում արդյունքները՝ նախքան դրանք իր աշխատանքում կիրառելը։"
+  },
+  {
+    "id": 16,
+    "date": "2026 թ․ հունիս · FACE 2026",
+    "title": "Վիրտուալ վիրահատական պլանավորումը ժամանակակից օրթոգնաթիկ վիրաբուժության մեջ",
+    "body": "Ինչպես է վիրտուալ վիրահատական պլանավորումն ուղղորդում որոշումները օրթոգնաթիկ վիրաբուժության մեջ՝ դեմքի համամասնությունների ու կծվածքի գնահատումից մինչև ծնոտների տեղաշարժերի պլանավորումն ու վիրահատության ընթացքում դրանց իրականացումը։"
+  },
+  {
+    "id": 17,
+    "date": "",
+    "title": "Սինուսիտներ․ գործնական ալգորիթմ առաջնային օղակի բժիշկների համար",
+    "body": "Սինուսիտների և քթային շնչառության խանգարումների գնահատման գործնական մոտեցում՝ բարդությունների ճանաչում, ՀՏ հետազոտության նպատակային կիրառում և պացիենտի ժամանակին ուղղորդում էնդոսկոպիկ հետազոտության ու բուժման։"
+  },
   {
     "id": 9,
     "date": "16.09.2023",
@@ -1428,3 +1476,11 @@ window.VIDEOS = { en: [
   }
 ] };
 
+
+window.LECTURE_IMAGES["14"] = (function () { var a = []; for (var i = 1; i <= 27; i++) a.push("images/lectures/14/" + (i < 10 ? "0" + i : i) + ".webp"); return a; })();
+
+window.LECTURE_IMAGES["15"] = (function () { var a = []; for (var i = 1; i <= 27; i++) a.push("images/lectures/15/" + (i < 10 ? "0" + i : i) + ".webp"); return a; })();
+
+window.LECTURE_IMAGES["16"] = (function () { var a = []; for (var i = 1; i <= 28; i++) a.push("images/lectures/16/" + (i < 10 ? "0" + i : i) + ".webp"); return a; })();
+
+window.LECTURE_IMAGES["17"] = (function () { var a = []; for (var i = 1; i <= 19; i++) a.push("images/lectures/17/" + (i < 10 ? "0" + i : i) + ".webp"); return a; })();
