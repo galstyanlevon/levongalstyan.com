@@ -602,10 +602,22 @@
           changeFaq(questionButton, function () { state.openQ = state.openQ === key ? null : key; });
         } }, [el("span", null, [it.q]), iconsRow]);
         li.appendChild(questionButton);
-        var answerContent = faqGuide ? el("a", {
-          href: resourcePages.guideHref(faqGuide), class: "faq-guide-link"
-        }, [window.RESOURCE_LABELS[state.lang].guideBody]) : (it.a || "");
-        var answerBody = el("div", { class: "faq-answer-content" }, [el("p", null, [answerContent])]);
+        var answerBody = el("div", { class: "faq-answer-content" });
+        if (faqGuide) {
+          answerBody.appendChild(el("p", null, [el("a", {
+            href: resourcePages.guideHref(faqGuide), class: "faq-guide-link"
+          }, [window.RESOURCE_LABELS[state.lang].guideBody])]));
+        } else if (it.a && it.a.sections) {
+          it.a.sections.forEach(function (section) {
+            var list = el("ul", { class: "faq-answer-list" }, section.items.map(function (point) {
+              return el("li", null, [el("strong", null, [point[0]]), " " + point[1]]);
+            }));
+            answerBody.appendChild(el("div", null, [el("p", null, [el("strong", null, [section.title])]), list]));
+          });
+          answerBody.appendChild(el("p", null, [el("em", null, [it.a.disclaimer])]));
+        } else {
+          answerBody.appendChild(el("p", null, [it.a || ""]));
+        }
         var ans = el("div", { id: answerId, class: "faq-answer faq-panel" + (qOpen ? " open" : ""), "aria-hidden": String(!qOpen), inert: qOpen ? null : "" }, [el("div", { class: "faq-panel-inner" }, [answerBody])]);
         if (hasVideo) {
           var mediaRow = el("div", { class: "faq-media-row" });
