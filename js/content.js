@@ -1079,6 +1079,12 @@ window.LECTURES = { en: [
     "body": "How virtual surgical planning informs decisions in orthognathic surgery, from assessing facial proportions and occlusion to planning jaw movements and transferring them to the operating theatre."
   },
   {
+    "id": 18,
+    "date": "24.11.2025 · Association of Orthodontists of Armenia",
+    "title": "Surgically Assisted Rapid Palatal Expansion (SARPE)",
+    "body": "A multidisciplinary approach to SARPE, covering indications, surgical planning and technique, expansion biomechanics, postoperative care, and coordination with orthodontic treatment."
+  },
+  {
     "id": 17,
     "date": "",
     "title": "Sinusitis: A Practical Approach for First-Contact Clinicians",
@@ -1174,6 +1180,12 @@ window.LECTURES = { en: [
     "date": "2026 թ․ հունիս · FACE 2026",
     "title": "Վիրտուալ վիրահատական պլանավորումը ժամանակակից օրթոգնաթիկ վիրաբուժության մեջ",
     "body": "Ինչպես է վիրտուալ վիրահատական պլանավորումն ուղղորդում որոշումները օրթոգնաթիկ վիրաբուժության մեջ՝ դեմքի համամասնությունների ու կծվածքի գնահատումից մինչև ծնոտների տեղաշարժերի պլանավորումն ու վիրահատության ընթացքում դրանց իրականացումը։"
+  },
+  {
+    "id": 18,
+    "date": "24.11.2025 · Հայաստանի օրթոդոնտների ասոցիացիա",
+    "title": "Քիմքի վիրաբուժական օժանդակությամբ արագ լայնացում (SARPE)",
+    "body": "SARPE-ի միջմասնագիտական մոտեցում՝ ցուցումներ, վիրահատության պլանավորում և տեխնիկա, լայնացման բիոմեխանիկա, հետվիրահատական խնամք և օրթոդոնտիկ բուժման հետ համաձայնեցում։"
   },
   {
     "id": 17,
@@ -1484,3 +1496,5 @@ window.LECTURE_IMAGES["15"] = (function () { var a = []; for (var i = 1; i <= 27
 window.LECTURE_IMAGES["16"] = (function () { var a = []; for (var i = 1; i <= 28; i++) a.push("images/lectures/16/" + (i < 10 ? "0" + i : i) + ".webp"); return a; })();
 
 window.LECTURE_IMAGES["17"] = (function () { var a = []; for (var i = 1; i <= 19; i++) a.push("images/lectures/17/" + (i < 10 ? "0" + i : i) + ".webp"); return a; })();
+
+window.LECTURE_IMAGES["18"] = (function () { var a = []; for (var i = 1; i <= 42; i++) a.push("images/lectures/18/" + (i < 10 ? "0" + i : i) + ".webp"); return a; })();
